@@ -64,12 +64,10 @@
   animation: rise 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) 0.05s both;
 }
 .masthead-title em {
-  font-style: italic;
   color: #d8442a;
 }
 
 .masthead-lead {
-  max-width: 46ch;
   margin-top: 24px;
   color: #6b665b;
   animation: rise 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) 0.12s both;
@@ -141,6 +139,41 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #6b665b;
+}
+
+.index-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 40px;
+  animation: rise 0.7s cubic-bezier(0.22, 0.61, 0.36, 1) 0.17s both;
+}
+
+.filter-chip {
+  padding: 8px 16px;
+  background: #f4f1e8;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b665b;
+  cursor: pointer;
+  transition: color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), background-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.filter-chip:hover {
+  border-color: #1c1b18;
+  color: #1c1b18;
+}
+.filter-chip.is-active {
+  background: #d8442a;
+  border-color: #d8442a;
+  color: #f4f1e8;
+}
+.filter-chip:focus-visible {
+  outline: 2px solid #d8442a;
+  outline-offset: 2px;
 }
 
 .index-grid {

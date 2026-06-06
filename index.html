@@ -59,9 +59,20 @@
         <span class="index-count" id="tool-count">16 項工具</span>
       </div>
 
+      <!-- 分類篩選：依領域切換工具，與搜尋列為交集篩選 -->
+      <div class="container index-filters" id="tool-filters" role="group" aria-label="依分類篩選工具">
+        <button class="filter-chip is-active" type="button" data-filter="all" aria-pressed="true">全部</button>
+        <button class="filter-chip" type="button" data-filter="image" aria-pressed="false">圖片</button>
+        <button class="filter-chip" type="button" data-filter="color" aria-pressed="false">色彩</button>
+        <button class="filter-chip" type="button" data-filter="css" aria-pressed="false">CSS</button>
+        <button class="filter-chip" type="button" data-filter="text" aria-pressed="false">文字</button>
+        <button class="filter-chip" type="button" data-filter="reference" aria-pressed="false">速查</button>
+        <button class="filter-chip" type="button" data-filter="assets" aria-pressed="false">資產</button>
+      </div>
+
       <nav class="container index-grid">
 
-        <a class="tool-card" href="services/image-compress/index.html" data-keywords="壓縮 圖片 compress image 縮小 檔案 jpg jpeg png webp 畫質">
+        <a class="tool-card" href="services/image-compress/index.html" data-category="image" data-keywords="壓縮 圖片 compress image 縮小 檔案 jpg jpeg png webp 畫質">
           <div class="tool-card-top">
             <span class="tool-card-no">01</span>
             <span class="badge is-live">上線</span>
@@ -74,7 +85,7 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
-        <a class="tool-card" href="services/svg-to-font/index.html" data-keywords="svg font 字型 字體 圖示 icon iconfont woff ttf 打包">
+        <a class="tool-card" href="services/svg-to-font/index.html" data-category="assets" data-keywords="svg font 字型 字體 圖示 icon iconfont woff ttf 打包">
           <div class="tool-card-top">
             <span class="tool-card-no">02</span>
             <span class="badge is-live">上線</span>
@@ -87,7 +98,7 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
-        <a class="tool-card" href="services/social-size/index.html" data-keywords="社群 尺寸 social size facebook instagram fb ig 版位 貼文 比例">
+        <a class="tool-card" href="services/social-size/index.html" data-category="reference" data-keywords="社群 尺寸 social size facebook instagram fb ig 版位 貼文 比例">
           <div class="tool-card-top">
             <span class="tool-card-no">03</span>
             <span class="badge is-live">上線</span>
@@ -100,7 +111,7 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
-        <a class="tool-card" href="services/device-size/index.html" data-keywords="裝置 device 尺寸 viewport 斷點 breakpoint rwd 響應式 手機 平板 桌機 dpr">
+        <a class="tool-card" href="services/device-size/index.html" data-category="reference" data-keywords="裝置 device 尺寸 viewport 斷點 breakpoint rwd 響應式 手機 平板 桌機 dpr">
           <div class="tool-card-top">
             <span class="tool-card-no">04</span>
             <span class="badge is-live">上線</span>
@@ -113,7 +124,7 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
-        <a class="tool-card" href="services/grid-flex/index.html" data-keywords="grid flex flexbox 排版 layout css playground 模擬器 對齊">
+        <a class="tool-card" href="services/grid-flex/index.html" data-category="css" data-keywords="grid flex flexbox 排版 layout css playground 模擬器 對齊">
           <div class="tool-card-top">
             <span class="tool-card-no">05</span>
             <span class="badge is-live">上線</span>
@@ -126,7 +137,7 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
-        <a class="tool-card" href="services/image-crop/index.html" data-keywords="圖片 裁切 crop resize 改尺寸 縮放 比例 image">
+        <a class="tool-card" href="services/image-crop/index.html" data-category="image" data-keywords="圖片 裁切 crop resize 改尺寸 縮放 比例 image">
           <div class="tool-card-top">
             <span class="tool-card-no">06</span>
             <span class="badge is-live">上線</span>
@@ -139,7 +150,7 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
-        <a class="tool-card" href="services/favicon/index.html" data-keywords="favicon icon 圖示 網站圖示 pwa manifest apple-touch 分頁">
+        <a class="tool-card" href="services/favicon/index.html" data-category="assets" data-keywords="favicon icon 圖示 網站圖示 pwa manifest apple-touch 分頁">
           <div class="tool-card-top">
             <span class="tool-card-no">07</span>
             <span class="badge is-live">上線</span>
@@ -152,7 +163,7 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
-        <a class="tool-card" href="services/qr-code/index.html" data-keywords="qr qrcode qr code 二維碼 條碼 網址 連結 url 掃描 svg png">
+        <a class="tool-card" href="services/qr-code/index.html" data-category="assets" data-keywords="qr qrcode qr code 二維碼 條碼 網址 連結 url 掃描 svg png">
           <div class="tool-card-top">
             <span class="tool-card-no">08</span>
             <span class="badge is-live">上線</span>
@@ -165,7 +176,7 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
-        <a class="tool-card" href="services/color-palette/index.html" data-keywords="調色盤 配色 色票 palette color 色階 scale 互補 類比 scss css 變數 設計系統">
+        <a class="tool-card" href="services/color-palette/index.html" data-category="color" data-keywords="調色盤 配色 色票 palette color 色階 scale 互補 類比 scss css 變數 設計系統">
           <div class="tool-card-top">
             <span class="tool-card-no">09</span>
             <span class="badge is-live">上線</span>
@@ -178,7 +189,7 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
-        <a class="tool-card" href="services/color-convert/index.html" data-keywords="色彩 顏色 格式 轉換 convert color hex rgb hsl oklch 色碼 換算">
+        <a class="tool-card" href="services/color-convert/index.html" data-category="color" data-keywords="色彩 顏色 格式 轉換 convert color hex rgb hsl oklch 色碼 換算">
           <div class="tool-card-top">
             <span class="tool-card-no">10</span>
             <span class="badge is-live">上線</span>
@@ -191,7 +202,7 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
-        <a class="tool-card" href="services/type-scale/index.html" data-keywords="字級 比例 type scale 級距 字體 排版 typography 字型大小 rem 模組化 modular 黃金比例 fs">
+        <a class="tool-card" href="services/type-scale/index.html" data-category="text" data-keywords="字級 比例 type scale 級距 字體 排版 typography 字型大小 rem 模組化 modular 黃金比例 fs">
           <div class="tool-card-top">
             <span class="tool-card-no">11</span>
             <span class="badge is-live">上線</span>
@@ -204,7 +215,7 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
-        <a class="tool-card" href="services/lorem/index.html" data-keywords="lorem ipsum 假文 placeholder 佔位 文字 中文 英文 段落 排版 dummy text 亂數文">
+        <a class="tool-card" href="services/lorem/index.html" data-category="text" data-keywords="lorem ipsum 假文 placeholder 佔位 文字 中文 英文 段落 排版 dummy text 亂數文">
           <div class="tool-card-top">
             <span class="tool-card-no">12</span>
             <span class="badge is-live">上線</span>
@@ -217,7 +228,7 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
-        <a class="tool-card" href="services/word-count/index.html" data-keywords="字數 字元 統計 word count character 計算 行數 段落 句子 閱讀時間 字數統計 中文 英文">
+        <a class="tool-card" href="services/word-count/index.html" data-category="text" data-keywords="字數 字元 統計 word count character 計算 行數 段落 句子 閱讀時間 字數統計 中文 英文">
           <div class="tool-card-top">
             <span class="tool-card-no">13</span>
             <span class="badge is-live">上線</span>
@@ -230,7 +241,7 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
-        <a class="tool-card" href="services/shadow/index.html" data-keywords="陰影 box-shadow shadow 投影 drop shadow 立體 層疊 css 內陰影 inset 發光 glow 圖層">
+        <a class="tool-card" href="services/shadow/index.html" data-category="css" data-keywords="陰影 box-shadow shadow 投影 drop shadow 立體 層疊 css 內陰影 inset 發光 glow 圖層">
           <div class="tool-card-top">
             <span class="tool-card-no">14</span>
             <span class="badge is-live">上線</span>
@@ -243,7 +254,7 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
-        <a class="tool-card" href="services/gradient/index.html" data-keywords="漸層 gradient 線性 linear 放射 radial 錐形 conic 色標 color stop 角度 配色 背景 background css 過渡">
+        <a class="tool-card" href="services/gradient/index.html" data-category="css" data-keywords="漸層 gradient 線性 linear 放射 radial 錐形 conic 色標 color stop 角度 配色 背景 background css 過渡">
           <div class="tool-card-top">
             <span class="tool-card-no">15</span>
             <span class="badge is-live">上線</span>
@@ -256,7 +267,7 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
-        <a class="tool-card" href="services/image-convert/index.html" data-keywords="圖片 格式 轉換 convert format png jpeg jpg webp avif 互轉 重新編碼 圖片格式 影像">
+        <a class="tool-card" href="services/image-convert/index.html" data-category="image" data-keywords="圖片 格式 轉換 convert format png jpeg jpg webp avif 互轉 重新編碼 圖片格式 影像">
           <div class="tool-card-top">
             <span class="tool-card-no">16</span>
             <span class="badge is-live">上線</span>

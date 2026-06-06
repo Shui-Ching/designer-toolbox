@@ -52,13 +52,13 @@
   animation: rise 0.7s $ease 0.05s both;
 
   em {
-    font-style: italic;
+    // font-style: italic;
     color: $color-accent;
   }
 }
 
 .masthead-lead {
-  max-width: 46ch;
+  // max-width: 46ch;
   margin-top: $space-4;
   color: $color-ink-soft;
   animation: rise 0.7s $ease 0.12s both;
@@ -124,6 +124,46 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: $color-ink-soft;
+}
+
+// — 分類篩選 chip —
+.index-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin-bottom: $space-5;
+  animation: rise 0.7s $ease 0.17s both;
+}
+
+.filter-chip {
+  padding: $space-2 $space-3;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    border-color: $color-ink;
+    color: $color-ink;
+  }
+
+  // 目前選取的分類：硃紅實底
+  &.is-active {
+    background: $color-accent;
+    border-color: $color-accent;
+    color: $color-paper;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-accent;
+    outline-offset: 2px;
+  }
 }
 
 .index-grid {

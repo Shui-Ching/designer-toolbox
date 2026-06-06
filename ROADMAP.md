@@ -3,7 +3,9 @@
 > 每次收工更新此檔。下次接續時，這裡是進度的單一真實來源。
 > 架構決策與設計 token 另存於 project skill（見最下方）。
 
-最後更新：2026-06-06（完成 16 圖片格式轉換：與 01 共用「拖放→createImageBitmap 解碼→canvas→toBlob 重新編碼」批次流程，但聚焦格式互轉、保留原尺寸；目標格式 PNG／JPEG／WebP／AVIF，啟動時以 1×1 canvas 試編碼比對 blob.type 偵測 WebP／AVIF 支援度，不支援即停用該按鈕並標「不支援」（避免靜默退回 PNG）；品質滑桿只對有損格式有效、PNG 自動停用，JPEG 先鋪白底避免透明變黑；每列顯示「來源格式→目標格式」徽章＋原尺寸＋前後大小對比與增減%，單張下載／全部下載／移除／清空，下載埋 track('use')；檔名以 escapeHtml 跳脫；入口頁卡片 is-live＋搜尋計數改 16、package.json 補編譯映射）
+最後更新：2026-06-06（入口頁新增分類篩選 chip：16 個工具依領域分 6 類，與既有搜尋列為「交集」篩選，詳見下方「入口頁功能」）
+
+前次更新：2026-06-06（完成 16 圖片格式轉換：與 01 共用「拖放→createImageBitmap 解碼→canvas→toBlob 重新編碼」批次流程，但聚焦格式互轉、保留原尺寸；目標格式 PNG／JPEG／WebP／AVIF，啟動時以 1×1 canvas 試編碼比對 blob.type 偵測 WebP／AVIF 支援度，不支援即停用該按鈕並標「不支援」（避免靜默退回 PNG）；品質滑桿只對有損格式有效、PNG 自動停用，JPEG 先鋪白底避免透明變黑；每列顯示「來源格式→目標格式」徽章＋原尺寸＋前後大小對比與增減%，單張下載／全部下載／移除／清空，下載埋 track('use')；檔名以 escapeHtml 跳脫；入口頁卡片 is-live＋搜尋計數改 16、package.json 補編譯映射）
 
 ---
 
@@ -15,7 +17,7 @@
 ## 技術約定
 
 - 技術棧：原生 HTML / SCSS / JS（無框架）
-- SCSS 編譯：Sass CLI（`npx sass`，本機未全域安裝）
+- SCSS 編譯：Sass CLI（已列入 `devDependencies`；跑過一次 `npm install` 後直接用 `npm run build:css`，不需 `npx` 或全域安裝）
 - 設計風格：手冊風（暖白紙感 × 硃紅，編號式工具索引）
 - 命名：kebab-case；CSS class 語意化、反映父子層級
 - 註解繁中、命名英文
@@ -133,6 +135,26 @@ tool/
 - [x] 14 陰影產生器：左控制台＋右棋盤舞台即時預覽；多層 box-shadow 清單可新增／刪除／點選，選取層滑桿調 X／Y 位移、模糊、擴散、不透明度，色票＋HEX 雙向同步、inset 內陰影切換；5 組預設樣式整組替換；預覽可調方塊色／圓角／舞台底色（淺／深／棋盤）；hex→rgba 輸出、多層逐層換行；複製 CSS 埋 track('use')；入口頁徽章 is-live＋搜尋計數改 14、package.json 補編譯映射
 - [x] 15 漸層產生器：linear／radial／conic 三種漸層；linear/conic 調角度（滑桿＋快捷鈕）、radial 選 circle/ellipse；棋盤底漸層條點空白新增色標、拖曳把手調位置（新增色標自動內插接續漸層色）；選取色標調位置、色票＋HEX 雙向同步、可刪除（至少 2 個）；6 組預設一鍵替換；CSS 依位置排序輸出、複製埋 track('use')；自寫零相依 hex↔rgb 內插維持 CSP script-src 'self'；入口頁徽章 is-live＋搜尋計數改 15、package.json 補編譯映射
 - [x] 16 圖片格式轉換：PNG ↔ WebP ↔ JPEG ↔ AVIF（與 01 共用解碼→toBlob 流程，聚焦格式互轉、保留原尺寸）；目標格式 4 選 1，啟動偵測 WebP／AVIF 編碼支援不支援即停用；品質滑桿有損格式才啟用、PNG 停用，JPEG 鋪白底；每列顯示來源→目標格式徽章＋原尺寸＋前後大小對比；單張／全部下載、移除、清空，下載埋 track('use')；入口頁徽章 is-live＋搜尋計數改 16、package.json 補編譯映射
+
+## 入口頁功能
+
+### 工具搜尋（既有）
+- [x] 關鍵字即時篩選：比對卡片可見文字 ＋ `data-keywords`，更新計數與空狀態
+
+### 分類篩選 chip（2026-06-06 新增）
+- [x] 16 個工具依「對象領域」分 6 類，每張 `.tool-card` 標 `data-category`：
+  - **image** 圖片：01 壓縮、06 裁切／改尺寸、16 格式轉換
+  - **color** 色彩：09 調色盤、10 色彩格式轉換
+  - **css** CSS：05 Grid／Flex、14 陰影、15 漸層
+  - **text** 文字：11 字級比例、12 Lorem、13 字數統計
+  - **reference** 速查：03 社群尺寸、04 裝置尺寸
+  - **assets** 資產：02 SVG 轉 Font、07 favicon、08 QR Code
+- [x] 搜尋列下方一排 `.filter-chip`（全部／圖片／色彩／CSS／文字／速查／資產），手冊風：銳利邊角、等寬大寫標籤、選取態 `.is-active` 填硃紅
+- [x] `home.js` 改為**分類 × 關鍵字交集篩選**：先選分類再搜尋會在該領域內再過濾；chip 為單選＋「全部」，切換時同步 `aria-pressed`
+- [x] 無障礙：chip 用 `<button>`、外層 `role="group"`、`:focus-visible` 焦點框
+- 備註：新增工具時，除既有步驟外，記得替入口頁卡片補對應 `data-category`；若開新領域，於 `index.html` chip 列與 `home.js`（邏輯自動支援任意 filter 值）對齊即可
+
+> 目前 chip 為單選。若日後要可複選多領域，需改 `home.js` 的 `activeCategory`（單值）為集合並調整 active 切換邏輯。
 
 ### 未來擴充
 - [ ] （待定）其他工具，新增 `services/<name>/` 資料夾即可
