@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>社群尺寸建議 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Umami 匿名分析（cookieless）。註冊 https://cloud.umami.is 後，把 data-website-id 換成你的網站 ID -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-UMAMI-WEBSITE-ID"></script>
+</head>
+<body data-tool="social-size">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 03</span>
+        <h1 class="tool-head-title">社群尺寸建議</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      各大社群平台各版位的建議發文尺寸與比例，一頁查清。點任一卡片即可複製尺寸（如
+      <span class="tag">1080×1350</span>）。資料以常見最佳實務為準，平台改版時請以官方為主。
+    </p>
+
+    <!-- 平台篩選列（由 JS 依資料生成；首顆「全部」為預設） -->
+    <div class="filter-bar" id="filter-bar"></div>
+
+    <!-- 平台分區（由 JS 渲染） -->
+    <div id="platform-list"></div>
+  </main>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>

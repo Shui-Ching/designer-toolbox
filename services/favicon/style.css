@@ -1,0 +1,317 @@
+:root {
+  --color-paper: #f4f1e8;
+  --color-paper-deep: #ece7d9;
+  --color-ink: #1c1b18;
+  --color-ink-soft: #6b665b;
+  --color-line: #d9d3c3;
+  --color-accent: #d8442a;
+  --color-accent-deep: #b0331d;
+  --color-mark: #e0a92e;
+  --font-display: Inter, Noto Sans TC, sans-serif;
+  --font-body: Inter, Noto Sans TC, sans-serif;
+  --font-mono: Inter, Noto Sans TC, sans-serif;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.tool-intro {
+  max-width: 64ch;
+  margin-block: 24px 40px;
+  color: #6b665b;
+}
+.tool-intro code {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 0.9em;
+  padding: 1px 4px;
+  background: #ece7d9;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  color: #1c1b18;
+}
+
+.dropzone {
+  cursor: pointer;
+}
+
+.editor-layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  background: #ece7d9;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+}
+
+.source-card {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #d9d3c3;
+}
+
+.source-thumb {
+  flex: 0 0 auto;
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  background-color: #f4f1e8;
+  background-image: linear-gradient(45deg, #d9d3c3 25%, transparent 25%), linear-gradient(-45deg, #d9d3c3 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #d9d3c3 75%), linear-gradient(-45deg, transparent 75%, #d9d3c3 75%);
+  background-size: 12px 12px;
+  background-position: 0 0, 0 6px, 6px -6px, -6px 0;
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.source-thumb img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+
+.source-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.source-name {
+  font-size: 1rem;
+  color: #1c1b18;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.source-dim {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+  font-variant-numeric: tabular-nums;
+}
+
+.source-warn {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #d8442a;
+}
+
+.control-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.control-label {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b665b;
+}
+
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  padding: 4px 16px;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  color: #6b665b;
+  background: #f4f1e8;
+  cursor: pointer;
+  transition: color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), background-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.chip:hover {
+  color: #1c1b18;
+  border-color: #1c1b18;
+}
+.chip.is-active {
+  color: #f4f1e8;
+  background: #d8442a;
+  border-color: #d8442a;
+}
+
+.color-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.color-input {
+  width: 40px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  background: #f4f1e8;
+  cursor: pointer;
+}
+
+.color-value {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+  font-variant-numeric: tabular-nums;
+}
+
+.slider {
+  width: 100%;
+  accent-color: #d8442a;
+  cursor: pointer;
+}
+
+.control-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 24px;
+  border-top: 1px solid #d9d3c3;
+}
+
+.output {
+  min-width: 0;
+}
+.output .section-rule:first-child {
+  margin-top: 0;
+}
+
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.icon-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  background: #ece7d9;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+}
+
+.icon-swatch {
+  width: 100%;
+  height: 112px;
+  display: grid;
+  place-items: center;
+  background-color: #f4f1e8;
+  background-image: linear-gradient(45deg, #d9d3c3 25%, transparent 25%), linear-gradient(-45deg, #d9d3c3 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #d9d3c3 75%), linear-gradient(-45deg, transparent 75%, #d9d3c3 75%);
+  background-size: 14px 14px;
+  background-position: 0 0, 0 7px, 7px -7px, -7px 0;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+}
+.icon-swatch img {
+  display: block;
+  image-rendering: auto;
+}
+
+.icon-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.icon-size {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #1c1b18;
+  font-variant-numeric: tabular-nums;
+}
+
+.icon-file {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+}
+
+.icon-dl {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  line-height: 1;
+  color: #6b665b;
+  background: #f4f1e8;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), background-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.icon-dl:hover {
+  color: #f4f1e8;
+  background: #d8442a;
+  border-color: #d8442a;
+}
+
+.code-card {
+  position: relative;
+  background: #1c1b18;
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1;
+  font-size: 1rem;
+  padding: 4px 16px;
+  border-color: #f4f1e8;
+  color: #f4f1e8;
+  background: rgba(244, 241, 232, 0.06);
+}
+.copy-btn:hover {
+  background: #f4f1e8;
+  color: #1c1b18;
+}
+
+.code-block {
+  margin: 0;
+  padding: 24px;
+  padding-right: 120px;
+  overflow-x: auto;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #f4f1e8;
+  white-space: pre;
+}
+
+@media (max-width: 720px) {
+  .editor-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .code-block {
+    padding-right: 24px;
+    padding-top: 64px;
+  }
+}

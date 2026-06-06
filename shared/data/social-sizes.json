@@ -1,0 +1,91 @@
+{
+  "_comment": "社群平台建議發文尺寸；單位為 px。ratio 為比例字串，供顯示與比例預覽用。",
+  "updated": "2026-06-05",
+  "platforms": [
+    {
+      "id": "instagram",
+      "name": "Instagram",
+      "note": "貼文以直式 4:5 觸及最佳；Reels 與限動同為 9:16。",
+      "formats": [
+        { "label": "貼文 · 正方形", "width": 1080, "height": 1080, "ratio": "1:1" },
+        { "label": "貼文 · 直式", "width": 1080, "height": 1350, "ratio": "4:5" },
+        { "label": "貼文 · 橫式", "width": 1080, "height": 566, "ratio": "1.91:1" },
+        { "label": "限時動態 / Reels", "width": 1080, "height": 1920, "ratio": "9:16" },
+        { "label": "大頭貼", "width": 320, "height": 320, "ratio": "1:1" }
+      ]
+    },
+    {
+      "id": "facebook",
+      "name": "Facebook",
+      "note": "貼文連結縮圖採 1.91:1；封面在桌機與手機裁切不同，主體置中。",
+      "formats": [
+        { "label": "貼文圖片", "width": 1200, "height": 630, "ratio": "1.91:1" },
+        { "label": "貼文 · 正方形", "width": 1080, "height": 1080, "ratio": "1:1" },
+        { "label": "封面照片", "width": 851, "height": 315, "ratio": "2.7:1" },
+        { "label": "限時動態", "width": 1080, "height": 1920, "ratio": "9:16" },
+        { "label": "大頭貼", "width": 320, "height": 320, "ratio": "1:1" }
+      ]
+    },
+    {
+      "id": "threads",
+      "name": "Threads",
+      "note": "支援橫式與直式；直式上限約 4:5，過高會被裁切。",
+      "formats": [
+        { "label": "貼文 · 正方形", "width": 1080, "height": 1080, "ratio": "1:1" },
+        { "label": "貼文 · 直式", "width": 1080, "height": 1350, "ratio": "4:5" },
+        { "label": "貼文 · 橫式", "width": 1080, "height": 566, "ratio": "1.91:1" }
+      ]
+    },
+    {
+      "id": "x",
+      "name": "X (Twitter)",
+      "note": "單圖以 16:9 呈現最完整；時間軸縮圖會裁成接近正方。",
+      "formats": [
+        { "label": "貼文單圖", "width": 1600, "height": 900, "ratio": "16:9" },
+        { "label": "貼文 · 正方形", "width": 1080, "height": 1080, "ratio": "1:1" },
+        { "label": "橫幅 / 標頭", "width": 1500, "height": 500, "ratio": "3:1" },
+        { "label": "大頭貼", "width": 400, "height": 400, "ratio": "1:1" }
+      ]
+    },
+    {
+      "id": "linkedin",
+      "name": "LinkedIn",
+      "note": "貼文單圖建議 1.91:1；公司／個人橫幅尺寸不同。",
+      "formats": [
+        { "label": "貼文單圖", "width": 1200, "height": 627, "ratio": "1.91:1" },
+        { "label": "貼文 · 正方形", "width": 1080, "height": 1080, "ratio": "1:1" },
+        { "label": "個人橫幅", "width": 1584, "height": 396, "ratio": "4:1" },
+        { "label": "公司橫幅", "width": 1128, "height": 191, "ratio": "5.9:1" }
+      ]
+    },
+    {
+      "id": "youtube",
+      "name": "YouTube",
+      "note": "縮圖固定 16:9；頻道橫幅以中央安全區 1546×423 為準。",
+      "formats": [
+        { "label": "影片縮圖", "width": 1280, "height": 720, "ratio": "16:9" },
+        { "label": "頻道橫幅", "width": 2560, "height": 1440, "ratio": "16:9" },
+        { "label": "Shorts", "width": 1080, "height": 1920, "ratio": "9:16" }
+      ]
+    },
+    {
+      "id": "tiktok",
+      "name": "TikTok",
+      "note": "全為直式 9:16；上下方避開介面元件留安全邊距。",
+      "formats": [
+        { "label": "影片 / 封面", "width": 1080, "height": 1920, "ratio": "9:16" },
+        { "label": "大頭貼", "width": 200, "height": 200, "ratio": "1:1" }
+      ]
+    },
+    {
+      "id": "line",
+      "name": "LINE",
+      "note": "官方帳號圖文以正方為主；主頁封面為橫式 2:1。",
+      "formats": [
+        { "label": "圖文訊息 · 正方", "width": 1040, "height": 1040, "ratio": "1:1" },
+        { "label": "主頁封面", "width": 1080, "height": 540, "ratio": "2:1" },
+        { "label": "貼圖主圖", "width": 240, "height": 240, "ratio": "1:1" }
+      ]
+    }
+  ]
+}

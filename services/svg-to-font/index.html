@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>SVG 轉 Font · 設計師工具箱</title>
+  <meta name="description" content="瀏覽器端把多個 SVG 圖示組成圖示字型：輸出 TTF / WOFF，自動產生 @font-face 與 .icon-* CSS，檔案不上傳。">
+
+  <!-- 字體：Inter（英文／數字）/ Noto Sans TC（中文），全站統一 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../shared/styles/shared.css">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- opentype.js：瀏覽器端組字型（CDN，暴露為全域 opentype）-->
+  <!-- integrity（SRI）：CDN 內容若被竄改會雜湊不符而拒載，防供應鏈攻擊 -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/opentype.js@1.3.4/dist/opentype.min.js"
+    integrity="sha384-3TaxGqyHrMuRIWY5Z5WHNIzgNRqGIUJE+mk6tm+g1wkm9Ux2kUyOLfy9AsNWXA6u"
+    crossorigin="anonymous"></script>
+
+  <!-- Umami 匿名分析（cookieless）。註冊 https://cloud.umami.is 後，把 data-website-id 換成你的網站 ID -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-UMAMI-WEBSITE-ID"></script>
+</head>
+<body data-tool="svg-to-font">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 02</span>
+        <h1 class="tool-head-title">SVG 轉 Font</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      把多個 SVG 圖示在瀏覽器端組成圖示字型：輸出 <strong>TTF / WOFF</strong>，自動產生
+      <strong>@font-face</strong> 與 <strong>.icon-*</strong> CSS。
+      <strong>檔案不會離開你的電腦。</strong>
+    </p>
+
+    <!-- 字型設定 -->
+    <section class="controls">
+      <div class="control-row">
+        <label class="control-label" for="family-name">字型名稱</label>
+        <input type="text" class="text-input" id="family-name" value="icon-font" spellcheck="false" autocomplete="off">
+      </div>
+      <div class="control-row">
+        <label class="control-label" for="class-prefix">Class 前綴</label>
+        <input type="text" class="text-input" id="class-prefix" value="icon-" spellcheck="false" autocomplete="off">
+      </div>
+    </section>
+
+    <!-- 拖放區 -->
+    <div class="dropzone" id="dropzone">
+      <p class="dropzone-hint">把 SVG 拖進來，或點擊選檔</p>
+      <p class="tag">每個 SVG = 一個圖示 · 可一次多檔 · 建議使用填色（fill）路徑</p>
+      <input type="file" id="file-input" accept=".svg,image/svg+xml" multiple hidden>
+    </div>
+
+    <!-- 結果 -->
+    <section class="results" id="results" hidden>
+      <div class="results-bar">
+        <p class="results-summary" id="results-summary"></p>
+        <div class="results-actions">
+          <button type="button" class="btn" id="clear-all">清空</button>
+          <button type="button" class="btn" id="download-woff">下載 WOFF</button>
+          <button type="button" class="btn btn-accent" id="download-ttf">下載 TTF</button>
+        </div>
+      </div>
+
+      <!-- 預覽格：以實際產出的字型渲染 -->
+      <div class="section-rule">
+        <span class="tag">預覽</span>
+      </div>
+      <div class="icon-grid" id="icon-grid"></div>
+
+      <!-- 可複製的 CSS -->
+      <div class="section-rule">
+        <span class="tag">CSS</span>
+        <button type="button" class="btn copy-css" id="copy-css">複製 CSS</button>
+      </div>
+      <pre class="css-panel"><code id="css-code"></code></pre>
+    </section>
+  </main>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>

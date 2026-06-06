@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>專業牛馬工具箱 · Designer's Toolbox</title>
+  <meta name="description" content="一組純前端微型工具：圖片壓縮、SVG 轉 Font、社群尺寸建議、裝置尺寸查詢。">
+
+  <!-- 字體：Inter（英文／數字）/ Noto Sans TC（中文），全站統一 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="shared/styles/shared.css">
+  <link rel="stylesheet" href="index.css">
+
+  <!-- Umami 匿名分析（cookieless）。註冊 https://cloud.umami.is 後，把 data-website-id 換成你的網站 ID -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-UMAMI-WEBSITE-ID"></script>
+</head>
+<body>
+  <div class="home">
+    <!-- 封面頁首 -->
+    <header class="masthead">
+      <div class="container masthead-bar">
+        <span class="masthead-issue">Corporate Drone Toolbox</span>
+        <span class="masthead-issue">Vol. 01 — 2026</span>
+      </div>
+      <div class="container masthead-hero">
+        <span class="tag tag-accent masthead-kicker">Field Manual / 工具手冊</span>
+        <h1 class="masthead-title">專業牛馬<em>工具箱</em></h1>
+        <p class="masthead-lead">
+          零安裝的微型工具！選一則項目開始，全部在瀏覽器端完成，檔案不離開你的電腦。
+        </p>
+      </div>
+    </header>
+
+    <!-- 工具索引 -->
+    <main class="index">
+
+      <!-- 搜尋列：依關鍵字即時篩選下方工具 -->
+      <div class="container index-bar">
+        <label class="index-search">
+          <svg class="index-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="16.5" y1="16.5" x2="21" y2="21" stroke-linecap="round"></line>
+          </svg>
+          <input
+            class="index-search-input"
+            id="tool-search"
+            type="search"
+            placeholder="搜尋工具…例如「壓縮」「favicon」「尺寸」"
+            autocomplete="off"
+            aria-label="搜尋工具">
+        </label>
+        <span class="index-count" id="tool-count">15 項工具</span>
+      </div>
+
+      <nav class="container index-grid">
+
+        <a class="tool-card" href="services/image-compress/index.html" data-keywords="壓縮 圖片 compress image 縮小 檔案 jpg jpeg png webp 畫質">
+          <div class="tool-card-top">
+            <span class="tool-card-no">01</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">壓縮圖片</h2>
+            <span class="tool-card-en">Image Compress</span>
+          </div>
+          <p class="tool-card-desc">在不犧牲畫質的前提下縮小檔案，即時對比壓縮前後大小。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/svg-to-font/index.html" data-keywords="svg font 字型 字體 圖示 icon iconfont woff ttf 打包">
+          <div class="tool-card-top">
+            <span class="tool-card-no">02</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">SVG 轉 Font</h2>
+            <span class="tool-card-en">SVG to Font</span>
+          </div>
+          <p class="tool-card-desc">把一組 SVG 打包成圖示字型，自動產生可用 CSS class 控制的樣式。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/social-size/index.html" data-keywords="社群 尺寸 social size facebook instagram fb ig 版位 貼文 比例">
+          <div class="tool-card-top">
+            <span class="tool-card-no">03</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">社群尺寸建議</h2>
+            <span class="tool-card-en">Social Sizes</span>
+          </div>
+          <p class="tool-card-desc">各大社群平台各版位的建議發文尺寸與比例，一頁查清。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/device-size/index.html" data-keywords="裝置 device 尺寸 viewport 斷點 breakpoint rwd 響應式 手機 平板 桌機 dpr">
+          <div class="tool-card-top">
+            <span class="tool-card-no">04</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">裝置尺寸查詢</h2>
+            <span class="tool-card-en">Device Sizes</span>
+          </div>
+          <p class="tool-card-desc">常見手機、平板、桌機的 viewport 與斷點，響應式設計速查。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/grid-flex/index.html" data-keywords="grid flex flexbox 排版 layout css playground 模擬器 對齊">
+          <div class="tool-card-top">
+            <span class="tool-card-no">05</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">Grid / Flex 模擬器</h2>
+            <span class="tool-card-en">Grid / Flex Playground</span>
+          </div>
+          <p class="tool-card-desc">視覺化調整 flexbox 與 grid 容器屬性，即時預覽排列並複製 CSS。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/image-crop/index.html" data-keywords="圖片 裁切 crop resize 改尺寸 縮放 比例 image">
+          <div class="tool-card-top">
+            <span class="tool-card-no">06</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">圖片裁切／改尺寸</h2>
+            <span class="tool-card-en">Image Crop / Resize</span>
+          </div>
+          <p class="tool-card-desc">框出要保留的範圍，可鎖比例或套社群版位，輸出指定尺寸。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/favicon/index.html" data-keywords="favicon icon 圖示 網站圖示 pwa manifest apple-touch 分頁">
+          <div class="tool-card-top">
+            <span class="tool-card-no">07</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">favicon 產生器</h2>
+            <span class="tool-card-en">Favicon Generator</span>
+          </div>
+          <p class="tool-card-desc">上傳一張圖，一次產生整組 favicon、PWA 圖示與 manifest 嵌入碼。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/qr-code/index.html" data-keywords="qr qrcode qr code 二維碼 條碼 網址 連結 url 掃描 svg png">
+          <div class="tool-card-top">
+            <span class="tool-card-no">08</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">QR Code 產生器</h2>
+            <span class="tool-card-en">QR Code Generator</span>
+          </div>
+          <p class="tool-card-desc">把網址或文字轉成 QR Code，可調色與容錯，下載 SVG 或 PNG。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/color-palette/index.html" data-keywords="調色盤 配色 色票 palette color 色階 scale 互補 類比 scss css 變數 設計系統">
+          <div class="tool-card-top">
+            <span class="tool-card-no">09</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">調色盤產生器</h2>
+            <span class="tool-card-en">Color Palette</span>
+          </div>
+          <p class="tool-card-desc">給一個主色，推導 50–900 色階與互補、類比調和色，輸出 SCSS / CSS 變數。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/color-convert/index.html" data-keywords="色彩 顏色 格式 轉換 convert color hex rgb hsl oklch 色碼 換算">
+          <div class="tool-card-top">
+            <span class="tool-card-no">10</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">色彩格式轉換</h2>
+            <span class="tool-card-en">Color Convert</span>
+          </div>
+          <p class="tool-card-desc">在 HEX、RGB、HSL、OKLCH 之間即時互轉，改任一格式其餘自動跟著換算。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/type-scale/index.html" data-keywords="字級 比例 type scale 級距 字體 排版 typography 字型大小 rem 模組化 modular 黃金比例 fs">
+          <div class="tool-card-top">
+            <span class="tool-card-no">11</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">字級比例計算</h2>
+            <span class="tool-card-en">Type Scale</span>
+          </div>
+          <p class="tool-card-desc">設定基準字級與比例，推導整套 type scale，即時預覽並輸出 $fs-* 變數。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/lorem/index.html" data-keywords="lorem ipsum 假文 placeholder 佔位 文字 中文 英文 段落 排版 dummy text 亂數文">
+          <div class="tool-card-top">
+            <span class="tool-card-no">12</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">Lorem 假文產生器</h2>
+            <span class="tool-card-en">Lorem Ipsum</span>
+          </div>
+          <p class="tool-card-desc">產生中文或拉丁佔位假文，可選段落、句子或字數，一鍵複製貼進設計稿。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/word-count/index.html" data-keywords="字數 字元 統計 word count character 計算 行數 段落 句子 閱讀時間 字數統計 中文 英文">
+          <div class="tool-card-top">
+            <span class="tool-card-no">13</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">字數／字元統計</h2>
+            <span class="tool-card-en">Word Count</span>
+          </div>
+          <p class="tool-card-desc">即時統計字數、字元、行數、段落與閱讀時間，並拆解中英數標點組成。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/shadow/index.html" data-keywords="陰影 box-shadow shadow 投影 drop shadow 立體 層疊 css 內陰影 inset 發光 glow 圖層">
+          <div class="tool-card-top">
+            <span class="tool-card-no">14</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">陰影產生器</h2>
+            <span class="tool-card-en">Box Shadow</span>
+          </div>
+          <p class="tool-card-desc">視覺化堆疊多層 box-shadow，調位移、模糊、擴散與顏色，即時預覽並複製 CSS。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/gradient/index.html" data-keywords="漸層 gradient 線性 linear 放射 radial 錐形 conic 色標 color stop 角度 配色 背景 background css 過渡">
+          <div class="tool-card-top">
+            <span class="tool-card-no">15</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">漸層產生器</h2>
+            <span class="tool-card-en">Gradient</span>
+          </div>
+          <p class="tool-card-desc">拖曳色標調整 linear／radial／conic 漸層，調角度與顏色，即時預覽並複製 CSS。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+      </nav>
+
+      <!-- 搜尋無結果時的空狀態 -->
+      <p class="container index-empty" id="index-empty" hidden>
+        找不到符合「<span id="empty-query"></span>」的工具，換個關鍵字試試。
+      </p>
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="container home-foot">
+      <span>專業牛馬必備，非誠勿入</span>
+      <span>© 2026 Andrew Cheng. All rights reserved.</span>
+    </footer>
+  </div>
+
+  <!-- 首頁工具搜尋（外部檔，符合 CSP script-src 'self'） -->
+  <script defer src="home.js"></script>
+</body>
+</html>

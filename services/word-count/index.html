@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>字數／字元統計 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Hanken+Grotesk:wght@300..700&family=Noto+Serif+TC:wght@300..700&family=Noto+Sans+TC:wght@300..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Umami 匿名分析（cookieless）。註冊 https://cloud.umami.is 後，把 data-website-id 換成你的網站 ID -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-UMAMI-WEBSITE-ID"></script>
+</head>
+<body data-tool="word-count">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 13</span>
+        <h1 class="tool-head-title">字數／字元統計</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      貼上或輸入文字，即時統計 <span class="tag">字數</span>、字元、行數、段落、句子與
+      預估閱讀時間，並拆解中英數標點組成。全程在瀏覽器端計算，文字不上傳。
+    </p>
+
+    <div class="counter-layout">
+
+      <!-- 左：輸入區 -->
+      <section class="editor-pane" aria-label="文字輸入">
+        <div class="editor-toolbar">
+          <span class="editor-toolbar-label" id="live-chars">0 字元</span>
+          <div class="editor-toolbar-actions">
+            <button class="btn" id="sample-btn" type="button">載入範例</button>
+            <button class="btn" id="copy-btn" type="button">複製統計</button>
+            <button class="btn" id="clear-btn" type="button">清空</button>
+          </div>
+        </div>
+        <textarea
+          id="text-input"
+          class="text-area"
+          placeholder="在這裡輸入或貼上文字…"
+          spellcheck="false"
+          aria-label="文字輸入區"></textarea>
+        <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+      </section>
+
+      <!-- 右：統計面板 -->
+      <aside class="stats-pane" aria-label="統計結果">
+
+        <!-- 主數據：字數 -->
+        <div class="stat-primary">
+          <span class="stat-primary-value" id="stat-words">0</span>
+          <span class="stat-primary-label">字數 · words<br>（中文計字、英數計詞）</span>
+        </div>
+
+        <!-- 次級數據網格 -->
+        <div class="stat-grid">
+          <div class="stat-cell">
+            <span class="stat-cell-value" id="stat-chars">0</span>
+            <span class="stat-cell-label">字元（含空白）</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-cell-value" id="stat-chars-nospace">0</span>
+            <span class="stat-cell-label">字元（不含空白）</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-cell-value" id="stat-lines">0</span>
+            <span class="stat-cell-label">行數</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-cell-value" id="stat-paragraphs">0</span>
+            <span class="stat-cell-label">段落</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-cell-value" id="stat-sentences">0</span>
+            <span class="stat-cell-label">句子</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-cell-value" id="stat-bytes">0</span>
+            <span class="stat-cell-label">UTF-8 位元組</span>
+          </div>
+        </div>
+
+        <!-- 閱讀時間 -->
+        <div class="stat-time">
+          <div class="stat-time-row">
+            <span class="stat-time-label">閱讀時間 · reading</span>
+            <span class="stat-time-value" id="stat-read">0 秒</span>
+          </div>
+          <div class="stat-time-row">
+            <span class="stat-time-label">朗讀時間 · speaking</span>
+            <span class="stat-time-value" id="stat-speak">0 秒</span>
+          </div>
+        </div>
+
+        <!-- 字元組成 -->
+        <div class="section-rule"><span class="tag">字元組成</span></div>
+        <div class="compose-bar" id="compose-bar" aria-hidden="true"><!-- JS 注入分段 --></div>
+        <ul class="compose-legend" id="compose-legend"><!-- JS 注入圖例 --></ul>
+
+      </aside>
+
+    </div>
+  </main>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>

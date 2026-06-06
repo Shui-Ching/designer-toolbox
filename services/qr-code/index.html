@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>QR Code 產生器 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Umami 匿名分析（cookieless）。註冊 https://cloud.umami.is 後，把 data-website-id 換成你的網站 ID -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-UMAMI-WEBSITE-ID"></script>
+</head>
+<body data-tool="qr-code">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 08</span>
+        <h1 class="tool-head-title">QR Code 產生器</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      把網址或任意文字轉成 QR Code，可調前景／背景色、容錯等級與留白，
+      下載向量 <span class="tag">SVG</span> 或點陣 <span class="tag">PNG</span>。
+      全程在瀏覽器端產生，內容不會離開你的電腦。
+    </p>
+
+    <div class="editor-layout">
+
+      <!-- 左：控制面板 -->
+      <section class="controls" aria-label="QR Code 設定">
+
+        <!-- 內容 -->
+        <div class="control-block">
+          <label class="control-label" for="text-input">內容 · 網址或文字</label>
+          <textarea
+            id="text-input"
+            class="text-input"
+            rows="3"
+            placeholder="https://example.com 或任意文字…"
+            spellcheck="false">https://github.com</textarea>
+          <span class="text-meta"><span id="byte-count">0</span> bytes</span>
+        </div>
+
+        <!-- 容錯等級 -->
+        <div class="control-block">
+          <span class="control-label">容錯等級 · 越高越耐汙損但越密</span>
+          <div class="chip-group" id="ecl-group">
+            <button class="chip" data-ecl="L">L · 7%</button>
+            <button class="chip is-active" data-ecl="M">M · 15%</button>
+            <button class="chip" data-ecl="Q">Q · 25%</button>
+            <button class="chip" data-ecl="H">H · 30%</button>
+          </div>
+        </div>
+
+        <!-- 顏色 -->
+        <div class="control-block">
+          <span class="control-label">顏色 · 前景 / 背景</span>
+          <div class="color-grid">
+            <div class="color-row">
+              <input type="color" class="color-input" id="fg-input" value="#1c1b18" aria-label="前景色">
+              <span class="color-value" id="fg-value">#1C1B18</span>
+            </div>
+            <div class="color-row">
+              <input type="color" class="color-input" id="bg-input" value="#ffffff" aria-label="背景色">
+              <span class="color-value" id="bg-value">#FFFFFF</span>
+            </div>
+          </div>
+          <span class="contrast-warn" id="contrast-warn" hidden>前景與背景對比偏低，掃描器可能讀不到</span>
+        </div>
+
+        <!-- 留白 -->
+        <div class="control-block">
+          <span class="control-label">外框留白 · <span id="quiet-value">4</span> 模組</span>
+          <input type="range" class="slider" id="quiet-input" min="0" max="8" step="1" value="4">
+        </div>
+
+        <!-- PNG 尺寸 -->
+        <div class="control-block">
+          <span class="control-label">PNG 輸出邊長</span>
+          <div class="chip-group" id="size-group">
+            <button class="chip" data-size="256">256</button>
+            <button class="chip is-active" data-size="512">512</button>
+            <button class="chip" data-size="1024">1024</button>
+            <button class="chip" data-size="2048">2048</button>
+          </div>
+        </div>
+
+        <!-- 動作 -->
+        <div class="control-actions">
+          <button class="btn btn-accent" id="download-png">下載 PNG</button>
+          <button class="btn" id="download-svg">下載 SVG</button>
+          <button class="btn" id="copy-svg" data-copy="svg">複製 SVG</button>
+        </div>
+      </section>
+
+      <!-- 右：預覽 + 資訊 -->
+      <section class="output" aria-label="QR Code 預覽">
+        <div class="section-rule"><span class="tag">預覽</span></div>
+
+        <div class="preview-stage">
+          <div class="preview-frame" id="preview-frame"><!-- JS 注入 SVG --></div>
+          <p class="preview-empty" id="preview-empty" hidden>輸入內容後即時產生 QR Code</p>
+        </div>
+
+        <dl class="qr-stats" id="qr-stats">
+          <div class="qr-stat">
+            <dt>版本</dt>
+            <dd id="stat-version">—</dd>
+          </div>
+          <div class="qr-stat">
+            <dt>模組數</dt>
+            <dd id="stat-modules">—</dd>
+          </div>
+          <div class="qr-stat">
+            <dt>容錯</dt>
+            <dd id="stat-ecl">—</dd>
+          </div>
+        </dl>
+      </section>
+
+    </div>
+  </main>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>

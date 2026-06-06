@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>色彩格式轉換 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Umami 匿名分析（cookieless）。註冊 https://cloud.umami.is 後，把 data-website-id 換成你的網站 ID -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-UMAMI-WEBSITE-ID"></script>
+</head>
+<body data-tool="color-convert">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 10</span>
+        <h1 class="tool-head-title">色彩格式轉換</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      在 <span class="tag">HEX</span>、<span class="tag">RGB</span>、<span class="tag">HSL</span>、<span class="tag">OKLCH</span>
+      之間即時互轉，改任一格式其餘自動跟著換算。OKLCH 換算全程自寫、在瀏覽器端運算，不上傳任何資料。
+    </p>
+
+    <div class="editor-layout">
+
+      <!-- 左：挑色 + 預覽 -->
+      <section class="controls" aria-label="挑色">
+
+        <div class="control-block">
+          <label class="control-label" for="picker">挑色 · 點開色票</label>
+          <div class="color-row">
+            <input type="color" class="color-input" id="picker" value="#2d6cdf" aria-label="色票挑色">
+            <span class="picker-note">或直接編輯右側任一格式</span>
+          </div>
+        </div>
+
+        <!-- 大型預覽色塊 -->
+        <div class="preview" id="preview">
+          <span class="preview-hex" id="preview-hex">#2D6CDF</span>
+        </div>
+
+        <div class="control-actions">
+          <button type="button" class="btn" id="random-btn">隨機色</button>
+          <button type="button" class="btn" id="eyedropper-btn" hidden>螢幕取色</button>
+        </div>
+      </section>
+
+      <!-- 右：四種格式 -->
+      <section class="output" aria-label="色彩格式">
+        <div class="section-rule"><span class="tag">格式互轉</span></div>
+
+        <div class="format-list">
+
+          <div class="format-row">
+            <span class="format-label">HEX</span>
+            <input type="text" class="format-input" data-format="hex" spellcheck="false" autocomplete="off" aria-label="HEX 色碼">
+            <button type="button" class="format-copy" data-copy-format="hex" aria-label="複製 HEX">複製</button>
+          </div>
+
+          <div class="format-row">
+            <span class="format-label">RGB</span>
+            <input type="text" class="format-input" data-format="rgb" spellcheck="false" autocomplete="off" aria-label="RGB 色碼">
+            <button type="button" class="format-copy" data-copy-format="rgb" aria-label="複製 RGB">複製</button>
+          </div>
+
+          <div class="format-row">
+            <span class="format-label">HSL</span>
+            <input type="text" class="format-input" data-format="hsl" spellcheck="false" autocomplete="off" aria-label="HSL 色碼">
+            <button type="button" class="format-copy" data-copy-format="hsl" aria-label="複製 HSL">複製</button>
+          </div>
+
+          <div class="format-row">
+            <span class="format-label">OKLCH</span>
+            <input type="text" class="format-input" data-format="oklch" spellcheck="false" autocomplete="off" aria-label="OKLCH 色碼">
+            <button type="button" class="format-copy" data-copy-format="oklch" aria-label="複製 OKLCH">複製</button>
+          </div>
+
+        </div>
+
+        <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+      </section>
+
+    </div>
+  </main>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>

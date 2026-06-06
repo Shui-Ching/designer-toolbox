@@ -1,0 +1,7 @@
+// ============================================================
+// 共享樣式進入點 — 編譯為 shared.css，所有頁面都載入
+// 用法：npx sass shared/styles/shared.scss shared/styles/shared.css
+// ============================================================
+@use 'tokens';
+@use 'reset';
+@use 'components';

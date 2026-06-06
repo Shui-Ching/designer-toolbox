@@ -1,0 +1,194 @@
+// ============================================================
+// 10 色彩格式轉換 — 工具特有樣式
+// 共用元件（tool-head / btn / tag / section-rule）直接套 class，這裡只補差異
+// 控制面板的 .controls / .control-block / .control-label / .color-row / .color-input
+// 與 09 調色盤一致，這裡重用同名 class 的樣式定義
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+}
+
+// — 版面：左控制、右輸出；窄螢幕改上下堆疊 —
+.editor-layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: $space-5;
+  align-items: start;
+}
+
+// ============================================================
+// 左側控制面板
+// ============================================================
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  padding: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+.control-block {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.control-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.color-row {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.color-input {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 36px;
+  padding: 0;
+  border: $border-ink;
+  border-radius: $radius;
+  background: $color-paper;
+  cursor: pointer;
+}
+
+// 色票旁的輔助說明
+.picker-note {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  line-height: 1.4;
+}
+
+// — 大型預覽色塊：底色為目前色彩，內含可讀的 HEX —
+.preview {
+  display: flex;
+  align-items: flex-end;
+  min-height: 160px;
+  padding: $space-3;
+  border: $border-ink;
+  border-radius: $radius;
+  box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
+  transition: background-color $dur $ease;
+}
+
+.preview-hex {
+  font-family: $font-mono;
+  font-size: $fs-base;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+// — 動作鈕 —
+.control-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  padding-top: $space-4;
+  border-top: $border-fine;
+}
+
+// ============================================================
+// 右側格式列表
+// ============================================================
+.output {
+  min-width: 0;
+
+  .section-rule:first-child { margin-top: 0; }
+}
+
+.format-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+// 單列：標籤 / 可編輯輸入 / 複製鈕
+.format-row {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: $space-3;
+}
+
+.format-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.format-input {
+  width: 100%;
+  min-width: 0;
+  padding: $space-2 $space-3;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  letter-spacing: 0.02em;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  transition: border-color $dur $ease;
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+
+  // 解析失敗時邊框轉硃紅提示
+  &.is-invalid { border-color: $color-accent; }
+}
+
+// 複製鈕：低調的描邊小鈕
+.format-copy {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-2 $space-3;
+  color: $color-ink-soft;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: $space-4 0 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// ============================================================
+// 窄螢幕
+// ============================================================
+@media (max-width: 720px) {
+  .editor-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-4;
+  }
+}

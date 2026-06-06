@@ -1,0 +1,256 @@
+// ============================================================
+// 08 QR Code 產生器 — 工具特有樣式
+// 共用元件（tool-head / btn / tag / chip / slider 風格）直接套 class，這裡只補差異
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+}
+
+// — 版面：左控制、右預覽；窄螢幕改上下堆疊 —
+.editor-layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: $space-5;
+  align-items: start;
+}
+
+// ============================================================
+// 左側控制面板
+// ============================================================
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  padding: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+.control-block {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.control-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+// — 內容輸入框 —
+.text-input {
+  width: 100%;
+  resize: vertical;
+  min-height: 4.5em;
+  padding: $space-3;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  line-height: 1.6;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  transition: border-color $dur $ease;
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+
+  &::placeholder { color: $color-ink-soft; }
+}
+
+.text-meta {
+  align-self: flex-end;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  font-variant-numeric: tabular-nums;
+}
+
+// — 分段按鈕群（容錯 / 尺寸共用）—
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.chip {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-1 $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+  background: $color-paper;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// — 顏色挑選 —
+.color-grid {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.color-row {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.color-input {
+  width: 40px;
+  height: 28px;
+  padding: 0;
+  border: $border-fine;
+  border-radius: $radius;
+  background: $color-paper;
+  cursor: pointer;
+}
+
+.color-value {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  font-variant-numeric: tabular-nums;
+}
+
+.contrast-warn {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// — 留白滑桿 —
+.slider {
+  width: 100%;
+  accent-color: $color-accent;
+  cursor: pointer;
+}
+
+// — 動作鈕 —
+.control-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  padding-top: $space-4;
+  border-top: $border-fine;
+}
+
+// ============================================================
+// 右側輸出
+// ============================================================
+.output {
+  min-width: 0;
+
+  .section-rule:first-child { margin-top: 0; }
+}
+
+// — 預覽舞台：置中 QR，棋盤底紋襯托透明留白 —
+.preview-stage {
+  display: grid;
+  place-items: center;
+  min-height: 320px;
+  padding: $space-5;
+  background-color: $color-paper-deep;
+  background-image:
+    linear-gradient(45deg, $color-line 25%, transparent 25%),
+    linear-gradient(-45deg, $color-line 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, $color-line 75%),
+    linear-gradient(-45deg, transparent 75%, $color-line 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+// QR 圖框：白邊外框 + 墨線，讓 QR 像貼在卡片上
+.preview-frame {
+  width: min(360px, 70vw);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
+
+  svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+}
+
+.preview-empty {
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  color: $color-ink-soft;
+}
+
+// — 統計資訊列 —
+.qr-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-3;
+  margin: $space-4 0 0;
+}
+
+.qr-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: $space-3;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+
+  dt {
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: $color-ink-soft;
+  }
+
+  dd {
+    margin: 0;
+    font-family: $font-mono;
+    font-size: $fs-lg;
+    color: $color-ink;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+// ============================================================
+// 窄螢幕
+// ============================================================
+@media (max-width: 720px) {
+  .editor-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-4;
+  }
+}

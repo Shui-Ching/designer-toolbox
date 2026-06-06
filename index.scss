@@ -1,0 +1,255 @@
+// ============================================================
+// 入口頁樣式 — 手冊封面 × 工具索引
+// 編譯為 index.css（見 package.json 的 build:css）
+// ============================================================
+@use 'shared/styles/tokens' as *;
+
+// — 進場動畫：由下淡入 —
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+// — 封面頁首 —
+.masthead {
+  border-bottom: $border-ink;
+}
+
+.masthead-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: $space-3;
+}
+
+.masthead-issue {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.masthead-hero {
+  padding-block: $space-6 $space-5;
+}
+
+.masthead-kicker {
+  display: block;
+  margin-bottom: $space-3;
+  animation: rise 0.6s $ease both;
+}
+
+.masthead-title {
+  font-size: $fs-3xl;
+  letter-spacing: -0.02em;
+  animation: rise 0.7s $ease 0.05s both;
+
+  em {
+    font-style: italic;
+    color: $color-accent;
+  }
+}
+
+.masthead-lead {
+  max-width: 46ch;
+  margin-top: $space-4;
+  color: $color-ink-soft;
+  animation: rise 0.7s $ease 0.12s both;
+}
+
+// — 工具索引格 —
+.index {
+  flex: 1;
+  padding-block: $space-6 $space-7;
+}
+
+// — 搜尋列 —
+.index-bar {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  margin-bottom: $space-5;
+  animation: rise 0.7s $ease 0.16s both;
+}
+
+.index-search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  min-width: 0;
+  padding: $space-3 $space-4;
+  background: $color-paper;
+  border: $border-ink;
+  transition: border-color $dur $ease;
+
+  &:focus-within { border-color: $color-accent; }
+}
+
+.index-search-icon {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  color: $color-ink-soft;
+  transition: color $dur $ease;
+}
+.index-search:focus-within .index-search-icon { color: $color-accent; }
+
+.index-search-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  font-family: $font-body;
+  font-size: $fs-base;
+  color: $color-ink;
+
+  &::placeholder { color: $color-ink-soft; }
+  &:focus { outline: none; }
+  // 隱去 search 型別在 WebKit 的預設清除鈕，維持手冊風一致
+  &::-webkit-search-cancel-button { -webkit-appearance: none; }
+}
+
+.index-count {
+  flex: none;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.index-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: $color-line;       // 格線：用 gap 露出底色形成網格
+  border: $border-fine;
+}
+
+// — 搜尋無結果 —
+.index-empty {
+  margin-top: $space-5;
+  padding: $space-6 $space-4;
+  border: $border-fine;
+  text-align: center;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+}
+
+// — 單一工具卡 —
+.tool-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  min-height: 260px;
+  padding: $space-4;
+  background: $color-paper;
+  overflow: hidden;
+  transition: background-color $dur $ease;
+  animation: rise 0.6s $ease both;
+
+  // 依序錯開進場（涵蓋全部卡片）
+  @for $i from 1 through 8 {
+    &:nth-child(#{$i}) { animation-delay: #{0.18 + ($i - 1) * 0.05}s; }
+  }
+
+  // 被搜尋篩掉的卡片：覆蓋 display:flex 才能隱藏
+  &[hidden] { display: none; }
+
+  &:hover { background: $color-paper-deep; }
+
+  // hover 時左側浮現硃紅標記
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: $color-accent;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform $dur $ease;
+  }
+  &:hover::before { transform: scaleY(1); }
+}
+
+.tool-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.tool-card-no {
+  font-family: $font-display;
+  font-size: $fs-2xl;
+  line-height: 1;
+  color: $color-ink;
+  transition: color $dur $ease;
+}
+.tool-card:hover .tool-card-no { color: $color-accent; }
+
+.tool-card-title {
+  font-size: $fs-xl;
+}
+
+.tool-card-en {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.tool-card-desc {
+  margin-top: auto;
+  font-size: $fs-sm;
+  color: $color-ink-soft;
+}
+
+.tool-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $color-ink;
+  transition: gap $dur $ease;
+}
+.tool-card:hover .tool-card-cta { gap: $space-3; color: $color-accent; }
+
+// — 頁尾 —
+.home-foot {
+  padding-block: $space-4;
+  border-top: $border-ink;
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-3;
+  justify-content: space-between;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+}
+
+// — 響應式：平板兩欄、手機單欄 —
+@media (max-width: 900px) {
+  .index-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .index-bar { flex-wrap: wrap; }
+  .index-grid { grid-template-columns: 1fr; }
+  .tool-card { min-height: 200px; }
+}

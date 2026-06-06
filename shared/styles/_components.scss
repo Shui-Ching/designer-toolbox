@@ -1,0 +1,159 @@
+// ============================================================
+// 共用元件 — 入口頁與各工具共享的基礎 UI
+// 命名走語意化 kebab-case，反映父子層級
+// ============================================================
+@use 'tokens' as *;
+
+// — 版心容器 —
+.container {
+  width: 100%;
+  max-width: $max-width;
+  margin-inline: auto;
+  padding-inline: $space-4;
+}
+
+// — 等寬技術標籤（如 "TOOL / 01"、"PHASE 2"）—
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.tag-accent { color: $color-accent; }
+
+// — 狀態徽章 —
+.badge {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: 2px $space-2;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+
+  &.is-live {
+    color: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// — 按鈕 —
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  letter-spacing: 0.04em;
+  padding: $space-2 $space-4;
+  border: $border-ink;
+  border-radius: $radius;
+  background: transparent;
+  transition: background-color $dur $ease, color $dur $ease;
+
+  &:hover {
+    background: $color-ink;
+    color: $color-paper;
+  }
+
+  &.btn-accent {
+    border-color: $color-accent;
+    color: $color-accent;
+
+    &:hover {
+      background: $color-accent;
+      color: $color-paper;
+    }
+  }
+}
+
+// — 返回入口的連結 —
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+  transition: color $dur $ease, gap $dur $ease;
+
+  &:hover {
+    color: $color-accent;
+    gap: $space-3;
+  }
+}
+
+// — 工具頁首動作群組（分享 + 返回）—
+.tool-head-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-4;
+}
+
+// 分享鈕：沿用 back-link 視覺，僅重置 button 的預設外觀
+.share-btn {
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+// — 檔案拖放區（圖片壓縮、SVG 轉 Font 共用）—
+.dropzone {
+  display: grid;
+  place-items: center;
+  gap: $space-3;
+  padding: $space-6 $space-4;
+  text-align: center;
+  border: 1.5px dashed $color-line;
+  border-radius: $radius;
+  background: $color-paper-deep;
+  color: $color-ink-soft;
+  transition: border-color $dur $ease, background-color $dur $ease;
+
+  &.is-dragover {
+    border-color: $color-accent;
+    background: color-mix(in srgb, $color-accent 8%, $color-paper-deep);
+  }
+}
+
+.dropzone-hint {
+  font-family: $font-mono;
+  font-size: $fs-sm;
+}
+
+// — 工具頁通用頁首 —
+.tool-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: $space-3;
+  padding-block: $space-5 $space-4;
+  border-bottom: $border-ink;
+}
+
+.tool-head-title {
+  font-size: $fs-2xl;
+}
+
+// — 區段標題 —
+.section-rule {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  margin-block: $space-5 $space-4;
+
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: $color-line;
+  }
+}

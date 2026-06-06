@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>字級比例計算 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Umami 匿名分析（cookieless）。註冊 https://cloud.umami.is 後，把 data-website-id 換成你的網站 ID -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-UMAMI-WEBSITE-ID"></script>
+</head>
+<body data-tool="type-scale">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 11</span>
+        <h1 class="tool-head-title">字級比例計算</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      設定一個基準字級與比例，自動推導整套 <span class="tag">type scale</span>，
+      右側以實際字級即時預覽，輸出可直接貼進專案的 <span class="tag">$fs-*</span> 變數。
+      全程在瀏覽器端運算，不上傳任何資料。
+    </p>
+
+    <div class="editor-layout">
+
+      <!-- 左：控制面板 -->
+      <section class="controls" aria-label="字級比例設定">
+
+        <!-- 基準字級 -->
+        <div class="control-block">
+          <label class="control-label" for="base-range">
+            基準字級 · base
+            <span class="control-label-value"><span id="base-value">16</span>px</span>
+          </label>
+          <input type="range" class="range-input" id="base-range" min="10" max="32" step="1" value="16" aria-label="基準字級（px）">
+        </div>
+
+        <!-- 比例 -->
+        <div class="control-block">
+          <span class="control-label">比例 · ratio</span>
+          <div class="chip-group" id="ratio-group">
+            <button class="chip" data-ratio="1.125">1.125 二度</button>
+            <button class="chip" data-ratio="1.2">1.2 小三度</button>
+            <button class="chip is-active" data-ratio="1.25">1.25 大三度</button>
+            <button class="chip" data-ratio="1.333">1.333 四度</button>
+            <button class="chip" data-ratio="1.5">1.5 五度</button>
+            <button class="chip" data-ratio="1.618">1.618 黃金</button>
+            <input
+              type="number"
+              class="ratio-custom"
+              id="ratio-custom"
+              min="1.05"
+              max="2.5"
+              step="0.001"
+              value="1.25"
+              aria-label="自訂比例">
+          </div>
+        </div>
+
+        <!-- 升／降階數 -->
+        <div class="control-block">
+          <span class="control-label">階數 · steps</span>
+          <div class="step-row">
+            <div class="control-block">
+              <label class="control-label" for="steps-up">向上</label>
+              <input type="number" class="text-input" id="steps-up" min="0" max="10" step="1" value="4" aria-label="向上階數">
+            </div>
+            <div class="control-block">
+              <label class="control-label" for="steps-down">向下</label>
+              <input type="number" class="text-input" id="steps-down" min="0" max="10" step="1" value="2" aria-label="向下階數">
+            </div>
+          </div>
+        </div>
+
+        <!-- 樣本字 -->
+        <div class="control-block">
+          <label class="control-label" for="sample-input">預覽樣本字</label>
+          <input
+            type="text"
+            class="text-input"
+            id="sample-input"
+            value="設計 Design 永 Ag"
+            spellcheck="false"
+            autocomplete="off"
+            aria-label="預覽樣本字">
+        </div>
+
+        <!-- 變數前綴 -->
+        <div class="control-block">
+          <label class="control-label" for="prefix-input">變數前綴</label>
+          <input
+            type="text"
+            class="text-input"
+            id="prefix-input"
+            value="fs"
+            spellcheck="false"
+            autocomplete="off"
+            aria-label="變數前綴">
+        </div>
+
+        <!-- 單位 -->
+        <div class="control-block">
+          <span class="control-label">單位 · unit</span>
+          <div class="chip-group" id="unit-group">
+            <button class="chip is-active" data-unit="rem">rem</button>
+            <button class="chip" data-unit="px">px</button>
+          </div>
+        </div>
+
+        <!-- 輸出格式 -->
+        <div class="control-block">
+          <span class="control-label">輸出格式</span>
+          <div class="chip-group" id="format-group">
+            <button class="chip is-active" data-format="scss">SCSS 變數</button>
+            <button class="chip" data-format="css">CSS 變數</button>
+          </div>
+        </div>
+
+        <!-- 動作 -->
+        <div class="control-actions">
+          <button class="btn btn-accent" id="copy-vars" data-copy>複製變數</button>
+          <button class="btn" id="download-vars">下載檔案</button>
+        </div>
+      </section>
+
+      <!-- 右：輸出 -->
+      <section class="output" aria-label="字級比例輸出">
+
+        <!-- 字級海報 -->
+        <div class="section-rule"><span class="tag">字級預覽</span></div>
+        <div class="scale-preview" id="scale-preview"><!-- JS 注入各階 --></div>
+
+        <!-- 變數碼 -->
+        <div class="section-rule"><span class="tag">變數輸出</span></div>
+        <pre class="code-block"><code id="code-output"></code></pre>
+        <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+      </section>
+
+    </div>
+  </main>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>

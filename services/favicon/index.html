@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>favicon 產生器 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Umami 匿名分析（cookieless）。註冊 https://cloud.umami.is 後，把 data-website-id 換成你的網站 ID -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-UMAMI-WEBSITE-ID"></script>
+</head>
+<body data-tool="favicon">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 07</span>
+        <h1 class="tool-head-title">favicon 產生器</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      上傳一張圖（建議<span class="tag">正方形</span>、邊長 ≥ 512px），一次產生網站需要的整組
+      favicon：<span class="tag">.ico</span>、各尺寸 PNG、PWA 圖示與 <span class="tag">site.webmanifest</span>，
+      並附上可直接貼進 <code>&lt;head&gt;</code> 的嵌入碼。全程在瀏覽器端完成，圖片不會離開你的電腦。
+    </p>
+
+    <!-- 上傳區（尚無圖片時顯示）-->
+    <div class="dropzone" id="dropzone">
+      <span class="dropzone-hint">拖放圖片到這裡，或點擊選檔</span>
+      <span class="tag">PNG / JPG / SVG / WebP</span>
+      <input type="file" id="file-input" accept="image/*" hidden>
+    </div>
+
+    <!-- 編輯區（載入圖片後顯示）-->
+    <div class="editor" id="editor" hidden>
+      <div class="editor-layout">
+
+        <!-- 左：控制面板 -->
+        <section class="controls" aria-label="圖示設定">
+          <!-- 來源縮圖 -->
+          <div class="source-card">
+            <div class="source-thumb">
+              <img id="source-img" alt="來源圖片" draggable="false">
+            </div>
+            <div class="source-meta">
+              <span class="source-name" id="source-name">image</span>
+              <span class="source-dim" id="source-dim">—</span>
+              <span class="source-warn" id="source-warn" hidden>非正方形，已置中裁切預覽</span>
+            </div>
+          </div>
+
+          <!-- 背景 -->
+          <div class="control-block">
+            <span class="control-label">背景</span>
+            <div class="chip-group" id="bg-group">
+              <button class="chip is-active" data-bg="transparent">透明</button>
+              <button class="chip" data-bg="solid">純色</button>
+            </div>
+            <div class="color-row" id="color-row" hidden>
+              <input type="color" class="color-input" id="color-input" value="#ffffff" aria-label="背景顏色">
+              <span class="color-value" id="color-value">#FFFFFF</span>
+            </div>
+          </div>
+
+          <!-- 形狀 -->
+          <div class="control-block">
+            <span class="control-label">形狀</span>
+            <div class="chip-group" id="shape-group">
+              <button class="chip is-active" data-shape="square">方形</button>
+              <button class="chip" data-shape="rounded">圓角</button>
+              <button class="chip" data-shape="circle">圓形</button>
+            </div>
+          </div>
+
+          <!-- 內距 -->
+          <div class="control-block">
+            <span class="control-label">內距 · <span id="pad-value">0%</span></span>
+            <input type="range" class="slider" id="pad-input" min="0" max="30" step="1" value="0">
+          </div>
+
+          <!-- 動作 -->
+          <div class="control-actions">
+            <button class="btn btn-accent" id="download-btn">下載 ZIP</button>
+            <button class="btn" id="change-btn">更換圖片</button>
+          </div>
+        </section>
+
+        <!-- 右：預覽 + 嵌入碼 -->
+        <section class="output" aria-label="輸出預覽">
+          <div class="section-rule"><span class="tag">產生結果</span></div>
+          <div class="icon-grid" id="icon-grid"><!-- JS 注入各尺寸卡片 --></div>
+
+          <div class="section-rule"><span class="tag">貼進 &lt;head&gt;</span></div>
+          <div class="code-card">
+            <button class="btn copy-btn" id="copy-html" data-copy="html">複製 HTML</button>
+            <pre class="code-block" id="html-snippet"></pre>
+          </div>
+
+          <div class="section-rule"><span class="tag">site.webmanifest</span></div>
+          <div class="code-card">
+            <button class="btn copy-btn" id="copy-manifest" data-copy="manifest">複製 JSON</button>
+            <pre class="code-block" id="manifest-snippet"></pre>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>

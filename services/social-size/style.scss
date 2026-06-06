@@ -1,0 +1,178 @@
+// ============================================================
+// 03 社群尺寸建議 — 工具特有樣式
+// 共用元件（tag / badge / btn / tool-head…）直接套 class，這裡只補差異
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 60ch;
+  margin-block: $space-4 $space-3;
+  color: $color-ink-soft;
+}
+
+// — 平台篩選列 —
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  padding-block: $space-3;
+  border-bottom: $border-fine;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: $color-paper; // 黏頂時蓋住下方內容
+}
+
+// 單一平台篩選鈕（等寬技術標籤風）
+.filter-chip {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-1 $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+  background: transparent;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  // 選中狀態：硃紅實底
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// — 平台分區 —
+.platform-block {
+  padding-block: $space-5 $space-3;
+  border-bottom: $border-fine;
+
+  &:last-child { border-bottom: 0; }
+}
+
+.platform-head {
+  display: flex;
+  align-items: baseline;
+  gap: $space-3;
+  margin-bottom: $space-2;
+}
+
+.platform-name {
+  font-family: $font-display;
+  font-size: $fs-xl;
+}
+
+.platform-count {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+.platform-note {
+  max-width: 60ch;
+  margin-bottom: $space-4;
+  font-size: $fs-sm;
+  color: $color-ink-soft;
+}
+
+// — 尺寸卡片網格 —
+.size-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: $space-3;
+}
+
+.size-card {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  padding: $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  background: $color-paper-deep;
+  cursor: pointer;
+  transition: border-color $dur $ease, transform $dur $ease;
+
+  &:hover {
+    border-color: $color-accent;
+    transform: translateY(-2px);
+  }
+}
+
+// 比例預覽框：用一個外框置中一個依比例縮放的實體方塊
+.ratio-preview {
+  display: grid;
+  place-items: center;
+  height: 96px;
+  border: $border-fine;
+  border-radius: $radius;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent 0 6px,
+      color-mix(in srgb, $color-ink 4%, transparent) 6px 7px
+    );
+}
+
+// 依比例縮放的實心塊（寬高由 JS 以 inline style 給定）
+.ratio-shape {
+  background: $color-ink;
+  border-radius: 1px;
+}
+
+.size-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.size-card-label {
+  font-size: $fs-sm;
+  font-weight: 500;
+}
+
+.size-card-dim {
+  font-family: $font-mono;
+  font-size: $fs-lg;
+  color: $color-accent;
+}
+
+.size-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+}
+
+// 複製提示（hover 才浮現的等寬小字）
+.size-card-copy {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+  opacity: 0;
+  transition: opacity $dur $ease, color $dur $ease;
+}
+
+.size-card:hover .size-card-copy { opacity: 1; }
+
+// 複製成功的瞬間回饋
+.size-card.is-copied .size-card-copy {
+  opacity: 1;
+  color: $color-accent;
+}
+
+// — 無資料時的空狀態 —
+.empty-state {
+  padding-block: $space-6;
+  text-align: center;
+  color: $color-ink-soft;
+}

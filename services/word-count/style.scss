@@ -1,0 +1,258 @@
+// ============================================================
+// 13 字數／字元統計 — 工具特有樣式
+// 共用元件（tool-head / btn / tag / section-rule）直接套 class，這裡補輸入區與統計面板
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+}
+
+// — 版面：左輸入、右統計；窄螢幕改上下堆疊 —
+.counter-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: $space-5;
+  align-items: start;
+}
+
+// ============================================================
+// 左側輸入區
+// ============================================================
+.editor-pane {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  min-width: 0;
+}
+
+// 工具列：左即時字元數、右動作鈕
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+}
+
+.editor-toolbar-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+  font-variant-numeric: tabular-nums;
+}
+
+.editor-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+// — 稿紙輸入框 —
+.text-area {
+  width: 100%;
+  min-height: 420px;
+  padding: $space-4;
+  font-family: $font-body;
+  font-size: $fs-base;
+  line-height: 1.85;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
+  resize: vertical;
+  transition: border-color $dur $ease;
+
+  &::placeholder { color: $color-ink-soft; }
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// ============================================================
+// 右側統計面板（黏頂，捲動時跟著）
+// ============================================================
+.stats-pane {
+  position: sticky;
+  top: $space-4;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  padding: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+// — 主數據：字數放大 —
+.stat-primary {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  padding-bottom: $space-4;
+  border-bottom: $border-fine;
+}
+
+.stat-primary-value {
+  font-family: $font-display;
+  font-size: $fs-2xl;
+  font-weight: 600;
+  line-height: 1;
+  color: $color-accent;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-primary-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  line-height: 1.4;
+  letter-spacing: 0.03em;
+  color: $color-ink-soft;
+}
+
+// — 次級數據網格 —
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $space-1;
+}
+
+.stat-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: $space-2 $space-3;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+.stat-cell-value {
+  font-family: $font-display;
+  font-size: $fs-lg;
+  font-weight: 600;
+  line-height: 1.1;
+  color: $color-ink;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-cell-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.02em;
+  color: $color-ink-soft;
+}
+
+// — 閱讀／朗讀時間 —
+.stat-time {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.stat-time-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: $space-3;
+}
+
+.stat-time-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.03em;
+  color: $color-ink-soft;
+}
+
+.stat-time-value {
+  font-family: $font-display;
+  font-size: $fs-base;
+  font-weight: 600;
+  color: $color-ink;
+  font-variant-numeric: tabular-nums;
+}
+
+// — 字元組成：堆疊長條 + 圖例 —
+.compose-bar {
+  display: flex;
+  width: 100%;
+  height: 14px;
+  overflow: hidden;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+}
+
+// 單一組成分段（背景色由 JS 帶行內樣式）
+.compose-seg {
+  height: 100%;
+  transition: width $dur $ease;
+}
+
+.compose-legend {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.compose-item {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+// 圖例色塊
+.compose-swatch {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  border: 1px solid $color-ink;
+  border-radius: 1px;
+}
+
+.compose-item-name { color: $color-ink; }
+
+// 數值靠右對齊
+.compose-item-value {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+// ============================================================
+// 窄螢幕：上下堆疊，統計面板取消黏頂
+// ============================================================
+@media (max-width: 860px) {
+  .counter-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-4;
+  }
+
+  .stats-pane {
+    position: static;
+  }
+
+  .text-area {
+    min-height: 320px;
+  }
+}

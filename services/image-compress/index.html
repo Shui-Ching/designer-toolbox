@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>壓縮圖片 · 設計師工具箱</title>
+  <meta name="description" content="瀏覽器端圖片壓縮：JPEG / WebP / PNG 輸出，可調品質，批次處理，壓縮前後大小即時對比，檔案不上傳。">
+
+  <!-- 字體：Inter（英文／數字）/ Noto Sans TC（中文），全站統一 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../shared/styles/shared.css">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Umami 匿名分析（cookieless）。註冊 https://cloud.umami.is 後，把 data-website-id 換成你的網站 ID -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-UMAMI-WEBSITE-ID"></script>
+</head>
+<body data-tool="image-compress">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 01</span>
+        <h1 class="tool-head-title">壓縮圖片</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      在瀏覽器端用 Canvas 重新編碼圖片：可選 JPEG / WebP / PNG，調整品質，批次處理，
+      壓縮前後大小即時對比。<strong>檔案不會離開你的電腦。</strong>
+    </p>
+
+    <!-- 壓縮設定 -->
+    <section class="controls">
+      <!-- 輸出格式 -->
+      <div class="control-row">
+        <span class="control-label">輸出格式</span>
+        <div class="format-group" id="format-group">
+          <button type="button" class="format-chip is-active" data-format="image/jpeg">JPEG</button>
+          <button type="button" class="format-chip" data-format="image/webp">WebP</button>
+          <button type="button" class="format-chip" data-format="image/png">PNG <span class="format-note">無損</span></button>
+        </div>
+      </div>
+
+      <!-- 品質 -->
+      <div class="control-row" id="quality-row">
+        <span class="control-label">品質 <output class="quality-value" id="quality-value">80%</output></span>
+        <input type="range" class="quality-slider" id="quality" min="10" max="100" step="5" value="80">
+      </div>
+
+      <!-- 最大寬度 -->
+      <div class="control-row">
+        <span class="control-label">最大寬度</span>
+        <div class="maxw-group" id="maxw-group">
+          <button type="button" class="maxw-chip is-active" data-maxw="0">原始</button>
+          <button type="button" class="maxw-chip" data-maxw="2048">2048px</button>
+          <button type="button" class="maxw-chip" data-maxw="1600">1600px</button>
+          <button type="button" class="maxw-chip" data-maxw="1200">1200px</button>
+          <button type="button" class="maxw-chip" data-maxw="800">800px</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 拖放區 -->
+    <div class="dropzone" id="dropzone">
+      <p class="dropzone-hint">把圖片拖進來，或點擊選檔</p>
+      <p class="tag">支援 JPG / PNG / WebP / GIF · 可一次多張</p>
+      <input type="file" id="file-input" accept="image/*" multiple hidden>
+    </div>
+
+    <!-- 結果 -->
+    <section class="results" id="results" hidden>
+      <div class="section-rule">
+        <span class="tag">壓縮結果</span>
+      </div>
+
+      <div class="results-bar">
+        <p class="results-summary" id="results-summary"></p>
+        <div class="results-actions">
+          <button type="button" class="btn" id="clear-all">清空</button>
+          <button type="button" class="btn btn-accent" id="download-all">全部下載</button>
+        </div>
+      </div>
+
+      <ul class="result-list" id="result-list"></ul>
+    </section>
+  </main>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>

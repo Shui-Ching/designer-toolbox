@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>漸層產生器 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Hanken+Grotesk:wght@300..700&family=Noto+Serif+TC:wght@300..700&family=Noto+Sans+TC:wght@300..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Umami 匿名分析（cookieless）。註冊 https://cloud.umami.is 後，把 data-website-id 換成你的網站 ID -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-UMAMI-WEBSITE-ID"></script>
+</head>
+<body data-tool="gradient">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 15</span>
+        <h1 class="tool-head-title">漸層產生器</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      在漸層條上拖曳色標，調整角度與類型，<span class="tag">linear</span> /
+      <span class="tag">radial</span> / <span class="tag">conic</span> 三種漸層即時預覽，
+      一鍵複製可直接貼用的 CSS。全程在瀏覽器端運算。
+    </p>
+
+    <div class="gradient-layout">
+
+      <!-- 左：控制台 -->
+      <section class="controls" aria-label="漸層控制">
+
+        <!-- 預設樣式 -->
+        <div class="control-block">
+          <span class="control-label">預設樣式 · presets</span>
+          <div class="chip-group" id="preset-group">
+            <button class="chip" type="button" data-preset="dusk">暮色</button>
+            <button class="chip" type="button" data-preset="citrus">柑橘</button>
+            <button class="chip" type="button" data-preset="ocean">海洋</button>
+            <button class="chip" type="button" data-preset="ember">硃紅手冊</button>
+            <button class="chip" type="button" data-preset="ink">墨紙</button>
+            <button class="chip" type="button" data-preset="aurora">極光</button>
+          </div>
+        </div>
+
+        <!-- 漸層類型 -->
+        <div class="control-block control-section">
+          <span class="control-label">漸層類型 · type</span>
+          <div class="chip-group" id="type-group">
+            <button class="chip is-active" type="button" data-type="linear">線性 linear</button>
+            <button class="chip" type="button" data-type="radial">放射 radial</button>
+            <button class="chip" type="button" data-type="conic">錐形 conic</button>
+          </div>
+        </div>
+
+        <!-- 角度（linear / conic）-->
+        <div class="control-block" id="angle-block">
+          <span class="control-label">角度 angle
+            <span class="control-label-value"><span id="val-angle">135</span>°</span>
+          </span>
+          <input class="range-input" type="range" id="angle" min="0" max="360" value="135">
+          <div class="chip-group angle-presets" id="angle-presets">
+            <button class="chip" type="button" data-angle="0">0°</button>
+            <button class="chip" type="button" data-angle="45">45°</button>
+            <button class="chip" type="button" data-angle="90">90°</button>
+            <button class="chip" type="button" data-angle="135">135°</button>
+            <button class="chip" type="button" data-angle="180">180°</button>
+            <button class="chip" type="button" data-angle="225">225°</button>
+            <button class="chip" type="button" data-angle="270">270°</button>
+            <button class="chip" type="button" data-angle="315">315°</button>
+          </div>
+        </div>
+
+        <!-- 形狀（radial）-->
+        <div class="control-block" id="shape-block" hidden>
+          <span class="control-label">形狀 shape</span>
+          <div class="chip-group" id="shape-group">
+            <button class="chip is-active" type="button" data-shape="circle">圓形 circle</button>
+            <button class="chip" type="button" data-shape="ellipse">橢圓 ellipse</button>
+          </div>
+        </div>
+
+        <!-- 色標：漸層條 + 清單 -->
+        <div class="control-block control-section">
+          <span class="control-label">色標 · color stops
+            <span class="control-label-value stops-hint">點漸層條新增、拖曳調位置</span>
+          </span>
+          <div class="gradient-track" id="gradient-track">
+            <div class="gradient-track-fill" id="track-fill"></div>
+            <!-- JS 注入色標把手 -->
+          </div>
+        </div>
+
+        <!-- 選取色標的編輯區 -->
+        <div class="control-block layer-editor" id="stop-editor">
+          <div class="control-block">
+            <span class="control-label">位置 position
+              <span class="control-label-value"><span id="val-pos">0</span>%</span>
+            </span>
+            <input class="range-input" type="range" id="stop-pos" min="0" max="100" value="0">
+          </div>
+
+          <div class="control-block">
+            <div class="stop-editor-head">
+              <span class="control-label">顏色 · color</span>
+              <button class="layer-del-btn" type="button" id="del-stop" title="刪除此色標">✕ 刪除色標</button>
+            </div>
+            <div class="color-row">
+              <input type="color" id="stop-color" class="color-swatch" value="#000000">
+              <input type="text" id="stop-color-hex" class="text-input color-hex" value="#000000" spellcheck="false" maxlength="7">
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- 右：預覽 + 輸出 -->
+      <section class="output" aria-label="預覽與輸出">
+
+        <div class="stage-bar">
+          <span class="tag">Preview</span>
+          <span class="stage-hint">拖曳色標即時更新</span>
+        </div>
+        <div class="gradient-stage" id="gradient-stage"></div>
+
+        <div class="section-rule"><span class="tag">CSS</span></div>
+        <div class="code-wrap">
+          <pre class="code-block" id="code-out">background: ;</pre>
+          <button class="btn btn-accent code-copy" type="button" id="copy-btn">複製 CSS</button>
+        </div>
+        <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+
+      </section>
+
+    </div>
+  </main>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>

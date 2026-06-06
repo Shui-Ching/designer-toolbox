@@ -1,0 +1,68 @@
+// ============================================================
+// 設計 Token — 手冊風格（暖白紙感 × 硃紅）
+// 所有工具與入口頁共用，是整套設計系統的單一真實來源
+// ============================================================
+
+// — 色彩 —
+$color-paper:       #f4f1e8; // 主背景：暖白紙
+$color-paper-deep:  #ece7d9; // 次層紙色（卡片底）
+$color-ink:         #1c1b18; // 主文字：墨黑
+$color-ink-soft:    #6b665b; // 次要文字：淡墨
+$color-line:        #d9d3c3; // 分隔線
+$color-accent:      #d8442a; // 強調：硃紅
+$color-accent-deep: #b0331d; // 強調深色（hover）
+$color-mark:        #e0a92e; // 次要點綴：芥黃
+
+// — 字體 —
+// 全站統一單一 sans：英文／數字走 Inter，中文走 Noto Sans TC。
+// 三個角色名保留以維持結構相容，實際指向同一組字體堆疊。
+$font-display: 'Inter', 'Noto Sans TC', sans-serif; // 標題與編號
+$font-body:    'Inter', 'Noto Sans TC', sans-serif; // 內文
+$font-mono:    'Inter', 'Noto Sans TC', sans-serif; // 技術標籤（保留字距與大寫營造技術感）
+
+// — 字級（rem，基準 16px）—
+// 全站最小字級下限為 1rem（16px），故 xs / sm 一律不低於此值
+$fs-xs:   1rem;     // 16px：標籤、註腳（受最小字級限制，與 base 同）
+$fs-sm:   1rem;     // 16px（受最小字級限制，與 base 同）
+$fs-base: 1rem;     // 16px：內文
+$fs-lg:   1.25rem;  // 20px
+$fs-xl:   1.75rem;  // 28px
+$fs-2xl:  2.75rem;  // 44px
+$fs-3xl:  clamp(3rem, 8vw, 6rem); // 主視覺大標
+
+// — 間距（8px 為節奏）—
+$space-1: 4px;
+$space-2: 8px;
+$space-3: 16px;
+$space-4: 24px;
+$space-5: 40px;
+$space-6: 64px;
+$space-7: 96px;
+
+// — 形狀與邊框 —
+$radius:     2px;                       // 偏銳利，呼應手冊感
+$border-fine: 1px solid $color-line;    // 細線
+$border-ink:  1.5px solid $color-ink;   // 墨線（重點框）
+
+// — 動態 —
+$ease: cubic-bezier(0.22, 0.61, 0.36, 1); // 收尾平滑的緩動
+$dur:  0.4s;
+
+// — 版心 —
+$max-width: 1100px;
+
+// — 對外暴露為 CSS 變數，方便執行期（JS）取用 —
+:root {
+  --color-paper:       #{$color-paper};
+  --color-paper-deep:  #{$color-paper-deep};
+  --color-ink:         #{$color-ink};
+  --color-ink-soft:    #{$color-ink-soft};
+  --color-line:        #{$color-line};
+  --color-accent:      #{$color-accent};
+  --color-accent-deep: #{$color-accent-deep};
+  --color-mark:        #{$color-mark};
+  --font-display:      #{$font-display}; // 三者同一組，保留變數名以相容既有用法
+  --font-body:         #{$font-body};
+  --font-mono:         #{$font-mono};
+  --ease:              #{$ease};
+}

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>Grid / Flex 模擬器 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Umami 匿名分析（cookieless）。註冊 https://cloud.umami.is 後，把 data-website-id 換成你的網站 ID -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-UMAMI-WEBSITE-ID"></script>
+</head>
+<body data-tool="grid-flex">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 05</span>
+        <h1 class="tool-head-title">Grid / Flex 模擬器</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      視覺化調整 <span class="tag">flexbox</span> 與 <span class="tag">grid</span> 的容器屬性，即時觀察子項目排列變化，
+      下方自動產生對應的 CSS，一鍵複製。
+    </p>
+
+    <!-- 模式切換：Flex / Grid -->
+    <div class="mode-tabs" id="mode-tabs" role="tablist">
+      <button class="mode-tab is-active" data-mode="flex" role="tab">Flexbox</button>
+      <button class="mode-tab" data-mode="grid" role="tab">Grid</button>
+    </div>
+
+    <div class="sim-layout">
+      <!-- 左：控制面板（由 JS 依模式渲染）-->
+      <section class="sim-controls" id="sim-controls" aria-label="屬性控制"></section>
+
+      <!-- 右：預覽舞台 + CSS 輸出 -->
+      <section class="sim-output">
+        <div class="stage-bar">
+          <span class="tag">Preview</span>
+          <div class="count-control">
+            <span class="count-label">子項目</span>
+            <button class="count-btn" id="count-minus" aria-label="減少一個">−</button>
+            <span class="count-value" id="count-value">4</span>
+            <button class="count-btn" id="count-plus" aria-label="增加一個">+</button>
+          </div>
+        </div>
+
+        <div class="sim-stage" id="sim-stage"></div>
+
+        <div class="section-rule">
+          <span class="tag">CSS</span>
+        </div>
+        <div class="code-block">
+          <button class="btn btn-accent code-copy" id="code-copy">複製 CSS</button>
+          <pre class="code-out" id="code-out"></pre>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>

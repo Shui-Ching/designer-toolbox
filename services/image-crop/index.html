@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>圖片裁切／改尺寸 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Umami 匿名分析（cookieless）。註冊 https://cloud.umami.is 後，把 data-website-id 換成你的網站 ID -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-UMAMI-WEBSITE-ID"></script>
+</head>
+<body data-tool="image-crop">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 06</span>
+        <h1 class="tool-head-title">圖片裁切／改尺寸</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      拖一張圖進來，框出要保留的範圍——可<span class="tag">自由裁切</span>或<span class="tag">鎖定比例</span>，
+      也能直接套社群版位輸出指定像素。全部在瀏覽器端完成，圖片不會離開你的電腦。
+    </p>
+
+    <!-- 上傳區（尚無圖片時顯示）-->
+    <div class="dropzone" id="dropzone">
+      <span class="dropzone-hint">拖放圖片到這裡，或點擊選檔</span>
+      <span class="tag">JPG / PNG / WebP / GIF</span>
+      <input type="file" id="file-input" accept="image/*" hidden>
+    </div>
+
+    <!-- 編輯區（載入圖片後顯示）-->
+    <div class="editor" id="editor" hidden>
+      <div class="editor-layout">
+
+        <!-- 左：控制面板 -->
+        <section class="controls" aria-label="裁切設定">
+          <!-- 比例 -->
+          <div class="control-block">
+            <span class="control-label">比例</span>
+            <div class="chip-group" id="ratio-group">
+              <button class="chip is-active" data-ratio="free">自由</button>
+              <button class="chip" data-ratio="1">1:1</button>
+              <button class="chip" data-ratio="0.8">4:5</button>
+              <button class="chip" data-ratio="0.75">3:4</button>
+              <button class="chip" data-ratio="1.7778">16:9</button>
+              <button class="chip" data-ratio="1.5">3:2</button>
+            </div>
+          </div>
+
+          <!-- 社群版位（讀取 03 資料）-->
+          <div class="control-block" id="social-block" hidden>
+            <span class="control-label">社群版位</span>
+            <select class="social-select" id="social-select" aria-label="套用社群版位尺寸">
+              <option value="">— 選擇平台版位 —</option>
+            </select>
+          </div>
+
+          <!-- 輸出尺寸 -->
+          <div class="control-block">
+            <span class="control-label">輸出尺寸</span>
+            <div class="chip-group" id="size-group">
+              <button class="chip is-active" data-size="natural">裁切原寸</button>
+              <button class="chip" data-size="width">指定寬度</button>
+            </div>
+            <div class="width-row" id="width-row" hidden>
+              <input type="number" class="width-input" id="width-input" min="1" max="20000" placeholder="寬度" value="1080">
+              <span class="width-unit">px · 高度等比</span>
+            </div>
+          </div>
+
+          <!-- 輸出格式 -->
+          <div class="control-block">
+            <span class="control-label">輸出格式</span>
+            <div class="chip-group" id="format-group">
+              <button class="chip is-active" data-format="image/jpeg">JPEG</button>
+              <button class="chip" data-format="image/png">PNG</button>
+              <button class="chip" data-format="image/webp">WebP</button>
+            </div>
+          </div>
+
+          <!-- 尺寸讀數 -->
+          <dl class="readout">
+            <div class="readout-row">
+              <dt>裁切區域</dt>
+              <dd id="readout-crop">—</dd>
+            </div>
+            <div class="readout-row">
+              <dt>輸出尺寸</dt>
+              <dd id="readout-out">—</dd>
+            </div>
+          </dl>
+
+          <!-- 動作 -->
+          <div class="control-actions">
+            <button class="btn btn-accent" id="download-btn">下載</button>
+            <button class="btn" id="reset-btn">重設裁切</button>
+            <button class="btn" id="change-btn">更換圖片</button>
+          </div>
+        </section>
+
+        <!-- 右：裁切舞台 -->
+        <section class="stage-wrap" aria-label="裁切預覽">
+          <div class="crop-stage" id="crop-stage">
+            <img class="crop-image" id="crop-image" alt="待裁切圖片" draggable="false">
+            <div class="crop-frame" id="crop-frame">
+              <span class="crop-handle" data-dir="nw"></span>
+              <span class="crop-handle" data-dir="n"></span>
+              <span class="crop-handle" data-dir="ne"></span>
+              <span class="crop-handle" data-dir="e"></span>
+              <span class="crop-handle" data-dir="se"></span>
+              <span class="crop-handle" data-dir="s"></span>
+              <span class="crop-handle" data-dir="sw"></span>
+              <span class="crop-handle" data-dir="w"></span>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>

@@ -1,0 +1,260 @@
+:root {
+  --color-paper: #f4f1e8;
+  --color-paper-deep: #ece7d9;
+  --color-ink: #1c1b18;
+  --color-ink-soft: #6b665b;
+  --color-line: #d9d3c3;
+  --color-accent: #d8442a;
+  --color-accent-deep: #b0331d;
+  --color-mark: #e0a92e;
+  --font-display: Inter, Noto Sans TC, sans-serif;
+  --font-body: Inter, Noto Sans TC, sans-serif;
+  --font-mono: Inter, Noto Sans TC, sans-serif;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.tool-intro {
+  max-width: 64ch;
+  margin-block: 24px 40px;
+  color: #6b665b;
+}
+.tool-intro strong {
+  color: #1c1b18;
+}
+
+.dropzone {
+  cursor: pointer;
+}
+
+.editor-layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  background: #ece7d9;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+}
+
+.control-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.control-label {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b665b;
+}
+
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  padding: 4px 16px;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  color: #6b665b;
+  background: #f4f1e8;
+  cursor: pointer;
+  transition: color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), background-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.chip:hover {
+  color: #1c1b18;
+  border-color: #1c1b18;
+}
+.chip.is-active {
+  color: #f4f1e8;
+  background: #d8442a;
+  border-color: #d8442a;
+}
+
+.social-select {
+  width: 100%;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  padding: 8px 16px;
+  color: #1c1b18;
+  background: #f4f1e8;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.width-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.width-input {
+  width: 96px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  padding: 4px 8px;
+  color: #1c1b18;
+  background: #f4f1e8;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+}
+
+.width-unit {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+}
+
+.readout {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid #d9d3c3;
+}
+
+.readout-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+.readout-row dt {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b665b;
+}
+.readout-row dd {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+  color: #1c1b18;
+}
+
+.control-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.stage-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.crop-stage {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+  max-width: 100%;
+  background-color: #ece7d9;
+  background-image: linear-gradient(45deg, #d9d3c3 25%, transparent 25%), linear-gradient(-45deg, #d9d3c3 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #d9d3c3 75%), linear-gradient(-45deg, transparent 75%, #d9d3c3 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+  overflow: hidden;
+  user-select: none;
+  touch-action: none;
+}
+
+.crop-image {
+  display: block;
+  pointer-events: none;
+}
+
+.crop-frame {
+  position: absolute;
+  box-sizing: border-box;
+  border: 1px solid #f4f1e8;
+  box-shadow: 0 0 0 9999px rgba(28, 27, 24, 0.55);
+  cursor: move;
+  background-image: linear-gradient(to right, rgba(244, 241, 232, 0.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(244, 241, 232, 0.5) 1px, transparent 1px);
+  background-size: 33.333% 33.333%;
+  background-position: -1px -1px;
+}
+
+.crop-handle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #d8442a;
+  border: 1.5px solid #f4f1e8;
+  border-radius: 2px;
+  z-index: 1;
+}
+.crop-handle[data-dir=nw] {
+  top: -6px;
+  left: -6px;
+  cursor: nwse-resize;
+}
+.crop-handle[data-dir=ne] {
+  top: -6px;
+  right: -6px;
+  cursor: nesw-resize;
+}
+.crop-handle[data-dir=se] {
+  bottom: -6px;
+  right: -6px;
+  cursor: nwse-resize;
+}
+.crop-handle[data-dir=sw] {
+  bottom: -6px;
+  left: -6px;
+  cursor: nesw-resize;
+}
+.crop-handle[data-dir=n] {
+  top: -6px;
+  left: 50%;
+  margin-left: -6px;
+  cursor: ns-resize;
+}
+.crop-handle[data-dir=s] {
+  bottom: -6px;
+  left: 50%;
+  margin-left: -6px;
+  cursor: ns-resize;
+}
+.crop-handle[data-dir=w] {
+  left: -6px;
+  top: 50%;
+  margin-top: -6px;
+  cursor: ew-resize;
+}
+.crop-handle[data-dir=e] {
+  right: -6px;
+  top: 50%;
+  margin-top: -6px;
+  cursor: ew-resize;
+}
+
+.crop-stage.is-locked .crop-handle[data-dir=n],
+.crop-stage.is-locked .crop-handle[data-dir=s],
+.crop-stage.is-locked .crop-handle[data-dir=w],
+.crop-stage.is-locked .crop-handle[data-dir=e] {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .editor-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+}

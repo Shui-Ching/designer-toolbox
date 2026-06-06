@@ -1,0 +1,278 @@
+// ============================================================
+// 01 壓縮圖片 — 工具特有樣式
+// 共用元件（tool-head / dropzone / btn / tag / section-rule…）直接套 class，這裡只補差異
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+
+  strong { color: $color-ink; }
+}
+
+// — 壓縮設定面板 —
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  padding: $space-4;
+  margin-bottom: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+// 一列設定：標籤在左、控制項在右，窄螢幕改上下堆疊
+.control-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-3;
+
+  // 品質列在 PNG 無損時整列淡出停用
+  &.is-disabled {
+    opacity: 0.4;
+    pointer-events: none;
+  }
+}
+
+.control-label {
+  flex: 0 0 auto;
+  min-width: 6em;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.quality-value {
+  color: $color-accent;
+}
+
+// — 格式 / 最大寬度按鈕群（等寬技術標籤風）—
+.format-group,
+.maxw-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.format-chip,
+.maxw-chip {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-1 $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+  background: $color-paper;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+.format-note {
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+
+// — 品質滑桿 —
+.quality-slider {
+  flex: 1;
+  min-width: 180px;
+  max-width: 360px;
+  height: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: $color-line;
+  border-radius: $radius;
+  cursor: pointer;
+
+  // 把手（WebKit）
+  &::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: $color-accent;
+    border: 2px solid $color-paper;
+    cursor: pointer;
+  }
+
+  // 把手（Firefox）
+  &::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: $color-accent;
+    border: 2px solid $color-paper;
+    cursor: pointer;
+  }
+}
+
+// — 結果列總計與動作列 —
+.results-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+  margin-bottom: $space-4;
+}
+
+.results-summary {
+  font-size: $fs-sm;
+  color: $color-ink-soft;
+
+  strong { color: $color-ink; }
+
+  .text-accent { color: $color-accent; }
+  .text-warn { color: $color-mark; }
+}
+
+.results-actions {
+  display: flex;
+  gap: $space-2;
+}
+
+// — 結果列表 —
+.result-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+// 單張：縮圖 / 名稱與尺寸 / 大小對比 / 動作
+.result-item {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-2 $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  background: $color-paper;
+  transition: border-color $dur $ease;
+
+  &:hover { border-color: $color-line; }
+}
+
+.result-thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border: $border-fine;
+  border-radius: $radius;
+  background: $color-paper-deep;
+}
+
+.result-info { min-width: 0; }
+
+.result-name {
+  font-size: $fs-sm;
+  color: $color-ink;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.result-dim {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+// 大小對比：原始 → 壓縮後 + 縮減幅度
+.result-size {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  font-variant-numeric: tabular-nums;
+}
+
+.size-from { color: $color-ink-soft; text-decoration: line-through; }
+.size-arrow { color: $color-ink-soft; }
+.size-to { color: $color-ink; font-weight: 700; }
+
+// 縮減徽章：變小走硃紅、反而變大走芥黃警示
+.reduction {
+  padding: 2px $space-2;
+  border-radius: $radius;
+  color: $color-paper;
+  background: $color-accent;
+
+  &.is-up {
+    background: $color-mark;
+    color: $color-ink;
+  }
+}
+
+.result-actions {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+// 縮小版下載鈕，貼合列高
+.result-download {
+  padding: $space-1 $space-3;
+}
+
+// 移除鈕：低調的叉，hover 才轉硃紅
+.result-remove {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  font-family: $font-mono;
+  color: $color-ink-soft;
+  background: transparent;
+  border: $border-fine;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease;
+
+  &:hover {
+    color: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// 拖放區可點選檔
+.dropzone { cursor: pointer; }
+
+// — 窄螢幕：設定列堆疊、結果列改兩段式 —
+@media (max-width: 640px) {
+  .control-label { min-width: 100%; }
+
+  .result-item {
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+    grid-template-areas:
+      'thumb info actions'
+      'thumb size size';
+    row-gap: $space-2;
+  }
+
+  .result-thumb { grid-area: thumb; width: 48px; height: 48px; }
+  .result-info { grid-area: info; }
+  .result-actions { grid-area: actions; }
+  .result-size { grid-area: size; flex-wrap: wrap; }
+}

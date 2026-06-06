@@ -1,0 +1,39 @@
+{
+  "_comment": "常見裝置的 CSS viewport（直向）、DPR 與斷點。實體解析度由 viewport × dpr 於前端換算。尺寸以官方/常見實測值為準，廠商改版時請以官方為主。",
+  "updated": "2026-06-05",
+  "categories": [
+    { "id": "mobile",  "name": "手機" },
+    { "id": "tablet",  "name": "平板" },
+    { "id": "desktop", "name": "桌機" }
+  ],
+  "devices": [
+    { "name": "iPhone 15 Pro Max",      "category": "mobile",  "viewport": [430, 932],  "dpr": 3 },
+    { "name": "iPhone 15 / 15 Pro",     "category": "mobile",  "viewport": [393, 852],  "dpr": 3 },
+    { "name": "iPhone 14 / 13",         "category": "mobile",  "viewport": [390, 844],  "dpr": 3 },
+    { "name": "iPhone 13 / 12 mini",    "category": "mobile",  "viewport": [375, 812],  "dpr": 3 },
+    { "name": "iPhone SE (第 2/3 代)",  "category": "mobile",  "viewport": [375, 667],  "dpr": 2 },
+    { "name": "Pixel 8 / 7",            "category": "mobile",  "viewport": [412, 915],  "dpr": 2.625 },
+    { "name": "Samsung Galaxy S23",     "category": "mobile",  "viewport": [360, 780],  "dpr": 3 },
+
+    { "name": "iPad Pro 12.9\"",        "category": "tablet",  "viewport": [1024, 1366], "dpr": 2 },
+    { "name": "iPad Pro 11\"",          "category": "tablet",  "viewport": [834, 1194],  "dpr": 2 },
+    { "name": "iPad Air 10.9\"",        "category": "tablet",  "viewport": [820, 1180],  "dpr": 2 },
+    { "name": "iPad (第 10 代)",        "category": "tablet",  "viewport": [810, 1080],  "dpr": 2 },
+    { "name": "iPad mini",              "category": "tablet",  "viewport": [744, 1133],  "dpr": 2 },
+
+    { "name": "MacBook Air 13\"",       "category": "desktop", "viewport": [1280, 832],  "dpr": 2 },
+    { "name": "MacBook Pro 14\"",       "category": "desktop", "viewport": [1512, 982],  "dpr": 2 },
+    { "name": "MacBook Pro 16\"",       "category": "desktop", "viewport": [1728, 1117], "dpr": 2 },
+    { "name": "桌機 Full HD",           "category": "desktop", "viewport": [1920, 1080], "dpr": 1 },
+    { "name": "桌機 QHD",               "category": "desktop", "viewport": [2560, 1440], "dpr": 1 },
+    { "name": "桌機 4K UHD",            "category": "desktop", "viewport": [3840, 2160], "dpr": 1 }
+  ],
+  "breakpoints": [
+    { "name": "xs",  "min": 0,    "label": "手機（直向）",  "note": "預設，未設下限" },
+    { "name": "sm",  "min": 576,  "label": "手機（橫向）",  "note": "" },
+    { "name": "md",  "min": 768,  "label": "平板",          "note": "" },
+    { "name": "lg",  "min": 992,  "label": "小筆電 / 桌機", "note": "" },
+    { "name": "xl",  "min": 1200, "label": "桌機",          "note": "" },
+    { "name": "xxl", "min": 1400, "label": "大螢幕桌機",    "note": "" }
+  ]
+}

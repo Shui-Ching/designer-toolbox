@@ -1,0 +1,386 @@
+// ============================================================
+// 14 陰影產生器 — 工具特有樣式
+// 共用元件（tool-head / btn / tag / chip / section-rule）直接套 class，這裡補控制台與舞台
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+}
+
+// — 版面：左控制台、右預覽；窄螢幕改上下堆疊 —
+.shadow-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  gap: $space-5;
+  align-items: start;
+}
+
+// ============================================================
+// 左側控制台
+// ============================================================
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  padding: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+.control-block {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.control-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.control-label-value {
+  font-variant-numeric: tabular-nums;
+  color: $color-ink;
+  text-transform: none;
+}
+
+// 與預設、舞台等段落間的分隔
+.control-section {
+  padding-top: $space-4;
+  border-top: $border-fine;
+}
+
+// — 分段 chip 群（沿用 type-scale 慣例）—
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-2;
+}
+
+.chip {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-1 $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+  background: $color-paper;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// 舞台底色那一行的前綴小標
+.stage-label {
+  margin-right: $space-1;
+}
+
+// — 滑桿 —
+.range-input {
+  width: 100%;
+  accent-color: $color-accent;
+  cursor: pointer;
+}
+
+// — 圖層清單 —
+.layers-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+}
+
+.layer-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.layer-item {
+  display: flex;
+  align-items: stretch;
+  gap: $space-1;
+  border: $border-fine;
+  border-radius: $radius;
+  background: $color-paper;
+  overflow: hidden;
+  transition: border-color $dur $ease;
+
+  &.is-active {
+    border-color: $color-accent;
+  }
+}
+
+.layer-pick {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  min-width: 0;
+  padding: $space-2 $space-3;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+// 棋盤底襯托半透明陰影色
+.layer-swatch {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  border: $border-fine;
+  border-radius: $radius;
+  background-color: $color-ink;
+  background-image:
+    linear-gradient(45deg, $color-line 25%, transparent 25%),
+    linear-gradient(-45deg, $color-line 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, $color-line 75%),
+    linear-gradient(-45deg, transparent 75%, $color-line 75%);
+  background-size: 10px 10px;
+  background-position: 0 0, 0 5px, 5px -5px, -5px 0;
+}
+
+.layer-summary {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.layer-del {
+  flex: 0 0 auto;
+  padding-inline: $space-3;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  background: none;
+  border: none;
+  border-left: $border-fine;
+  cursor: pointer;
+  transition: color $dur $ease, background-color $dur $ease;
+
+  &:hover:not(:disabled) {
+    color: $color-paper;
+    background: $color-accent;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
+// — 選取圖層的編輯區 —
+.layer-editor {
+  gap: $space-4;
+  padding: $space-3;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink;
+  cursor: pointer;
+
+  input { accent-color: $color-accent; cursor: pointer; }
+}
+
+// — 顏色列：色票 + hex 文字 —
+.color-row {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.color-swatch {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 32px;
+  padding: 0;
+  border: $border-ink;
+  border-radius: $radius;
+  background: none;
+  cursor: pointer;
+
+  &::-webkit-color-swatch-wrapper { padding: 2px; }
+  &::-webkit-color-swatch { border: none; border-radius: 1px; }
+}
+
+.text-input {
+  width: 100%;
+  min-width: 0;
+  padding: $space-2 $space-3;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  letter-spacing: 0.02em;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  transition: border-color $dur $ease;
+
+  &:focus { outline: none; border-color: $color-accent; }
+}
+
+.color-hex {
+  text-transform: uppercase;
+}
+
+// — 預覽外觀：方塊色 + 圓角 —
+.preview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-3;
+  align-items: end;
+}
+
+.mini-field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+
+  .color-swatch { width: 100%; }
+}
+
+// ============================================================
+// 右側預覽與輸出
+// ============================================================
+.output {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+
+  .section-rule { margin-top: $space-5; }
+}
+
+.stage-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+  margin-bottom: $space-2;
+}
+
+.stage-hint {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+// — 舞台：置中放一個示範方塊，底色可切換 —
+.shadow-stage {
+  display: grid;
+  place-items: center;
+  min-height: 360px;
+  padding: $space-6;
+  border: $border-ink;
+  border-radius: $radius;
+  transition: background-color $dur $ease;
+
+  &.is-light { background: $color-paper; }
+
+  &.is-dark { background: $color-ink; }
+
+  &.is-check {
+    background-color: $color-paper;
+    background-image:
+      linear-gradient(45deg, $color-line 25%, transparent 25%),
+      linear-gradient(-45deg, $color-line 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, $color-line 75%),
+      linear-gradient(-45deg, transparent 75%, $color-line 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+  }
+}
+
+.shadow-box {
+  width: 160px;
+  height: 160px;
+  background: $color-paper;
+  border-radius: 12px;
+  transition: box-shadow $dur $ease, border-radius $dur $ease;
+}
+
+// — CSS 輸出區（沿用 type-scale code-block）—
+.code-wrap {
+  position: relative;
+}
+
+.code-block {
+  margin: 0;
+  padding: $space-4;
+  padding-right: 132px; // 讓出右上複製鈕空間
+  max-height: 280px;
+  overflow: auto;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  line-height: 1.7;
+  color: $color-ink;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+  white-space: pre;
+  tab-size: 2;
+}
+
+.code-copy {
+  position: absolute;
+  top: $space-3;
+  right: $space-3;
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: $space-2 0 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// ============================================================
+// 窄螢幕
+// ============================================================
+@media (max-width: 860px) {
+  .shadow-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-4;
+  }
+}

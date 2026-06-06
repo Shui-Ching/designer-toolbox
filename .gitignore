@@ -1,0 +1,15 @@
+# 依賴（GitHub Pages 直接吃靜態檔，不需要 node_modules）
+node_modules/
+
+# 作業系統 / 編輯器雜項
+.DS_Store
+Thumbs.db
+*.log
+
+# Sass 快取與 source map
+.sass-cache/
+*.css.map
+
+# 環境變數（切勿把任何金鑰 commit）
+.env
+.env.*

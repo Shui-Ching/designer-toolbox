@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>Lorem 假文產生器 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Hanken+Grotesk:wght@300..700&family=Noto+Serif+TC:wght@300..700&family=Noto+Sans+TC:wght@300..700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Umami 匿名分析（cookieless）。註冊 https://cloud.umami.is 後，把 data-website-id 換成你的網站 ID -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-UMAMI-WEBSITE-ID"></script>
+</head>
+<body data-tool="lorem">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 12</span>
+        <h1 class="tool-head-title">Lorem 假文產生器</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      排版時用來佔位的 <span class="tag">假文</span>，可選中文或拉丁 Lorem ipsum，
+      依段落、句子或字數產生，一鍵複製貼進設計稿。全程在瀏覽器端產生，不上傳任何資料。
+    </p>
+
+    <div class="editor-layout">
+
+      <!-- 左：控制面板 -->
+      <section class="controls" aria-label="假文設定">
+
+        <!-- 語言 -->
+        <div class="control-block">
+          <span class="control-label">語言 · language</span>
+          <div class="chip-group" id="lang-group">
+            <button class="chip is-active" data-lang="zh">中文</button>
+            <button class="chip" data-lang="en">拉丁 Lorem</button>
+          </div>
+        </div>
+
+        <!-- 產生單位 -->
+        <div class="control-block">
+          <span class="control-label">產生單位 · unit</span>
+          <div class="chip-group" id="mode-group">
+            <button class="chip is-active" data-mode="paragraphs">段落</button>
+            <button class="chip" data-mode="sentences">句子</button>
+            <button class="chip" data-mode="words" id="mode-words">字數</button>
+          </div>
+        </div>
+
+        <!-- 數量 -->
+        <div class="control-block">
+          <label class="control-label" for="count-input">
+            數量 · count
+            <span class="control-label-value" id="count-unit">段</span>
+          </label>
+          <input
+            type="number"
+            class="text-input"
+            id="count-input"
+            min="1"
+            max="100"
+            step="1"
+            value="3"
+            inputmode="numeric"
+            aria-label="數量">
+        </div>
+
+        <!-- 經典開頭（僅拉丁文有效） -->
+        <div class="control-block" id="classic-block">
+          <span class="control-label">經典開頭 · classic</span>
+          <div class="chip-group" id="classic-group">
+            <button class="chip is-active" data-classic="on">以 Lorem ipsum 起頭</button>
+            <button class="chip" data-classic="off">關閉</button>
+          </div>
+          <p class="control-note">中文模式不適用，切到拉丁 Lorem 才會生效。</p>
+        </div>
+
+        <!-- 動作 -->
+        <div class="control-actions">
+          <button class="btn btn-accent" id="copy-btn">複製假文</button>
+          <button class="btn" id="regen-btn">↻ 重新產生</button>
+          <button class="btn" id="download-btn">下載 .txt</button>
+        </div>
+      </section>
+
+      <!-- 右：輸出 -->
+      <section class="output" aria-label="假文輸出">
+        <div class="section-rule"><span class="tag">產生結果</span></div>
+        <p class="lorem-stat" id="lorem-stat" aria-live="polite"></p>
+        <div class="lorem-output" id="lorem-output"><!-- JS 注入段落 --></div>
+        <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+      </section>
+
+    </div>
+  </main>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+// ============================================================
+// 02 SVG 轉 Font — 工具特有樣式
+// 共用元件（tool-head / dropzone / btn / tag / section-rule…）直接套 class，這裡只補差異
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+
+  strong { color: $color-ink; }
+} 
+
+// — 設定面板（與 01 同調）—
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  padding: $space-4;
+  margin-bottom: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+.control-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-3;
+}
+
+.control-label {
+  flex: 0 0 auto;
+  min-width: 6em;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+// — 文字輸入：等寬、墨線底，hover/focus 轉硃紅 —
+.text-input {
+  flex: 1;
+  min-width: 180px;
+  max-width: 320px;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  letter-spacing: 0.02em;
+  padding: $space-2 $space-3;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+  transition: border-color $dur $ease;
+
+  &:hover { border-color: $color-ink; }
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+}
+
+// — 結果列總計與動作列 —
+.results-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+  margin-bottom: $space-4;
+}
+
+.results-summary {
+  font-size: $fs-sm;
+  color: $color-ink-soft;
+
+  strong { color: $color-ink; }
+}
+
+.results-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+// — 圖示預覽格 —
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: $space-2;
+}
+
+// 單張卡：大圖示 + class 名 + 碼位，整張可點複製
+.icon-card {
+  display: grid;
+  gap: $space-2;
+  justify-items: center;
+  padding: $space-3 $space-2;
+  text-align: center;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    border-color: $color-accent;
+    background: color-mix(in srgb, $color-accent 5%, $color-paper);
+  }
+}
+
+// 以產出的字型渲染的圖示本體
+.icon-glyph {
+  font-size: 40px;
+  line-height: 1;
+  color: $color-ink;
+}
+
+.icon-name {
+  max-width: 100%;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  // 複製成功的瞬時提示
+  &.is-flash { color: $color-accent; }
+}
+
+.icon-code {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+}
+
+// — CSS 程式碼面板 —
+.copy-css {
+  flex: 0 0 auto;
+  padding: $space-1 $space-3;
+  font-size: $fs-xs;
+}
+
+.css-panel {
+  max-height: 360px;
+  overflow: auto;
+  padding: $space-4;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  line-height: 1.7;
+  color: $color-ink;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+  white-space: pre;
+  tab-size: 2;
+}
+
+// 拖放區可點選檔
+.dropzone { cursor: pointer; }
+
+// — 窄螢幕：設定列堆疊、動作列換行 —
+@media (max-width: 640px) {
+  .control-label { min-width: 100%; }
+  .text-input { max-width: 100%; }
+}

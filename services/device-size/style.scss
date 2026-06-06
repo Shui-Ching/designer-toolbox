@@ -1,0 +1,272 @@
+// ============================================================
+// 04 裝置尺寸查詢 — 工具特有樣式
+// 共用元件（tag / badge / tool-head / section-rule…）直接套 class，這裡只補差異
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-3;
+  color: $color-ink-soft;
+}
+
+// — 查詢列：搜尋框 + 類型篩選，黏頂方便長表捲動時操作 —
+.query-bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding-block: $space-3;
+  background: $color-paper; // 黏頂時蓋住下方表格
+  border-bottom: $border-fine;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 360px;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  padding: $space-2 $space-3;
+  margin-bottom: $space-3;
+  color: $color-ink;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+  transition: border-color $dur $ease;
+
+  &::placeholder { color: $color-ink-soft; }
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+}
+
+// — 類型篩選列 —
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+// 單一篩選鈕（等寬技術標籤風）
+.filter-chip {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-1 $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+  background: transparent;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// — 結果筆數 —
+.result-count {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  margin-block: $space-3 $space-2;
+}
+
+// — 規格表 —
+.table-wrap {
+  overflow-x: auto; // 窄螢幕可橫向捲動
+}
+
+.device-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: $fs-sm;
+  white-space: nowrap;
+
+  th, td {
+    padding: $space-3;
+    text-align: left;
+    border-bottom: $border-fine;
+  }
+}
+
+// 表頭：等寬小字、可排序欄位帶 hover 與排序箭頭
+.device-table thead th {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+  border-bottom: $border-ink;
+  user-select: none;
+
+  &.is-sortable {
+    cursor: pointer;
+    transition: color $dur $ease;
+
+    &:hover { color: $color-ink; }
+  }
+
+  &.is-sorted { color: $color-accent; }
+}
+
+.th-arrow {
+  display: inline-block;
+  width: 1em;
+  margin-left: $space-1;
+  color: $color-accent;
+}
+
+.th-copy { width: 1px; } // 複製欄盡量窄
+
+// 表身列：可點擊複製，hover 換底色
+.device-table tbody tr {
+  cursor: pointer;
+  transition: background-color $dur $ease;
+
+  &:hover { background: $color-paper-deep; }
+
+  &.is-copied { background: color-mix(in srgb, $color-accent 10%, $color-paper); }
+}
+
+.cell-name { font-weight: 500; }
+
+// 數值欄走等寬，對齊好讀
+.cell-mono {
+  font-family: $font-mono;
+  font-variant-numeric: tabular-nums;
+}
+
+.cell-accent { color: $color-accent; }
+
+// 類型小膠囊：三類各以不同點綴色描邊
+.cat-pill {
+  display: inline-block;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: 2px $space-2;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+}
+
+.cat-mobile  { border-color: $color-accent; color: $color-accent; }
+.cat-tablet  { border-color: $color-mark; color: color-mix(in srgb, $color-mark 70%, $color-ink); }
+.cat-desktop { border-color: $color-ink; color: $color-ink; }
+
+// 複製提示：hover 該列才浮現的等寬小字
+.cell-copy { text-align: right; }
+
+.copy-hint {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+  opacity: 0;
+  transition: opacity $dur $ease, color $dur $ease;
+}
+
+.device-table tbody tr:hover .copy-hint { opacity: 1; }
+
+.device-table tbody tr.is-copied .copy-hint {
+  opacity: 1;
+  color: $color-accent;
+}
+
+// — 空狀態 —
+.empty-state {
+  padding-block: $space-6 !important;
+  text-align: center;
+  color: $color-ink-soft;
+  white-space: normal;
+}
+
+// — 斷點刻度尺 —
+.bp-intro {
+  max-width: 64ch;
+  margin-bottom: $space-5;
+  font-size: $fs-sm;
+  color: $color-ink-soft;
+}
+
+// 刻度軌道：底線 + 絕對定位的各斷點刻度
+.bp-scale {
+  position: relative;
+  height: 120px;
+  margin-bottom: $space-6;
+  border-top: $border-ink;
+}
+
+.bp-tick {
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-top: $space-3;
+  // 以左緣對齊刻度點，並畫一條向上的短墨線標記位置
+  border-left: $border-fine;
+  padding-left: $space-2;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    width: $space-2;
+    height: 1px;
+    background: $color-accent;
+  }
+}
+
+.bp-name {
+  font-family: $font-mono;
+  font-size: $fs-base;
+  font-weight: 700;
+  color: $color-accent;
+}
+
+.bp-min {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink;
+}
+
+.bp-label {
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  max-width: 12ch;
+  white-space: normal;
+  line-height: 1.3;
+}
+
+// 窄螢幕：刻度尺改為直列堆疊，避免擠成一團
+@media (max-width: 640px) {
+  .bp-scale {
+    height: auto;
+    border-top: 0;
+  }
+
+  .bp-tick {
+    position: static;
+    flex-direction: row;
+    align-items: baseline;
+    gap: $space-3;
+    padding: $space-2 0 $space-2 $space-3;
+    border-left: $border-ink;
+
+    &::before { display: none; }
+  }
+
+  .bp-label { max-width: none; }
+}

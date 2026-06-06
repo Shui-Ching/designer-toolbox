@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>調色盤產生器 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Umami 匿名分析（cookieless）。註冊 https://cloud.umami.is 後，把 data-website-id 換成你的網站 ID -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-UMAMI-WEBSITE-ID"></script>
+</head>
+<body data-tool="color-palette">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 09</span>
+        <h1 class="tool-head-title">調色盤產生器</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      給一個主色，自動推導 <span class="tag">50–900</span> 完整色階，
+      與互補、類比調和色，輸出可直接貼進專案的 <span class="tag">SCSS</span> 或 <span class="tag">CSS</span> 變數。
+      全程在瀏覽器端運算，不上傳任何資料。
+    </p>
+
+    <div class="editor-layout">
+
+      <!-- 左：控制面板 -->
+      <section class="controls" aria-label="調色盤設定">
+
+        <!-- 主色 -->
+        <div class="control-block">
+          <label class="control-label" for="base-input">主色 · 色階以此為基準</label>
+          <div class="color-row">
+            <input type="color" class="color-input" id="base-input" value="#2d6cdf" aria-label="主色">
+            <input
+              type="text"
+              class="hex-input"
+              id="hex-input"
+              value="#2D6CDF"
+              spellcheck="false"
+              autocomplete="off"
+              aria-label="主色 HEX 碼"
+              maxlength="7">
+          </div>
+        </div>
+
+        <!-- 變數前綴 -->
+        <div class="control-block">
+          <label class="control-label" for="prefix-input">變數前綴</label>
+          <input
+            type="text"
+            class="hex-input"
+            id="prefix-input"
+            value="primary"
+            spellcheck="false"
+            autocomplete="off"
+            aria-label="變數前綴">
+        </div>
+
+        <!-- 輸出格式 -->
+        <div class="control-block">
+          <span class="control-label">輸出格式</span>
+          <div class="chip-group" id="format-group">
+            <button class="chip is-active" data-format="scss">SCSS 變數</button>
+            <button class="chip" data-format="css">CSS 變數</button>
+          </div>
+        </div>
+
+        <!-- 動作 -->
+        <div class="control-actions">
+          <button class="btn btn-accent" id="copy-vars" data-copy>複製變數</button>
+          <button class="btn" id="download-vars">下載檔案</button>
+        </div>
+      </section>
+
+      <!-- 右：輸出 -->
+      <section class="output" aria-label="調色盤輸出">
+
+        <!-- 色階 -->
+        <div class="section-rule"><span class="tag">色階 50–900</span></div>
+        <div class="scale-strip" id="scale-strip"><!-- JS 注入色塊 --></div>
+
+        <!-- 調和色 -->
+        <div class="section-rule"><span class="tag">調和色</span></div>
+        <div class="harmony-grid" id="harmony-grid"><!-- JS 注入調和色 --></div>
+
+        <!-- 變數碼 -->
+        <div class="section-rule"><span class="tag">變數輸出</span></div>
+        <pre class="code-block"><code id="code-output"></code></pre>
+        <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+      </section>
+
+    </div>
+  </main>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>

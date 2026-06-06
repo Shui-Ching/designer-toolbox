@@ -1,0 +1,171 @@
+:root {
+  --color-paper: #f4f1e8;
+  --color-paper-deep: #ece7d9;
+  --color-ink: #1c1b18;
+  --color-ink-soft: #6b665b;
+  --color-line: #d9d3c3;
+  --color-accent: #d8442a;
+  --color-accent-deep: #b0331d;
+  --color-mark: #e0a92e;
+  --font-display: Inter, Noto Sans TC, sans-serif;
+  --font-body: Inter, Noto Sans TC, sans-serif;
+  --font-mono: Inter, Noto Sans TC, sans-serif;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.tool-intro {
+  max-width: 60ch;
+  margin-block: 24px 16px;
+  color: #6b665b;
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-block: 16px;
+  border-bottom: 1px solid #d9d3c3;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #f4f1e8;
+}
+
+.filter-chip {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  padding: 4px 16px;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  color: #6b665b;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), background-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.filter-chip:hover {
+  color: #1c1b18;
+  border-color: #1c1b18;
+}
+.filter-chip.is-active {
+  color: #f4f1e8;
+  background: #d8442a;
+  border-color: #d8442a;
+}
+
+.platform-block {
+  padding-block: 40px 16px;
+  border-bottom: 1px solid #d9d3c3;
+}
+.platform-block:last-child {
+  border-bottom: 0;
+}
+
+.platform-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.platform-name {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1.75rem;
+}
+
+.platform-count {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+}
+
+.platform-note {
+  max-width: 60ch;
+  margin-bottom: 24px;
+  font-size: 1rem;
+  color: #6b665b;
+}
+
+.size-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.size-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  background: #ece7d9;
+  cursor: pointer;
+  transition: border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.size-card:hover {
+  border-color: #d8442a;
+  transform: translateY(-2px);
+}
+
+.ratio-preview {
+  display: grid;
+  place-items: center;
+  height: 96px;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  background: repeating-linear-gradient(45deg, transparent 0 6px, color-mix(in srgb, #1c1b18 4%, transparent) 6px 7px);
+}
+
+.ratio-shape {
+  background: #1c1b18;
+  border-radius: 1px;
+}
+
+.size-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.size-card-label {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.size-card-dim {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1.25rem;
+  color: #d8442a;
+}
+
+.size-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.size-card-copy {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  color: #6b665b;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.size-card:hover .size-card-copy {
+  opacity: 1;
+}
+
+.size-card.is-copied .size-card-copy {
+  opacity: 1;
+  color: #d8442a;
+}
+
+.empty-state {
+  padding-block: 64px;
+  text-align: center;
+  color: #6b665b;
+}
