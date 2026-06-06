@@ -3,8 +3,8 @@
 // 流程：SVG → 路徑指令(svg-to-path) → opentype 字符 → TTF/WOFF → 即時預覽 + CSS
 // opentype.js 由 CDN 載入為全域 `opentype`
 // ============================================================
-import { downloadBlob, copyText, bindDropzone, track } from '../../shared/scripts/shared.js';
-import { svgToCommands } from './svg-to-path.js';
+import { downloadBlob, copyText, bindDropzone, track } from '../../shared/scripts/shared.js?v=202606061445';
+import { svgToCommands } from './svg-to-path.js?v=202606061445';
 
 const dropzone = document.getElementById('dropzone');
 const fileInput = document.getElementById('file-input');

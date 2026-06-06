@@ -25,13 +25,23 @@
 ## 開發指令
 
 ```bash
-# 編譯一次
+# 部署用：編譯 SCSS + 蓋版本戳記（防瀏覽器快取）
 npm run build:css
-# 監看自動編譯（開發時）
+# 開發用：監看自動編譯（只編譯、不戳記，存檔即重編）
 npm run dev
 ```
 
-> 新增工具時，記得在 `package.json` 的 `build:css` 補上該工具的 `style.scss:style.css`。
+> 新增工具時，記得在 `package.json` 的 `compile:css` 補上該工具的 `style.scss:style.css`。
+
+### 防快取版本戳記（2026-06-06 建立）
+
+- `stamp-version.js`：為**本地** css/js 引用補上 `?v=<YYYYMMDDHHmm>`，外部 URL（字體／Umami／jsdelivr CDN）一律略過。涵蓋兩處：
+  1. 各 HTML 的 `<link href>` / `<script src>`
+  2. 工具頁 `script.js`（ES Module）內 `import` 的本地模組（`shared.js`、`qr-encode.js`、`svg-to-path.js`、`pack.js`…）
+- 戳記為**冪等**：重跑只會把舊 `?v=` 換成新值，不會疊加。
+- 指令結構：`compile:css`（純 sass）／`stamp`（跑腳本）／`build:css = compile:css && stamp`／`watch:css = compile:css --watch`。
+- **工作流程**：本機開發用 `npm run dev`（監看不戳記，搭配瀏覽器硬重整即可）；**要部署／推上線前跑 `npm run build:css`**，戳記才會更新成當下時間，回訪者才會抓到新檔。
+- 新增工具時無需改腳本：`stamp-version.js` 自動掃描 `services/*/`，新頁面會被一併涵蓋。
 
 ## 分析與資安基線（2026-06-05 建立）
 

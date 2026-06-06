@@ -50,13 +50,13 @@
   font-size: $fs-3xl;
   letter-spacing: -0.02em;
   animation: rise 0.7s $ease 0.05s both;
-
+ 
   em {
     // font-style: italic;
     color: $color-accent;
   }
 }
-
+ 
 .masthead-lead {
   // max-width: 46ch;
   margin-top: $space-4;
