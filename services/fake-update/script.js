@@ -50,6 +50,9 @@ function launchFakeUpdate(os) {
 
   // 全螢幕意外退出時也關閉 overlay
   document.addEventListener('fullscreenchange', handleFullscreenChange);
+
+  // 手機：點擊任意處關閉
+  overlay.addEventListener('click', closeOverlay, { once: true });
 }
 
 // ── 關閉 overlay ─────────────────────────────────
@@ -83,7 +86,7 @@ function handleFullscreenChange() {
 
 // ── 建立 overlay HTML ─────────────────────────────
 function buildOverlayHTML(os) {
-  const escHint = `<div class="fuo-esc-hint">ESC 離開</div>`;
+  const escHint = `<div class="fuo-esc-hint">點擊畫面或按 ESC 離開</div>`;
 
   if (os === 'mac') {
     return `

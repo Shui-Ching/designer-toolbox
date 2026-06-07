@@ -1,0 +1,228 @@
+@use '../../shared/styles/tokens' as *;
+
+// ── 工具介紹 ──────────────────────────────────────
+.tool-intro {
+  margin-bottom: $space-5;
+  line-height: 1.7;
+  color: $color-ink-soft;
+
+  strong { color: $color-ink; }
+
+  kbd {
+    display: inline-block;
+    padding: 1px 6px;
+    border: $border-fine;
+    border-radius: $radius;
+    font-size: 0.85em;
+    background: $color-paper-deep;
+    color: $color-ink;
+  }
+}
+
+// ── 區塊 ──────────────────────────────────────────
+.mb-section {
+  margin-bottom: $space-5;
+}
+
+.mb-section-label {
+  font-size: $fs-xs;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $color-ink-soft;
+  margin-bottom: $space-3;
+}
+
+// ── 預設訊息按鈕 ──────────────────────────────────
+.mb-preset-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  margin-bottom: $space-3;
+}
+
+.mb-preset-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $space-3 $space-4;
+  border: $border-fine;
+  border-radius: $radius;
+  background: $color-paper-deep;
+  cursor: pointer;
+  text-align: left;
+  font-family: $font-body;
+  font-size: $fs-lg;
+  color: $color-ink;
+  transition: border-color $dur $ease, background $dur $ease;
+
+  &:hover {
+    border-color: $color-ink-soft;
+    background: $color-paper;
+  }
+
+  &.is-selected {
+    border-color: $color-accent;
+    background: $color-paper;
+  }
+}
+
+.mb-preset-check {
+  font-weight: 700;
+  color: $color-accent;
+  opacity: 0;
+  transition: opacity 0.2s $ease;
+  flex-shrink: 0;
+  margin-left: $space-3;
+
+  .mb-preset-btn.is-selected & {
+    opacity: 1;
+  }
+}
+
+// ── 自訂輸入 ──────────────────────────────────────
+.mb-custom-area {
+  position: relative;
+}
+
+.mb-custom-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  background: $color-paper;
+  font-family: $font-body;
+  font-size: $fs-base;
+  color: $color-ink;
+  resize: vertical;
+  min-height: 72px;
+  transition: border-color $dur $ease;
+
+  &:focus {
+    outline: none;
+    border-color: $color-ink;
+  }
+
+  &::placeholder {
+    color: $color-ink-soft;
+  }
+}
+
+.mb-char-count {
+  display: block;
+  text-align: right;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  margin-top: $space-1;
+}
+
+// ── 預覽 + 啟動 ───────────────────────────────────
+.mb-launch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-4;
+}
+
+.mb-preview {
+  width: 100%;
+  padding: $space-5 $space-6;
+  background: $color-ink;
+  border-radius: $radius;
+  text-align: center;
+}
+
+.mb-preview-label {
+  display: block;
+  font-size: $fs-xs;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(#f4f1e8, 0.35);
+  margin-bottom: $space-2;
+}
+
+.mb-preview-text {
+  font-size: $fs-xl;
+  font-weight: 700;
+  color: #f4f1e8;
+  line-height: 1.4;
+  word-break: break-word;
+  transition: color 0.2s $ease;
+
+  &.is-empty {
+    color: rgba(#f4f1e8, 0.3);
+    font-weight: 400;
+  }
+}
+
+.mb-launch-btn {
+  min-width: 180px;
+}
+
+.mb-launch-hint {
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+
+  kbd {
+    display: inline-block;
+    padding: 1px 6px;
+    border: $border-fine;
+    border-radius: $radius;
+    font-size: 0.85em;
+    background: $color-paper-deep;
+    color: $color-ink;
+  }
+}
+
+// ── 全螢幕留言顯示層 ──────────────────────────────
+.mb-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: $color-ink;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $space-6;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s $ease;
+  user-select: none;
+
+  &.is-visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
+.mb-overlay-message {
+  font-size: clamp(2.5rem, 8vw, 7rem);
+  font-weight: 800;
+  color: #f4f1e8;
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  word-break: break-word;
+  max-width: 85vw;
+}
+
+.mb-overlay-hint {
+  position: absolute;
+  bottom: $space-5;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: $fs-xs;
+  color: rgba(#f4f1e8, 0.25);
+  white-space: nowrap;
+
+  kbd {
+    display: inline-block;
+    padding: 1px 6px;
+    border: 1px solid rgba(#f4f1e8, 0.15);
+    border-radius: $radius;
+    font-size: 0.85em;
+    color: rgba(#f4f1e8, 0.3);
+  }
+}

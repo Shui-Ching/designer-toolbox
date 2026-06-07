@@ -3,7 +3,7 @@
 > 每次收工更新此檔。下次接續時，這裡是進度的單一真實來源。
 > 架構決策與設計 token 另存於 project skill（見最下方）。
 
-最後更新：2026-06-07（18 偷懶神器：全螢幕假更新畫面 Mac / Windows 雙款；非線性進度模擬（28%、77% 設暫停點仿真實更新行為）；ESC 離開；入口頁搜尋計數改 18；data-category="fun"）
+最後更新：2026-06-07（19 我的留言板：三種訊息選擇（開會去／廁所去／自訂，60 字上限）；一鍵全螢幕顯示大字訊息；capture phase 鍵盤鎖定（僅允許 ESC 解除）；fullscreenchange 事件同步關閉 overlay；入口頁搜尋計數改 19；data-category="fun"）
 
 前次更新：2026-06-06（完成 16 圖片格式轉換：與 01 共用「拖放→createImageBitmap 解碼→canvas→toBlob 重新編碼」批次流程，但聚焦格式互轉、保留原尺寸；目標格式 PNG／JPEG／WebP／AVIF，啟動時以 1×1 canvas 試編碼比對 blob.type 偵測 WebP／AVIF 支援度，不支援即停用該按鈕並標「不支援」（避免靜默退回 PNG）；品質滑桿只對有損格式有效、PNG 自動停用，JPEG 先鋪白底避免透明變黑；每列顯示「來源格式→目標格式」徽章＋原尺寸＋前後大小對比與增減%，單張下載／全部下載／移除／清空，下載埋 track('use')；檔名以 escapeHtml 跳脫；入口頁卡片 is-live＋搜尋計數改 16、package.json 補編譯映射）
 
@@ -147,7 +147,8 @@ tool/
 - [x] 16 圖片格式轉換：PNG ↔ WebP ↔ JPEG ↔ AVIF（與 01 共用解碼→toBlob 流程，聚焦格式互轉、保留原尺寸）；目標格式 4 選 1，啟動偵測 WebP／AVIF 編碼支援不支援即停用；品質滑桿有損格式才啟用、PNG 停用，JPEG 鋪白底；每列顯示來源→目標格式徽章＋原尺寸＋前後大小對比；單張／全部下載、移除、清空，下載埋 track('use')；入口頁徽章 is-live＋搜尋計數改 16、package.json 補編譯映射
 - [x] 17 等等吃喝什麼（決策轉盤）：使用者自訂選項清單（新增／刪除，可命名，至少 2 項才能轉）；點「轉！」觸發轉盤旋轉動畫，緩速停止後高亮結果；轉盤以 Canvas 繪製扇形，依選項數均分角度、12 色自動配色（左側清單色塊與扇形同色對應）；四次方緩出 3.2–4 秒動畫；選項可清空並重設；入口頁徽章 is-live＋新增「趣味」分類 chip＋搜尋計數改 17、package.json 補編譯映射；data-category="fun"
 - [x] 18 偷懶神器（假更新螢幕）：全螢幕假更新畫面，Mac（Apple logo + 細白進度條 + 剩餘時間倒數）/ Windows 11（彩色 Windows logo + 大字百分比 + 脈衝點點）雙款；非線性進度分三段，28%、77% 自動暫停仿真實更新行為；ESC 退出；入口頁徽章 is-live＋搜尋計數改 18、package.json 補編譯映射；data-category="fun"
-- [ ] 19 PDF 壓縮：純前端拖放上傳 PDF，以 pdf-lib（本機 bundle，維持 CSP script-src 'self'）重新打包，去除 metadata、壓縮嵌入圖片品質（有損／無損兩模式），顯示壓縮前後大小對比，下載壓縮後 PDF；對超大 PDF 加檔案大小提示；下載埋 track('use')；入口頁徽章 is-live＋搜尋計數改 18、package.json 補編譯映射
+- [x] 19 我的留言板：三種訊息選擇（開會去／廁所去／自訂，60 字上限）；一鍵全螢幕顯示大字訊息；capture phase 鍵盤鎖定（僅允許 ESC 解除）；fullscreenchange 事件同步關閉 overlay；入口頁徽章 is-live＋搜尋計數改 19、package.json 補編譯映射；data-category="fun"
+- [ ] 20 PDF 壓縮：純前端拖放上傳 PDF，以 pdf-lib（本機 bundle，維持 CSP script-src 'self'）重新打包，去除 metadata、壓縮嵌入圖片品質（有損／無損兩模式），顯示壓縮前後大小對比，下載壓縮後 PDF；對超大 PDF 加檔案大小提示；下載埋 track('use')；入口頁徽章 is-live＋搜尋計數改 20、package.json 補編譯映射
 
 ## 入口頁功能
 

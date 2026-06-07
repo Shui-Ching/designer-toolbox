@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP） -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>我的留言板 · 設計師工具箱</title>
+  <meta name="description" content="設定好要留下的話，一鍵全螢幕顯示。人不在時讓路過的人一眼看清楚。">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../shared/styles/shared.css">
+  <link rel="stylesheet" href="./style.css">
+
+  <!-- Umami 匿名分析（cookieless） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="message-board">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 19</span>
+        <h1 class="tool-head-title">我的留言板</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      設定要留下的話，<strong>一鍵全螢幕顯示</strong>。<br>
+      人不在時讓路過的人一眼看清楚，按 <kbd>ESC</kbd> 解除。
+    </p>
+
+    <!-- 訊息選擇 -->
+    <div class="mb-section">
+      <p class="mb-section-label">選擇訊息</p>
+
+      <div class="mb-preset-list" role="radiogroup" aria-label="預設訊息">
+        <button class="mb-preset-btn is-selected" type="button" data-preset="0" aria-pressed="true">
+          <span class="mb-preset-text">人不在，開會去</span>
+          <span class="mb-preset-check" aria-hidden="true">✓</span>
+        </button>
+        <button class="mb-preset-btn" type="button" data-preset="1" aria-pressed="false">
+          <span class="mb-preset-text">人不在，廁所去</span>
+          <span class="mb-preset-check" aria-hidden="true">✓</span>
+        </button>
+        <button class="mb-preset-btn" type="button" data-preset="custom" aria-pressed="false">
+          <span class="mb-preset-text">自訂訊息…</span>
+          <span class="mb-preset-check" aria-hidden="true">✓</span>
+        </button>
+      </div>
+
+      <!-- 自訂輸入區，選自訂時才顯示 -->
+      <div class="mb-custom-area" id="mb-custom-area" hidden>
+        <textarea
+          class="mb-custom-input"
+          id="mb-custom-input"
+          placeholder="輸入你想留下的話…"
+          maxlength="60"
+          rows="2"
+          aria-label="自訂訊息內容"
+        ></textarea>
+        <span class="mb-char-count"><span id="mb-char-count">0</span> / 60</span>
+      </div>
+    </div>
+
+    <!-- 預覽 + 啟動 -->
+    <div class="mb-launch">
+      <div class="mb-preview" id="mb-preview">
+        <span class="mb-preview-label">預覽</span>
+        <p class="mb-preview-text" id="mb-preview-text">人不在，開會去</p>
+      </div>
+
+      <button class="btn btn-accent mb-launch-btn" type="button" id="mb-launch-btn">
+        全螢幕顯示
+      </button>
+      <p class="mb-launch-hint">顯示後點擊畫面或按 <kbd>ESC</kbd> 離開</p>
+    </div>
+  </main>
+
+  <!-- 全螢幕留言顯示層 -->
+  <div class="mb-overlay" id="mb-overlay" aria-live="assertive" aria-hidden="true">
+    <p class="mb-overlay-message" id="mb-overlay-message"></p>
+    <p class="mb-overlay-hint">點擊畫面或按 <kbd>ESC</kbd> 離開</p>
+  </div>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>
