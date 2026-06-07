@@ -52,7 +52,7 @@
   animation: rise 0.7s $ease 0.05s both;
  
   em {
-    // font-style: italic;
+    font-style: normal;
     color: $color-accent;
   }
 }
@@ -277,10 +277,41 @@
   flex-wrap: wrap;
   gap: $space-3;
   justify-content: space-between;
+  align-items: center;
   font-family: $font-mono;
   font-size: $fs-xs;
   letter-spacing: 0.04em;
   color: $color-ink-soft;
+}
+
+// — 回到頂端按鈕 —
+.go-top {
+  position: fixed;
+  bottom: $space-5;
+  right: $space-5;
+  width: 40px;
+  height: 40px;
+  background: $color-ink;
+  color: $color-paper;
+  border: none;
+  border-radius: $radius;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity $dur $ease, transform $dur $ease, background $dur $ease;
+  z-index: 200;
+
+  &.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  &:hover { background: $color-accent; }
 }
 
 // — 響應式：平板兩欄、手機單欄 —

@@ -54,3 +54,17 @@
 
   input.addEventListener('input', apply);
 })();
+
+// — 回到頂端 —
+(function () {
+  const btn = document.getElementById('go-top');
+  if (!btn) return;
+
+  window.addEventListener('scroll', function () {
+    btn.classList.toggle('is-visible', window.scrollY > 300);
+  }, { passive: true });
+
+  btn.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
