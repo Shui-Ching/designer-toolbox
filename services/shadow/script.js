@@ -2,7 +2,7 @@
 // 14 陰影產生器 — 視覺化堆疊多層 box-shadow，即時預覽並輸出 CSS
 // 零相依、純前端運算；維持 CSP script-src 'self'
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202606061445';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202606072300';
 
 // — DOM —
 const layerList   = document.getElementById('layer-list');

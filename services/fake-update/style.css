@@ -1,0 +1,323 @@
+:root {
+  --color-paper: #f4f1e8;
+  --color-paper-deep: #ece7d9;
+  --color-ink: #1c1b18;
+  --color-ink-soft: #6b665b;
+  --color-line: #d9d3c3;
+  --color-accent: #d8442a;
+  --color-accent-deep: #b0331d;
+  --color-mark: #e0a92e;
+  --font-display: Inter, Noto Sans TC, sans-serif;
+  --font-body: Inter, Noto Sans TC, sans-serif;
+  --font-mono: Inter, Noto Sans TC, sans-serif;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.tool-intro {
+  margin-block: 16px 40px;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #1c1b18;
+}
+
+.os-selector {
+  display: flex;
+  gap: 16px;
+  margin-block: 24px 40px;
+}
+
+.os-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 40px;
+  border: 1.5px solid #d9d3c3;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), background 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+  min-width: 180px;
+  text-align: center;
+}
+.os-card:hover {
+  border-color: #1c1b18;
+}
+.os-card.is-selected {
+  border-color: #d8442a;
+  background: color-mix(in srgb, #d8442a 7%, transparent);
+}
+
+.os-card-icon {
+  width: 44px;
+  height: 44px;
+  color: #1c1b18;
+  margin-bottom: 4px;
+}
+
+.os-card-icon-win {
+  color: unset;
+}
+
+.os-card-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1c1b18;
+  letter-spacing: 0.04em;
+}
+
+.os-card-desc {
+  font-size: 1rem;
+  color: #6b665b;
+}
+
+.launch-area {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.launch-btn {
+  padding: 12px 36px;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+}
+
+.launch-hint {
+  font-size: 1rem;
+  color: #6b665b;
+}
+.launch-hint kbd {
+  font-family: monospace;
+  font-size: 0.85em;
+  padding: 2px 7px;
+  border: 1px solid #d9d3c3;
+  border-radius: 3px;
+  background: #ece7d9;
+  color: #1c1b18;
+}
+
+.fuo-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
+  cursor: default;
+}
+.fuo-overlay.mac-mode {
+  background: #000;
+}
+.fuo-overlay.mac-mode .fuo-win {
+  display: none;
+}
+.fuo-overlay.mac-mode .fuo-mac {
+  display: flex;
+}
+.fuo-overlay.win-mode {
+  background: #0b1120;
+}
+.fuo-overlay.win-mode .fuo-mac {
+  display: none;
+}
+.fuo-overlay.win-mode .fuo-win {
+  display: flex;
+}
+
+.fuo-esc-hint {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-family: monospace;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.25);
+  letter-spacing: 0.12em;
+  pointer-events: none;
+  transition: opacity 1.2s ease;
+}
+.fuo-esc-hint.is-hidden {
+  opacity: 0;
+}
+
+.fuo-mac {
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  padding-bottom: 8vh;
+  position: relative;
+}
+
+.fuo-apple-logo {
+  width: 70px;
+  height: 70px;
+  color: #fff;
+  margin-bottom: 22px;
+}
+
+.fuo-mac-os-name {
+  font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: 27px;
+  font-weight: 300;
+  color: #fff;
+  letter-spacing: -0.015em;
+  margin-bottom: 6px;
+}
+
+.fuo-mac-status {
+  font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: 13px;
+  color: #8e8e93;
+  margin-bottom: 22px;
+}
+
+.fuo-mac-bar-track {
+  width: 310px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 11px;
+}
+
+.fuo-mac-bar-fill {
+  height: 100%;
+  background: #fff;
+  border-radius: 2px;
+  width: 0%;
+  transition: width 1.2s linear;
+}
+
+.fuo-mac-time {
+  font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: 12px;
+  color: #636366;
+  min-height: 16px;
+}
+
+.fuo-mac-footer {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.fuo-mac-note {
+  font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: 12px;
+  color: #636366;
+  white-space: nowrap;
+}
+
+.fuo-mac-copyright {
+  font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.12);
+  white-space: nowrap;
+}
+
+.fuo-win {
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  padding-bottom: 8vh;
+  position: relative;
+}
+
+.fuo-win-logo {
+  width: 68px;
+  height: 68px;
+  margin-bottom: 44px;
+  flex-shrink: 0;
+}
+
+.fuo-win-percent {
+  font-family: "Segoe UI", "Microsoft JhengHei", Arial, sans-serif;
+  font-size: 108px;
+  font-weight: 100;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  font-variant-numeric: tabular-nums;
+}
+
+.fuo-win-title {
+  font-family: "Segoe UI", "Microsoft JhengHei", Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.fuo-win-sub {
+  font-family: "Segoe UI", "Microsoft JhengHei", Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 36px;
+}
+
+.fuo-win-dots {
+  display: flex;
+  gap: 10px;
+}
+
+.fuo-win-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  animation: fuoWinDot 1.4s ease-in-out infinite;
+}
+.fuo-win-dot:nth-child(1) {
+  animation-delay: 0s;
+}
+.fuo-win-dot:nth-child(2) {
+  animation-delay: 0.18s;
+}
+.fuo-win-dot:nth-child(3) {
+  animation-delay: 0.36s;
+}
+.fuo-win-dot:nth-child(4) {
+  animation-delay: 0.54s;
+}
+.fuo-win-dot:nth-child(5) {
+  animation-delay: 0.72s;
+}
+
+@keyframes fuoWinDot {
+  0%, 80%, 100% {
+    opacity: 0.18;
+    transform: scale(0.75);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.fuo-win-footer {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.fuo-win-note {
+  font-family: "Segoe UI", "Microsoft JhengHei", Arial, sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  white-space: nowrap;
+}

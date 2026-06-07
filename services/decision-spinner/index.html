@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>決策轉盤 · 設計師工具箱</title>
+  <meta name="description" content="選項加進去，轉盤幫你決定。等等吃什麼、叫誰倒垃圾——人生難題，一轉解決。">
+
+  <!-- 字體：Inter（英文／數字）/ Noto Sans TC（中文），全站統一 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202606072300">
+  <link rel="stylesheet" href="./style.css?v=202606072300">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="decision-spinner">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 17</span>
+        <h1 class="tool-head-title">決策轉盤</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      選項都加進去，輪盤幫你做決定。等等吃什麼、喝什麼...
+      <strong>人生難題，一轉解決。</strong>
+    </p>
+
+    <div class="spinner-layout">
+
+      <!-- 左側：選項管理 -->
+      <aside class="options-panel">
+        <div class="options-header">
+          <span class="options-title">選項清單</span>
+          <span class="options-count" id="options-count">6 個選項</span>
+        </div>
+
+        <ul class="options-list" id="options-list" aria-label="選項清單"></ul>
+
+        <div class="options-add">
+          <input
+            type="text"
+            class="options-input"
+            id="option-input"
+            placeholder="輸入選項名稱…"
+            maxlength="20"
+            autocomplete="off"
+            aria-label="新增選項">
+          <button class="btn btn-accent" id="add-btn" type="button">新增</button>
+        </div>
+
+        <div class="options-footer">
+        
+            <button class="btn" id="preset-drink-btn" type="button">飲料預設</button>
+            <button class="btn" id="preset-food-btn" type="button">吃飯預設</button>
+  
+          <button class="btn" id="clear-btn" type="button">清空</button>
+        </div>
+      </aside>
+
+      <!-- 右側：轉盤舞台 -->
+      <div class="spinner-stage">
+        <div class="wheel-wrap">
+          <!-- 固定指針（三角形），指向正上方 -->
+          <div class="wheel-pointer" aria-hidden="true"></div>
+          <canvas
+            id="wheel"
+            width="400"
+            height="400"
+            aria-label="決策轉盤，按下「轉！」按鈕開始旋轉"></canvas>
+        </div>
+
+        <button class="spin-btn" id="spin-btn" type="button">啟動</button>
+
+        <div class="spin-result" id="spin-result" aria-live="polite" aria-atomic="true">
+          <span class="spin-result-label">答案揭曉</span>
+          <span class="spin-result-value" id="result-value"></span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script type="module" src="./script.js?v=202606072300"></script>
+</body>
+</html>

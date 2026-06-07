@@ -1,0 +1,313 @@
+@use '../../shared/styles/tokens' as *;
+
+// ── 工具說明 ──────────────────────────────────────
+.tool-intro {
+  margin-block: $space-3 $space-5;
+  font-size: $fs-base;
+  line-height: 1.7;
+  color: $color-ink;
+}
+
+// ── OS 選擇卡片 ───────────────────────────────────
+.os-selector {
+  display: flex;
+  gap: $space-3;
+  margin-block: $space-4 $space-5;
+}
+
+.os-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-4 $space-5;
+  border: 1.5px solid $color-line;
+  background: transparent;
+  cursor: pointer;
+  border-radius: $radius;
+  transition: border-color $dur $ease, background $dur $ease;
+  min-width: 180px;
+  text-align: center;
+
+  &:hover {
+    border-color: $color-ink;
+  }
+
+  &.is-selected {
+    border-color: $color-accent;
+    background: color-mix(in srgb, $color-accent 7%, transparent);
+  }
+}
+
+.os-card-icon {
+  width: 44px;
+  height: 44px;
+  color: $color-ink;
+  margin-bottom: $space-1;
+}
+
+.os-card-icon-win {
+  // Windows 圖示本身有顏色，不繼承 color
+  color: unset;
+}
+
+.os-card-name {
+  font-size: $fs-base;
+  font-weight: 700;
+  color: $color-ink;
+  letter-spacing: 0.04em;
+}
+
+.os-card-desc {
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+// ── 啟動區 ───────────────────────────────────────
+.launch-area {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: $space-2;
+}
+
+.launch-btn {
+  padding: 12px 36px;
+  font-size: $fs-base;
+  letter-spacing: 0.04em;
+}
+
+.launch-hint {
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+
+  kbd {
+    font-family: monospace;
+    font-size: 0.85em;
+    padding: 2px 7px;
+    border: 1px solid $color-line;
+    border-radius: 3px;
+    background: $color-paper-deep;
+    color: $color-ink;
+  }
+}
+
+// ══════════════════════════════════════════════════
+// 全螢幕覆蓋層
+// ══════════════════════════════════════════════════
+.fuo-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
+  cursor: default;
+
+  &.mac-mode {
+    background: #000;
+    .fuo-win { display: none; }
+    .fuo-mac { display: flex; }
+  }
+
+  &.win-mode {
+    background: #0b1120;
+    .fuo-mac { display: none; }
+    .fuo-win { display: flex; }
+  }
+}
+
+// ESC 提示（右上角，顯示 3 秒後淡出）
+.fuo-esc-hint {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-family: monospace;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.25);
+  letter-spacing: 0.12em;
+  pointer-events: none;
+  transition: opacity 1.2s ease;
+
+  &.is-hidden {
+    opacity: 0;
+  }
+}
+
+// ── macOS 更新畫面 ────────────────────────────────
+.fuo-mac {
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  padding-bottom: 8vh;
+  position: relative;
+}
+
+.fuo-apple-logo {
+  width: 70px;
+  height: 70px;
+  color: #fff;
+  margin-bottom: 22px;
+}
+
+.fuo-mac-os-name {
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 27px;
+  font-weight: 300;
+  color: #fff;
+  letter-spacing: -0.015em;
+  margin-bottom: 6px;
+}
+
+.fuo-mac-status {
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 13px;
+  color: #8e8e93;
+  margin-bottom: 22px;
+}
+
+.fuo-mac-bar-track {
+  width: 310px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 11px;
+}
+
+.fuo-mac-bar-fill {
+  height: 100%;
+  background: #fff;
+  border-radius: 2px;
+  width: 0%;
+  transition: width 1.2s linear;
+}
+
+.fuo-mac-time {
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 12px;
+  color: #636366;
+  min-height: 16px;
+}
+
+// 底部重啟提示
+.fuo-mac-footer {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.fuo-mac-note {
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 12px;
+  color: #636366;
+  white-space: nowrap;
+}
+
+.fuo-mac-copyright {
+  font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.12);
+  white-space: nowrap;
+}
+
+// ── Windows 11 更新畫面 ───────────────────────────
+.fuo-win {
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  padding-bottom: 8vh;
+  position: relative;
+}
+
+.fuo-win-logo {
+  width: 68px;
+  height: 68px;
+  margin-bottom: 44px;
+  flex-shrink: 0;
+}
+
+.fuo-win-percent {
+  font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+  font-size: 108px;
+  font-weight: 100;
+  color: #fff;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+  font-variant-numeric: tabular-nums;
+}
+
+.fuo-win-title {
+  font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.fuo-win-sub {
+  font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 36px;
+}
+
+// 脈衝點點（仿 Windows 載入動畫）
+.fuo-win-dots {
+  display: flex;
+  gap: 10px;
+}
+
+.fuo-win-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  animation: fuoWinDot 1.4s ease-in-out infinite;
+
+  &:nth-child(1) { animation-delay: 0s;     }
+  &:nth-child(2) { animation-delay: 0.18s;  }
+  &:nth-child(3) { animation-delay: 0.36s;  }
+  &:nth-child(4) { animation-delay: 0.54s;  }
+  &:nth-child(5) { animation-delay: 0.72s;  }
+}
+
+@keyframes fuoWinDot {
+  0%, 80%, 100% {
+    opacity: 0.18;
+    transform: scale(0.75);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// 底部提示
+.fuo-win-footer {
+  position: absolute;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.fuo-win-note {
+  font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  white-space: nowrap;
+}
