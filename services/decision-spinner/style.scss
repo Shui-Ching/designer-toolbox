@@ -38,6 +38,10 @@
   gap: $space-3;
   position: sticky;
   top: $space-4;
+
+  @media (max-width: 720px) {
+    position: static;
+  }
 }
 
 .options-header {
@@ -196,6 +200,11 @@
   justify-content: center;
   // 圓形投影讓轉盤浮起
   filter: drop-shadow(0 6px 24px rgba($color-ink, 0.18));
+
+  @media (max-width: 720px) {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 // 固定三角指針（硃紅，指向正上方）
