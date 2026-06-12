@@ -1,0 +1,336 @@
+// ============================================================
+// 25 影片壓縮 — 工具特有樣式
+// 共用元件（tool-head / dropzone / btn / tag / section-rule…）直接套 class，這裡只補差異
+// 結構沿用 20 PDF 壓縮的設定面板與結果列：解析度切換、品質滑桿、進度條、警告／錯誤態
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 100%;
+  margin-block: $space-4 $space-3;
+  color: $color-ink-soft;
+
+  strong { color: $color-ink; }
+}
+
+// — 有損重編碼提醒（芥黃警示框）—
+.notice {
+  max-width: 100%;
+  margin-bottom: $space-5;
+  padding: $space-3;
+  font-size: $fs-sm;
+  line-height: 1.6;
+  color: $color-ink;
+  background: rgba($color-mark, 0.14);
+  border: 1px solid rgba($color-mark, 0.5);
+  border-radius: $radius;
+
+  strong { color: $color-accent; }
+
+  // 瀏覽器不支援 WebCodecs：改走硃紅錯誤語氣
+  &.is-error {
+    background: rgba($color-accent, 0.08);
+    border-color: rgba($color-accent, 0.5);
+  }
+}
+
+// — 壓縮設定面板 —
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  padding: $space-4;
+  margin-bottom: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+// 一列設定：標籤在左、控制項在右，窄螢幕改上下堆疊
+.control-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-3;
+}
+
+.control-label {
+  flex: 0 0 auto;
+  min-width: 6em;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.quality-value {
+  color: $color-accent;
+}
+
+// — 解析度按鈕群（等寬技術標籤風）—
+.res-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.res-chip {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-1 $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+  background: $color-paper;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// — 品質滑桿 —
+.quality-slider {
+  flex: 1;
+  min-width: 180px;
+  max-width: 360px;
+  height: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: $color-line;
+  border-radius: $radius;
+  cursor: pointer;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: $color-accent;
+    border: 2px solid $color-paper;
+    cursor: pointer;
+  }
+
+  &::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: $color-accent;
+    border: 2px solid $color-paper;
+    cursor: pointer;
+  }
+}
+
+// 拖放區可點選檔；瀏覽器不支援時整塊停用
+.dropzone { cursor: pointer; }
+
+.dropzone.is-disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+// — 引擎初次載入提示 —
+.engine-status {
+  margin-top: $space-3;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  color: $color-accent;
+}
+
+// — 結果列總計與動作列 —
+.results-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+  margin-bottom: $space-4;
+}
+
+.results-summary {
+  font-size: $fs-sm;
+  color: $color-ink-soft;
+
+  strong { color: $color-ink; }
+
+  .text-accent { color: $color-accent; }
+  .text-warn { color: $color-mark; }
+}
+
+.results-actions {
+  display: flex;
+  gap: $space-2;
+}
+
+// — 結果列表 —
+.result-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+// 單支：縮圖 / 名稱與狀態 / 大小對比 / 動作
+.result-item {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-2 $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  background: $color-paper;
+  transition: border-color $dur $ease;
+
+  &:hover { border-color: $color-line; }
+
+  // 解析失敗：整列淡硃紅框
+  &.is-error { border-color: rgba($color-accent, 0.55); }
+}
+
+.result-thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover; // 影片首格裁滿縮圖框，視覺較整齊
+  border: $border-fine;
+  border-radius: $radius;
+  background: $color-paper-deep;
+}
+
+// 無縮圖時的占位（顯示「影片」字樣）
+.result-thumb-empty {
+  display: grid;
+  place-items: center;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.06em;
+  color: $color-ink-soft;
+}
+
+.result-info { min-width: 0; }
+
+.result-name {
+  font-size: $fs-sm;
+  color: $color-ink;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.result-meta {
+  margin-top: 2px;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+
+  &.is-error { color: $color-accent; }
+}
+
+// 大檔／聲音軌提醒（芥黃）
+.result-warn { color: $color-mark; }
+
+// — 進度條 —
+.progress {
+  margin-top: $space-1;
+  width: 100%;
+  max-width: 220px;
+  height: 4px;
+  background: $color-line;
+  border-radius: $radius;
+  overflow: hidden;
+}
+
+.progress-bar {
+  display: block;
+  height: 100%;
+  background: $color-accent;
+  border-radius: $radius;
+  transition: width 0.2s $ease;
+}
+
+// 大小對比：原始 → 壓縮後 + 縮減幅度
+.result-size {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  font-variant-numeric: tabular-nums;
+}
+
+.size-from { color: $color-ink-soft; text-decoration: line-through; }
+.size-arrow { color: $color-ink-soft; }
+.size-to { color: $color-ink; font-weight: 700; }
+
+// 縮減徽章：變小走硃紅、反而變大走芥黃警示
+.reduction {
+  padding: 2px $space-2;
+  border-radius: $radius;
+  color: $color-paper;
+  background: $color-accent;
+
+  &.is-up {
+    background: $color-mark;
+    color: $color-ink;
+  }
+}
+
+.result-actions {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+// 縮小版下載鈕，貼合列高
+.result-download {
+  padding: $space-1 $space-3;
+}
+
+// 移除鈕：低調的叉，hover 才轉硃紅
+.result-remove {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  font-family: $font-mono;
+  color: $color-ink-soft;
+  background: transparent;
+  border: $border-fine;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease;
+
+  &:hover {
+    color: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// — 窄螢幕：設定列堆疊、結果列改兩段式 —
+@media (max-width: 640px) {
+  .control-label { min-width: 100%; }
+
+  .result-item {
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+    grid-template-areas:
+      'thumb info actions'
+      'thumb size size';
+    row-gap: $space-2;
+  }
+
+  .result-thumb { grid-area: thumb; width: 48px; height: 48px; }
+  .result-info { grid-area: info; }
+  .result-actions { grid-area: actions; }
+  .result-size { grid-area: size; flex-wrap: wrap; justify-content: flex-start; }
+}
