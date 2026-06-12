@@ -2,7 +2,7 @@
 // 12 Lorem 假文產生器 — 中文／拉丁假文，依段落・句子・字數產生
 // 零相依、純前端隨機組字；維持 CSP script-src 'self'
 // ============================================================
-import { downloadBlob, copyText, track } from '../../shared/scripts/shared.js?v=202606112235';
+import { downloadBlob, copyText, track } from '../../shared/scripts/shared.js?v=202606121244';
 
 // — DOM —
 const langGroup = document.getElementById('lang-group');

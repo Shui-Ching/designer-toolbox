@@ -149,28 +149,70 @@
   }
 }
 
-// ── 設定 ──────────────────────────────────────────
+// ── 設定（置頂強調卡片，可收合）──────────────────
 .pm-settings {
-  margin-top: $space-3;
+  margin: 0 0 $space-4;
+  border: $border-ink;                       // 墨線重點框，凸顯為主要操作區
+  border-radius: $radius;
+  background: $color-paper-deep;             // 次層紙底，與頁面背景區隔
+  box-shadow: 4px 4px 0 rgba($color-ink, 0.12); // 手冊風硬陰影，增加存在感
+  overflow: hidden;
 }
 
 .pm-settings-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
   cursor: pointer;
-  font-size: $fs-xs;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: $color-ink-soft;
-  padding: $space-2 0;
+  padding: $space-3 $space-4;
+  font-family: $font-display;
+  font-size: $fs-lg;
+  font-weight: 700;
+  color: $color-ink;
+  list-style: none;                          // 移除預設展開三角
+  user-select: none;
 
-  &:hover { color: $color-ink; }
-  &:focus-visible { outline: 2px solid $color-accent; outline-offset: 2px; }
+  &::-webkit-details-marker { display: none; }
+  &:hover { color: $color-accent; }
+  &:focus-visible { outline: 2px solid $color-accent; outline-offset: -4px; }
 }
+
+// 標題：前置硃紅圓點，視線第一落點
+.pm-settings-label {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+
+  &::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background: $color-accent;
+    border-radius: 50%;
+  }
+}
+
+// 開合指示箭頭（收合時朝下、展開時朝上）
+.pm-settings-toggle {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid $color-ink-soft;
+  border-bottom: 2px solid $color-ink-soft;
+  transform: rotate(45deg);
+  transition: transform $dur $ease, border-color $dur $ease;
+}
+
+.pm-settings[open] .pm-settings-toggle { transform: rotate(-135deg); }
+.pm-settings-summary:hover .pm-settings-toggle { border-color: $color-accent; }
 
 .pm-settings-body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: $space-3;
-  margin-top: $space-3;
+  padding: $space-4;
+  border-top: $border-fine;                  // 與標題列分隔
 }
 
 .pm-field {

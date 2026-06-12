@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>浮水印 · 設計師工具箱</title>
+  <meta name="description" content="瀏覽器端替圖片壓上客製化浮水印：文字或 logo、九宮格定位或拖曳、單顆或平鋪整張，可調大小／透明度／旋轉，支援批次，檔案不上傳。">
+
+  <!-- 字體：Inter（英文／數字）/ Noto Sans TC（中文），全站統一 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202606121244">
+  <link rel="stylesheet" href="./style.css?v=202606121244">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="watermark">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 23</span>
+        <h1 class="tool-head-title">浮水印</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      替圖片壓上客製化浮水印：<span class="tag">文字</span>或<span class="tag">上傳 logo</span>，
+      九宮格定位或直接拖曳，單顆或<span class="tag">平鋪整張</span>，大小／透明度／旋轉自由調。
+      可一次處理多張、套用同一設定。<strong>圖片不會離開你的電腦。</strong>
+    </p>
+
+    <!-- 上傳區（尚無圖片時顯示）-->
+    <div class="dropzone" id="dropzone">
+      <span class="dropzone-hint">拖放圖片到這裡，或點擊選檔</span>
+      <span class="tag">JPG / PNG / WebP · 可一次多張</span>
+      <input type="file" id="file-input" accept="image/*" multiple hidden>
+    </div>
+
+    <!-- 編輯區（載入圖片後顯示）-->
+    <div class="editor" id="editor" hidden>
+      <div class="editor-layout">
+
+        <!-- 左：控制面板 -->
+        <section class="controls" aria-label="浮水印設定">
+
+          <!-- 浮水印類型 -->
+          <div class="control-block">
+            <span class="control-label">浮水印類型 · type</span>
+            <div class="chip-group" id="type-group">
+              <button class="chip is-active" type="button" data-type="text">文字</button>
+              <button class="chip" type="button" data-type="logo">圖片 logo</button>
+            </div>
+          </div>
+
+          <!-- 文字設定 -->
+          <div class="control-block" id="text-block">
+            <span class="control-label">文字內容 · content</span>
+            <input type="text" class="text-input" id="text-input" value="© 你的品牌" maxlength="60" spellcheck="false">
+            <span class="control-label">文字顏色 · color</span>
+            <div class="color-row">
+              <input type="color" id="text-color" class="color-swatch" value="#ffffff">
+              <input type="text" id="text-color-hex" class="text-input color-hex" value="#FFFFFF" spellcheck="false" maxlength="7">
+            </div>
+          </div>
+
+          <!-- logo 設定 -->
+          <div class="control-block" id="logo-block" hidden>
+            <span class="control-label">浮水印圖 · logo</span>
+            <button type="button" class="btn logo-pick" id="logo-pick">＋ 上傳浮水印圖（建議去背 PNG）</button>
+            <span class="logo-name" id="logo-name" hidden></span>
+            <input type="file" id="logo-input" accept="image/*" hidden>
+          </div>
+
+          <!-- 大小 -->
+          <div class="control-block">
+            <span class="control-label">大小（佔圖寬）
+              <span class="control-label-value"><span id="val-size">6</span>%</span>
+            </span>
+            <input class="range-input" type="range" id="size" min="1" max="40" step="1" value="6">
+          </div>
+
+          <!-- 不透明度 -->
+          <div class="control-block">
+            <span class="control-label">不透明度 · opacity
+              <span class="control-label-value"><span id="val-opacity">35</span>%</span>
+            </span>
+            <input class="range-input" type="range" id="opacity" min="5" max="100" step="5" value="35">
+          </div>
+
+          <!-- 旋轉 -->
+          <div class="control-block">
+            <span class="control-label">旋轉 · rotate
+              <span class="control-label-value"><span id="val-rotate">0</span>°</span>
+            </span>
+            <input class="range-input" type="range" id="rotate" min="-180" max="180" step="5" value="0">
+          </div>
+
+          <!-- 排列方式 -->
+          <div class="control-block">
+            <span class="control-label">排列 · layout</span>
+            <div class="chip-group" id="mode-group">
+              <button class="chip is-active" type="button" data-mode="single">單顆</button>
+              <button class="chip" type="button" data-mode="tile">平鋪整張</button>
+            </div>
+          </div>
+
+          <!-- 位置九宮格（單顆模式）-->
+          <div class="control-block" id="pos-block">
+            <span class="control-label">位置 · position</span>
+            <div class="pos-grid" id="pos-grid" role="group" aria-label="浮水印位置">
+              <button class="pos-cell" type="button" data-anchor="tl" aria-label="左上"></button>
+              <button class="pos-cell" type="button" data-anchor="t"  aria-label="上中"></button>
+              <button class="pos-cell" type="button" data-anchor="tr" aria-label="右上"></button>
+              <button class="pos-cell" type="button" data-anchor="l"  aria-label="左中"></button>
+              <button class="pos-cell" type="button" data-anchor="c"  aria-label="正中"></button>
+              <button class="pos-cell" type="button" data-anchor="r"  aria-label="右中"></button>
+              <button class="pos-cell" type="button" data-anchor="bl" aria-label="左下"></button>
+              <button class="pos-cell" type="button" data-anchor="b"  aria-label="下中"></button>
+              <button class="pos-cell is-active" type="button" data-anchor="br" aria-label="右下"></button>
+            </div>
+            <span class="pos-hint">也可直接在預覽上拖曳浮水印</span>
+          </div>
+
+          <!-- 平鋪間距（平鋪模式）-->
+          <div class="control-block" id="gap-block" hidden>
+            <span class="control-label">平鋪間距
+              <span class="control-label-value"><span id="val-gap">10</span>%</span>
+            </span>
+            <input class="range-input" type="range" id="gap" min="0" max="40" step="1" value="10">
+          </div>
+
+          <!-- 輸出格式 -->
+          <div class="control-block control-section">
+            <span class="control-label">輸出格式 · format</span>
+            <div class="chip-group" id="format-group">
+              <button class="chip is-active" type="button" data-format="image/png">PNG</button>
+              <button class="chip" type="button" data-format="image/jpeg">JPEG</button>
+              <button class="chip" type="button" data-format="image/webp">WebP</button>
+            </div>
+          </div>
+
+          <!-- 動作 -->
+          <div class="control-actions">
+            <button class="btn btn-accent" type="button" id="download-btn">下載這張</button>
+            <button class="btn" type="button" id="download-all">全部下載</button>
+            <button class="btn" type="button" id="add-btn">新增圖片</button>
+            <button class="btn" type="button" id="clear-btn">清空</button>
+          </div>
+        </section>
+
+        <!-- 右：預覽舞台 + 縮圖列 -->
+        <section class="stage-wrap" aria-label="浮水印預覽">
+          <div class="stage-bar">
+            <span class="tag">Preview</span>
+            <span class="stage-hint" id="stage-hint">—</span>
+          </div>
+          <div class="wm-stage" id="wm-stage">
+            <canvas class="wm-canvas" id="wm-canvas"></canvas>
+          </div>
+          <ul class="thumb-strip" id="thumb-strip"><!-- JS 注入縮圖 --></ul>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="./script.js?v=202606121244"></script>
+</body>
+</html>

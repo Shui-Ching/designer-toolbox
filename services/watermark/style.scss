@@ -1,0 +1,323 @@
+// ============================================================
+// 23 浮水印 — 工具特有樣式
+// 共用元件（tool-head / dropzone / btn / tag / chip / section-rule）直接套 class，這裡只補差異
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+
+  strong { color: $color-ink; }
+}
+
+// 拖放區可點選檔
+.dropzone { cursor: pointer; }
+
+// — 編輯區：左控制、右舞台；窄螢幕改上下堆疊 —
+.editor-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
+  gap: $space-5;
+  align-items: start;
+}
+
+// ============================================================
+// 左側控制台
+// ============================================================
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  padding: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+.control-block {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.control-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.control-label-value {
+  font-variant-numeric: tabular-nums;
+  color: $color-ink;
+  text-transform: none;
+}
+
+.control-section {
+  padding-top: $space-4;
+  border-top: $border-fine;
+}
+
+// — 分段 chip 群 —
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.chip {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-1 $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+  background: $color-paper;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// — 滑桿 —
+.range-input {
+  width: 100%;
+  accent-color: $color-accent;
+  cursor: pointer;
+}
+
+// — 文字輸入 —
+.text-input {
+  width: 100%;
+  min-width: 0;
+  padding: $space-2 $space-3;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  letter-spacing: 0.02em;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  transition: border-color $dur $ease;
+
+  &:focus { outline: none; border-color: $color-accent; }
+}
+
+.color-hex { text-transform: uppercase; }
+
+// — 顏色列：色票 + hex —
+.color-row {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.color-swatch {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 32px;
+  padding: 0;
+  border: $border-ink;
+  border-radius: $radius;
+  background: none;
+  cursor: pointer;
+
+  &::-webkit-color-swatch-wrapper { padding: 2px; }
+  &::-webkit-color-swatch { border: none; border-radius: 1px; }
+}
+
+// — logo 上傳 —
+.logo-pick {
+  width: 100%;
+  text-align: center;
+}
+
+.logo-name {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// — 位置九宮格 —
+.pos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $space-1;
+  width: 108px;
+  aspect-ratio: 3 / 2;
+}
+
+.pos-cell {
+  border: $border-fine;
+  border-radius: $radius;
+  background: $color-paper;
+  cursor: pointer;
+  transition: background-color $dur $ease, border-color $dur $ease;
+
+  &:hover { border-color: $color-ink; }
+
+  // 中央小點，提示這是定位格
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: $color-line;
+    transition: background-color $dur $ease;
+  }
+
+  &.is-active {
+    background: $color-accent;
+    border-color: $color-accent;
+    &::after { background: $color-paper; }
+  }
+}
+
+.pos-hint {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+// — 動作鈕 —
+.control-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+// ============================================================
+// 右側預覽舞台
+// ============================================================
+.stage-wrap {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.stage-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+}
+
+.stage-hint {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  font-variant-numeric: tabular-nums;
+  color: $color-ink-soft;
+}
+
+// 棋盤底紋：透明圖也看得清邊界
+.wm-stage {
+  display: grid;
+  place-items: center;
+  padding: $space-4;
+  background-color: $color-paper;
+  background-image:
+    linear-gradient(45deg, $color-line 25%, transparent 25%),
+    linear-gradient(-45deg, $color-line 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, $color-line 75%),
+    linear-gradient(-45deg, transparent 75%, $color-line 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+  border: $border-ink;
+  border-radius: $radius;
+  overflow: hidden;
+
+  &.is-dragging { cursor: grabbing; }
+}
+
+.wm-canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  cursor: grab;
+  touch-action: none;
+  box-shadow: 0 1px 0 rgba(28, 27, 24, 0.08);
+}
+
+// — 縮圖列 —
+.thumb-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.thumb {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border: $border-fine;
+  border-radius: $radius;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color $dur $ease;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  &:hover { border-color: $color-ink; }
+
+  &.is-active { border: $border-ink; border-color: $color-accent; }
+}
+
+.thumb-del {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  line-height: 1;
+  color: $color-paper;
+  background: rgba(28, 27, 24, 0.6);
+  border: none;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: background-color $dur $ease;
+
+  &:hover { background: $color-accent; }
+}
+
+// ============================================================
+// 窄螢幕
+// ============================================================
+@media (max-width: 860px) {
+  .editor-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-4;
+  }
+}
