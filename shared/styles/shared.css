@@ -194,6 +194,23 @@ h1, h2, h3 {
   font-size: 2.75rem;
 }
 
+.site-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 64px;
+  padding-block: 24px;
+  border-top: 1px solid #d9d3c3;
+}
+
+.site-foot-copy {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+}
+
 .section-rule {
   display: flex;
   align-items: center;

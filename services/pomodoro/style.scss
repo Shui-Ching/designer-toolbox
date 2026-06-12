@@ -135,7 +135,10 @@
   margin-bottom: $space-4;
 }
 
-.pm-start { min-width: 140px; }
+.pm-start { 
+  min-width: 140px; 
+justify-content: center; }
+
 
 // ── 今日收成 ──────────────────────────────────────
 .pm-harvest {

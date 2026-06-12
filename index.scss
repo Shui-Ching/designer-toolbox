@@ -126,6 +126,42 @@
   color: $color-ink-soft;
 }
 
+// — 排序選單 —
+.index-sort {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.index-sort-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.index-sort-select {
+  padding: $space-2 $space-3;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.06em;
+  color: $color-ink;
+  cursor: pointer;
+  transition: border-color $dur $ease, color $dur $ease;
+
+  &:hover { border-color: $color-ink; }
+
+  &:focus-visible {
+    outline: 2px solid $color-accent;
+    outline-offset: 2px;
+  }
+}
+
 // — 分類篩選 chip —
 .index-filters {
   display: flex;
@@ -163,6 +199,115 @@
   &:focus-visible {
     outline: 2px solid $color-accent;
     outline-offset: 2px;
+  }
+}
+
+// — 使用者心聲跑馬燈 —
+// 同一組內容並列三份，平移一組寬度（-33.333%）達成無縫循環；
+// hover／focus 暫停，並尊重 prefers-reduced-motion。
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-33.3333%); }
+}
+
+.feedback-ticker {
+  border-bottom: $border-ink;          // 延續 masthead 的墨線節奏
+  background: $color-paper-deep;        // 與紙底拉出層次
+  overflow: hidden;
+  animation: rise 0.7s $ease 0.14s both; // 與封面標題同調進場
+}
+
+.feedback-ticker-inner {
+  display: flex;
+  align-items: stretch;
+  gap: $space-4;
+}
+
+// 釘在左側的硃紅標籤：呼應選取態 chip 的實底
+.feedback-ticker-label {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  padding-inline: $space-3;
+  margin-inline-start: -$space-4;      // 抵銷 container 的左內距，貼齊版心左緣
+  background: $color-accent;
+  color: $color-paper;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.feedback-ticker-viewport {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+
+  // 兩側淡出遮罩，讓內容進出更柔順
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 $space-5, #000 calc(100% - #{$space-5}), transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 $space-5, #000 calc(100% - #{$space-5}), transparent);
+}
+
+.feedback-ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker 32s linear infinite;
+
+  // 滑入或鍵盤聚焦時暫停，方便閱讀
+  .feedback-ticker:hover &,
+  .feedback-ticker:focus-within & {
+    animation-play-state: paused;
+  }
+}
+
+.feedback-item {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-3;
+  padding-block: $space-3;
+  padding-inline: $space-4;
+  white-space: nowrap;
+
+  // 編輯感分隔：每則前綴芥黃菱點
+  &::before {
+    content: '◆';
+    color: $color-mark;
+    font-size: 0.75em;
+  }
+}
+
+.feedback-item-tag {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $color-accent;
+}
+
+.feedback-item-text {
+  font-size: $fs-sm;
+  color: $color-ink;
+}
+
+.feedback-item-date {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+}
+
+// 降低動態偏好：停掉捲動，僅靜態呈現真實兩則（隱藏循環複製品）
+@media (prefers-reduced-motion: reduce) {
+  .feedback-ticker { animation: none; }
+  .feedback-ticker-track {
+    animation: none;
+    flex-wrap: wrap;
+    width: auto;
+  }
+  .feedback-item.is-clone { display: none; }
+  .feedback-ticker-viewport {
+    -webkit-mask-image: none;
+            mask-image: none;
   }
 }
 

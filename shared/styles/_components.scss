@@ -143,6 +143,25 @@
   font-size: $fs-2xl;
 }
 
+// — 站點頁尾（各工具頁共用）—
+// 全寬頁尾條：上方細線與內容區隔，意見回饋鈕靠左、版權靠右
+.site-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+  margin-top: $space-6;
+  padding-block: $space-4;
+  border-top: $border-fine;
+}
+
+.site-foot-copy {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
 // — 區段標題 —
 .section-rule {
   display: flex;

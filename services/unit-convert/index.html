@@ -8,7 +8,7 @@
   <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
 
-  <title>裝置尺寸查詢 · 設計師工具箱</title>
+  <title>單位換算 · 設計師工具箱</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
@@ -18,12 +18,12 @@
   <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
 </head>
-<body data-tool="device-size">
+<body data-tool="unit-convert">
   <main class="container">
     <div class="tool-head">
       <div>
-        <span class="tag tag-accent">Tool / 04</span>
-        <h1 class="tool-head-title">裝置尺寸查詢</h1>
+        <span class="tag tag-accent">Tool / 24</span>
+        <h1 class="tool-head-title">單位換算</h1>
       </div>
       <div class="tool-head-actions">
         <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
@@ -32,35 +32,35 @@
     </div>
 
     <p class="tool-intro">
-      常見手機、平板、桌機的 CSS <span class="tag">viewport</span>、裝置像素比（DPR）與實體解析度速查。
-      點任一列即可複製 viewport 尺寸；下方附響應式斷點刻度尺。
+      網頁字級（<span class="tag">px</span><span class="tag">rem</span><span class="tag">em</span><span class="tag">pt</span><span class="tag">%</span>）、
+      印刷物理（<span class="tag">mm</span><span class="tag">cm</span><span class="tag">in</span><span class="tag">pt</span><span class="tag">px</span>）、
+      以及長度／重量／溫度／面積即時雙向互轉。改任一欄其餘自動跟著換算，全程在瀏覽器端運算、不上傳任何資料。
     </p>
 
-    <!-- 搜尋 + 類型篩選 -->
-    <div class="query-bar">
-      <input type="search" id="search" class="search-input" placeholder="搜尋裝置名稱…" autocomplete="off">
-      <div class="filter-bar" id="filter-bar"></div>
-    </div>
+    <section class="converter" aria-label="單位換算">
 
-    <p class="result-count" id="result-count"></p>
+      <!-- 換算類別分頁 -->
+      <div class="unit-tabs" id="unit-tabs" role="tablist" aria-label="換算類別">
+        <button class="unit-tab is-active" type="button" role="tab" data-cat="css" aria-selected="true">網頁字級</button>
+        <button class="unit-tab" type="button" role="tab" data-cat="print" aria-selected="false">印刷／物理</button>
+        <button class="unit-tab" type="button" role="tab" data-cat="length" aria-selected="false">長度</button>
+        <button class="unit-tab" type="button" role="tab" data-cat="weight" aria-selected="false">重量</button>
+        <button class="unit-tab" type="button" role="tab" data-cat="temp" aria-selected="false">溫度</button>
+        <button class="unit-tab" type="button" role="tab" data-cat="area" aria-selected="false">面積</button>
+      </div>
 
-    <!-- 規格表（由 JS 渲染） -->
-    <div class="table-wrap">
-      <table class="device-table">
-        <thead>
-          <tr id="table-head"></tr>
-        </thead>
-        <tbody id="table-body"></tbody>
-      </table>
-    </div>
+      <!-- 設定列（依類別動態顯示，例如根字級、DPI） -->
+      <div class="settings" id="settings"></div>
 
-    <!-- 斷點刻度尺 -->
-    <div class="section-rule">
-      <span class="tag">Breakpoints / Bootstrap 5</span>
-    </div>
-    <p class="bp-intro">以最小寬度（min-width）由下而上套用，是 Bootstrap 5 的預設斷點，亦可作為自訂 RWD 的參考刻度。</p>
-    <div class="bp-scale" id="bp-scale"></div>
+      <div class="section-rule"><span class="tag" id="cat-tag">單位互轉</span></div>
 
+      <!-- 單位欄位列表（依類別動態產生） -->
+      <div class="unit-list" id="unit-list"></div>
+
+      <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+      <p class="unit-note" id="unit-note"></p>
+
+    </section>
   </main>
 
   <!-- 頁尾 -->

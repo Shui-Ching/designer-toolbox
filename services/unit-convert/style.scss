@@ -1,0 +1,235 @@
+// ============================================================
+// 24 單位換算 — 工具特有樣式
+// 共用元件（tool-head / btn / tag / section-rule）直接套 class，這裡只補差異
+// 欄位列（.unit-row）的標籤／輸入／複製鈕配置沿用 10 色彩格式轉換的手法
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 100%;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+
+  // intro 裡的單位標籤緊湊排列
+  .tag { margin-right: $space-1; }
+}
+
+.converter {
+  // 窄欄靠左，與頁首標題、說明段落、footer 同樣左錨定對齊
+  max-width: 100%;
+}
+
+// ============================================================
+// 換算類別分頁（手冊風：銳利邊角、等寬大寫、選取態填硃紅）
+// ============================================================
+.unit-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin-bottom: $space-4;
+}
+
+.unit-tab {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-2 $space-3;
+  color: $color-ink-soft;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// ============================================================
+// 設定列（根字級、參考字級、DPI…）
+// ============================================================
+.settings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-4;
+  padding: $space-3 $space-4;
+  margin-bottom: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+
+  &[hidden] { display: none; }
+}
+
+.setting-block {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.setting-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.02em;
+  color: $color-ink-soft;
+}
+
+.setting-field {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.setting-input {
+  width: 96px;
+  padding: $space-2 $space-3;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  font-variant-numeric: tabular-nums;
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+}
+
+.setting-suffix {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+// DPI 等常用值快捷鈕
+.preset-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-1;
+}
+
+.preset-chip {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  padding: $space-1 $space-2;
+  color: $color-ink-soft;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+}
+
+// ============================================================
+// 單位欄位列表
+// ============================================================
+.unit-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+// 單列：名稱／可編輯輸入／複製鈕
+.unit-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 200px) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: $space-3;
+}
+
+.unit-label {
+  font-size: $fs-sm;
+  color: $color-ink;
+}
+
+// 單位符號：等寬、淡墨、緊接名稱後
+.unit-sym {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+.unit-input {
+  width: 100%;
+  min-width: 0;
+  padding: $space-2 $space-3;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  letter-spacing: 0.02em;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  font-variant-numeric: tabular-nums;
+  transition: border-color $dur $ease;
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+
+  // 解析失敗時邊框轉硃紅提示
+  &.is-invalid { border-color: $color-accent; }
+}
+
+// 複製鈕：低調的描邊小鈕
+.unit-copy {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-2 $space-3;
+  color: $color-ink-soft;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: $space-4 0 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// 換算基準說明
+.unit-note {
+  margin: $space-2 0 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  line-height: 1.5;
+  color: $color-ink-soft;
+}
+
+// ============================================================
+// 窄螢幕
+// ============================================================
+@media (max-width: 560px) {
+  .unit-row {
+    grid-template-columns: minmax(96px, 1fr) minmax(0, 1.4fr) auto;
+    gap: $space-2;
+  }
+}
