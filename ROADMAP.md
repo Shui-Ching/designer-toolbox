@@ -3,9 +3,9 @@
 > 每次收工更新此檔。下次接續時，這裡是進度的單一真實來源。
 > 架構決策與設計 token 另存於 project skill（見最下方）。
 
-最後更新：2026-06-07（19 我的留言板：三種訊息選擇（開會去／廁所去／自訂，60 字上限）；一鍵全螢幕顯示大字訊息；capture phase 鍵盤鎖定（僅允許 ESC 解除）；fullscreenchange 事件同步關閉 overlay；入口頁搜尋計數改 19；data-category="fun"）
+最後更新：2026-06-12（入口頁將 21 環境音卡片**暫時隱藏**：整張 `.tool-card` 以 HTML 註解包起（保留原始碼，日後拿掉註解即可復活），不採 `hidden` 屬性——因 `home.js` 篩選時會對每張 `.tool-card` 重設 `el.hidden`，加屬性會在使用者一點分類／搜尋後被 JS 重新顯示。22 番茄鐘編號往前遞補為 **21**，搜尋計數初始值由 22 改 **21**（有 JS 後仍由 home.js 動態算）。工具本體 `services/white-noise/` 與其分析串接保留不動，僅入口頁不再露出）
 
-前次更新：2026-06-06（完成 16 圖片格式轉換：與 01 共用「拖放→createImageBitmap 解碼→canvas→toBlob 重新編碼」批次流程，但聚焦格式互轉、保留原尺寸；目標格式 PNG／JPEG／WebP／AVIF，啟動時以 1×1 canvas 試編碼比對 blob.type 偵測 WebP／AVIF 支援度，不支援即停用該按鈕並標「不支援」（避免靜默退回 PNG）；品質滑桿只對有損格式有效、PNG 自動停用，JPEG 先鋪白底避免透明變黑；每列顯示「來源格式→目標格式」徽章＋原尺寸＋前後大小對比與增減%，單張下載／全部下載／移除／清空，下載埋 track('use')；檔名以 escapeHtml 跳脫；入口頁卡片 is-live＋搜尋計數改 16、package.json 補編譯映射）
+前次更新：2026-06-11（完成 21 環境音 + 22 番茄鐘，並新增「效率」(focus) 分類 chip。21 原為「白噪音混音台」、規劃 8 軌，但使用者驗收後判定白／粉紅／棕噪音、海浪、溪流、咖啡廳的純合成擬真度不足、名實不符，全數移除，只留雨聲、風聲兩軌並更名為「環境音」。聲音全部用 Web Audio API 即時合成、零外部音檔維持 CSP script-src 'self'：雨＝粉紅噪音（Paul Kellet）過高通留沙沙聲，風＝棕噪音（積分白噪音）過帶通＋兩組慢 LFO 調音量／頻率營造陣風。每頻道 source→濾波→textureGain(調性)→userGain(音量)→masterGain；首次互動才建 AudioContext、所有 source 一次 start 靠 gain 開關。UI：大播放鈕、主音量、自動停止（15/30/60/90 分）、3 組快速情境（綿綿細雨／狂風／風雨交加）、頻道卡（點擊開關＋拖曳音量＋等化器動畫）；首次出聲埋 track('use')。folder／data-tool 仍沿用 white-noise 維持路徑與分析連續性。22：番茄鐘專注／短休／長休三模式，SVG 進度環倒數（rAF 以時間戳計算避免分頁節流誤差）、document.title 同步倒數可在背景分頁看；時間到自動接續（每 interval 輪長休息）、Web Audio 合成提示音（專注結束上行三音、休息兩音）、可選桌面通知；設定與今日番茄數存 localStorage（跨日自動歸零）。兩工具入口頁卡片 is-live＋data-category="focus"＋搜尋計數改 22、package.json 補編譯映射）
 
 ---
 
@@ -148,7 +148,12 @@ tool/
 - [x] 17 等等吃喝什麼（決策轉盤）：使用者自訂選項清單（新增／刪除，可命名，至少 2 項才能轉）；點「轉！」觸發轉盤旋轉動畫，緩速停止後高亮結果；轉盤以 Canvas 繪製扇形，依選項數均分角度、12 色自動配色（左側清單色塊與扇形同色對應）；四次方緩出 3.2–4 秒動畫；選項可清空並重設；入口頁徽章 is-live＋新增「趣味」分類 chip＋搜尋計數改 17、package.json 補編譯映射；data-category="fun"
 - [x] 18 偷懶神器（假更新螢幕）：全螢幕假更新畫面，Mac（Apple logo + 細白進度條 + 剩餘時間倒數）/ Windows 11（彩色 Windows logo + 大字百分比 + 脈衝點點）雙款；非線性進度分三段，28%、77% 自動暫停仿真實更新行為；ESC 退出；入口頁徽章 is-live＋搜尋計數改 18、package.json 補編譯映射；data-category="fun"
 - [x] 19 我的留言板：三種訊息選擇（開會去／廁所去／自訂，60 字上限）；一鍵全螢幕顯示大字訊息；capture phase 鍵盤鎖定（僅允許 ESC 解除）；fullscreenchange 事件同步關閉 overlay；入口頁徽章 is-live＋搜尋計數改 19、package.json 補編譯映射；data-category="fun"
-- [ ] 20 PDF 壓縮：純前端拖放上傳 PDF，以 pdf-lib（本機 bundle，維持 CSP script-src 'self'）重新打包，去除 metadata、壓縮嵌入圖片品質（有損／無損兩模式），顯示壓縮前後大小對比，下載壓縮後 PDF；對超大 PDF 加檔案大小提示；下載埋 track('use')；入口頁徽章 is-live＋搜尋計數改 20、package.json 補編譯映射
+- [x] 20 PDF 壓縮：純前端拖放上傳 PDF，**單一有損「光柵化」路線**（2026-06-11 使用者拍板）——pdf.js 逐頁 render→canvas→重新編碼 JPEG→pdf-lib 重組，保留各頁實體尺寸（point）；代價是文字變影像、不可選取（頁面以 .notice 明示。原規格的「pdf-lib 去 metadata 無損模式」因省幅過小、且 pdf-lib 無法重編內嵌圖片而捨棄）。兩根品質槓桿：解析度 96／150／300 DPI（scale=dpi/72）＋ JPEG 品質滑桿（放開才重壓）；改設定即 runToken 作廢進行中迴圈並重壓全部、保留 pdf.js 文件不重新解析。pdf.js@6 + pdf-lib + cmaps + standard_fonts 全本機 vendor 至 `services/pdf-compress/vendor/`（維持 CSP script-src 'self'，另補 worker-src 'self' blob:），首次拖檔才動態 import。第一頁縮圖、逐頁進度條、加密 PDF 偵測友善報錯、>30MB 大檔提示、JPEG 鋪白底；下載埋 track('use')；入口頁徽章 is-live＋data-category="image"＋搜尋計數改 20、package.json 補編譯映射
+  - 備註：vendor 約 4.5MB（核心 2.1MB + cmaps 1.6MB + standard_fonts 0.8MB）。cmaps／fonts 由 pdf.js 按需抓取、不會一次全載；保留它們是為了沒嵌入字型的 PDF（尤其中文）光柵化不缺字。`.mjs` 不在 stamp-version.js 的 `?v=` 戳記範圍（只戳 .js），vendor 走動態 import／runtime URL 故無妨
+- [x] 21 環境音：聲音用 **Web Audio API 即時合成**、零外部音檔維持 CSP `script-src 'self'`；**僅保留雨聲、風聲兩軌**——雨＝粉紅噪音（Paul Kellet）過高通留沙沙聲，風＝棕噪音（積分白噪音）過帶通＋兩組慢 LFO 調音量／頻率營造陣風。每頻道 `source→濾波→textureGain(調性)→userGain(音量)→masterGain`，首次互動才建 AudioContext、所有 source 一次 start 後靠 gain 開關；UI 含大播放鈕／主音量／自動停止（15/30/60/90 分）／3 組快速情境（綿綿細雨／狂風／風雨交加）／頻道卡（點擊開關＋拖曳音量＋等化器動畫）；首次出聲埋 `track('use')`；入口頁徽章 is-live＋`data-category="focus"`＋搜尋計數改 22、package.json 補編譯映射
+  - 備註（2026-06-11 使用者驗收後收斂）：原規劃 8 軌，但白／粉紅／棕噪音、海浪、溪流、咖啡廳的純合成擬真度不足、名實不符，全數移除；只留下實聽夠像的雨聲與風聲。工具因此從「白噪音混音台」更名為「環境音」（folder／`data-tool` 仍沿用 `white-noise` 以維持路徑與分析連續性）
+  - **2026-06-12 入口頁暫時隱藏**：`index.html` 中整張卡片已用 HTML 註解包起、不再露出（工具本體與分析串接保留）。要復活時：拿掉 `index.html` 的卡片註解、把編號改回 21（屆時番茄鐘改回 22）、搜尋計數初始值改回 22
+- [x] 22 番茄鐘（環境音隱藏後，入口頁編號往前遞補為 21）：專注／短休／長休三模式，SVG 進度環倒數（rAF 以時間戳計算避免分頁節流誤差）、`document.title` 同步倒數可在背景分頁看；時間到自動接續（每 interval 輪走長休息）、**Web Audio 合成提示音**（專注結束上行三音、休息兩音）、可選桌面通知（`Notification` 權限）；設定與今日番茄數存 localStorage（跨日自動歸零）；專注段完成埋 `track('use')`；入口頁徽章 is-live＋`data-category="focus"`＋package.json 補編譯映射
 
 ## 入口頁功能
 
@@ -156,14 +161,16 @@ tool/
 - [x] 關鍵字即時篩選：比對卡片可見文字 ＋ `data-keywords`，更新計數與空狀態
 
 ### 分類篩選 chip（2026-06-06 新增）
-- [x] 16 個工具依「對象領域」分 6 類，每張 `.tool-card` 標 `data-category`：
-  - **image** 圖片：01 壓縮、06 裁切／改尺寸、16 格式轉換
+- [x] 各工具依「對象領域」分類，每張 `.tool-card` 標 `data-category`：
+  - **image** 圖片：01 壓縮、06 裁切／改尺寸、16 格式轉換、20 PDF 壓縮
   - **color** 色彩：09 調色盤、10 色彩格式轉換
   - **css** CSS：05 Grid／Flex、14 陰影、15 漸層
   - **text** 文字：11 字級比例、12 Lorem、13 字數統計
   - **reference** 速查：03 社群尺寸、04 裝置尺寸
   - **assets** 資產：02 SVG 轉 Font、07 favicon、08 QR Code
-- [x] 搜尋列下方一排 `.filter-chip`（全部／圖片／色彩／CSS／文字／速查／資產），手冊風：銳利邊角、等寬大寫標籤、選取態 `.is-active` 填硃紅
+  - **focus** 效率：番茄鐘（入口頁編號 21；環境音已於 2026-06-12 暫時隱藏）
+  - **fun** 趣味：17 決策轉盤、18 假更新、19 留言板
+- [x] 搜尋列下方一排 `.filter-chip`（全部／圖片／色彩／CSS／文字／速查／資產／效率／趣味），手冊風：銳利邊角、等寬大寫標籤、選取態 `.is-active` 填硃紅
 - [x] `home.js` 改為**分類 × 關鍵字交集篩選**：先選分類再搜尋會在該領域內再過濾；chip 為單選＋「全部」，切換時同步 `aria-pressed`
 - [x] 無障礙：chip 用 `<button>`、外層 `role="group"`、`:focus-visible` 焦點框
 - 備註：新增工具時，除既有步驟外，記得替入口頁卡片補對應 `data-category`；若開新領域，於 `index.html` chip 列與 `home.js`（邏輯自動支援任意 filter 值）對齊即可

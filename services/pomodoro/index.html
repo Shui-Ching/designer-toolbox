@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP） -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>番茄鐘 · 設計師工具箱</title>
+  <meta name="description" content="番茄工作法計時器：專注 25 分、休息 5 分自動接續，提示音與完成統計，幫你穩定推進工作。">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202606112235">
+  <link rel="stylesheet" href="./style.css?v=202606112235">
+
+  <!-- Umami 匿名分析（cookieless） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="pomodoro">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 22</span>
+        <h1 class="tool-head-title">番茄鐘</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      <strong>專注 25 分、休息 5 分</strong>，一輪輪推進工作。<br>
+      時間到自動接續下一段並提示，今日累積的番茄會幫你記著。
+    </p>
+
+    <!-- 模式分頁 -->
+    <div class="pm-modes" id="pm-modes" role="tablist" aria-label="計時模式">
+      <button class="pm-mode is-active" type="button" data-mode="focus" role="tab" aria-selected="true">專注</button>
+      <button class="pm-mode" type="button" data-mode="short" role="tab" aria-selected="false">短休息</button>
+      <button class="pm-mode" type="button" data-mode="long" role="tab" aria-selected="false">長休息</button>
+    </div>
+
+    <!-- 計時器 -->
+    <div class="pm-clock" id="pm-clock">
+      <svg class="pm-ring" viewBox="0 0 240 240" aria-hidden="true">
+        <circle class="pm-ring-track" cx="120" cy="120" r="110"></circle>
+        <circle class="pm-ring-fill" id="pm-ring-fill" cx="120" cy="120" r="110"></circle>
+      </svg>
+      <div class="pm-clock-center">
+        <span class="pm-time" id="pm-time">25:00</span>
+        <span class="pm-phase" id="pm-phase">準備專注</span>
+      </div>
+    </div>
+
+    <!-- 控制鈕 -->
+    <div class="pm-controls">
+      <button class="btn btn-accent pm-start" type="button" id="pm-start">開始</button>
+      <button class="btn pm-reset" type="button" id="pm-reset">重設</button>
+    </div>
+
+    <!-- 今日收成 -->
+    <p class="pm-harvest" id="pm-harvest" aria-live="polite">
+      今日完成 <strong id="pm-count">0</strong> 個番茄
+    </p>
+
+    <hr class="section-rule">
+
+    <!-- 設定 -->
+    <details class="pm-settings">
+      <summary class="pm-settings-summary">設定</summary>
+      <div class="pm-settings-body">
+        <div class="pm-field">
+          <label for="pm-focus">專注（分鐘）</label>
+          <input id="pm-focus" type="number" min="1" max="90" value="25" inputmode="numeric">
+        </div>
+        <div class="pm-field">
+          <label for="pm-short">短休息（分鐘）</label>
+          <input id="pm-short" type="number" min="1" max="30" value="5" inputmode="numeric">
+        </div>
+        <div class="pm-field">
+          <label for="pm-long">長休息（分鐘）</label>
+          <input id="pm-long" type="number" min="1" max="60" value="15" inputmode="numeric">
+        </div>
+        <div class="pm-field">
+          <label for="pm-interval">幾輪後長休息</label>
+          <input id="pm-interval" type="number" min="2" max="8" value="4" inputmode="numeric">
+        </div>
+
+        <label class="pm-check">
+          <input type="checkbox" id="pm-autostart" checked>
+          <span>時間到自動接續下一段</span>
+        </label>
+        <label class="pm-check">
+          <input type="checkbox" id="pm-sound" checked>
+          <span>結束時播放提示音</span>
+        </label>
+        <label class="pm-check">
+          <input type="checkbox" id="pm-notify">
+          <span>結束時顯示桌面通知</span>
+        </label>
+      </div>
+    </details>
+  </main>
+
+  <script type="module" src="./script.js?v=202606112235"></script>
+</body>
+</html>

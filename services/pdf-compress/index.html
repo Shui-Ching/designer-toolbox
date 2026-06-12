@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <!-- pdf.js／pdf-lib 皆為本機 vendor，worker 與 cmaps／standard_fonts 同源，'self' 已涵蓋 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; worker-src 'self' blob:; base-uri 'self'; form-action 'self'">
+
+  <title>PDF 壓縮 · 設計師工具箱</title>
+  <meta name="description" content="瀏覽器端 PDF 壓縮：逐頁重繪重新編碼，大幅縮小檔案，可調解析度與品質，前後大小即時對比，檔案不上傳。">
+
+  <!-- 字體：Inter（英文／數字）/ Noto Sans TC（中文），全站統一 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202606112235">
+  <link rel="stylesheet" href="./style.css?v=202606112235">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="pdf-compress">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 20</span>
+        <h1 class="tool-head-title">PDF 壓縮</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      把每一頁重繪成影像再重新編碼，藉此大幅縮小 PDF 體積。
+      解析度越低、品質越低，檔案越小。<strong>檔案不會離開你的電腦。</strong>
+    </p>
+
+    <!-- 重要提醒：光柵化代價 -->
+    <p class="notice">
+      ⚠️ 此工具會把頁面轉成圖片，<strong>壓縮後的文字將無法被選取或搜尋</strong>，放大也會略糊。
+      適合用於投稿、上傳大小受限、純檢視的情境；需保留可選取文字者請勿使用。
+    </p>
+
+    <!-- 壓縮設定 -->
+    <section class="controls">
+      <!-- 解析度 -->
+      <div class="control-row">
+        <span class="control-label">解析度</span>
+        <div class="dpi-group" id="dpi-group">
+          <button type="button" class="dpi-chip" data-dpi="96">96 <span class="dpi-note">螢幕</span></button>
+          <button type="button" class="dpi-chip is-active" data-dpi="150">150 <span class="dpi-note">一般</span></button>
+          <button type="button" class="dpi-chip" data-dpi="300">300 <span class="dpi-note">列印</span></button>
+        </div>
+      </div>
+
+      <!-- 品質 -->
+      <div class="control-row">
+        <span class="control-label">品質 <output class="quality-value" id="quality-value">75%</output></span>
+        <input type="range" class="quality-slider" id="quality" min="10" max="100" step="5" value="75">
+      </div>
+    </section>
+
+    <!-- 拖放區 -->
+    <div class="dropzone" id="dropzone">
+      <p class="dropzone-hint">把 PDF 拖進來，或點擊選檔</p>
+      <p class="tag">支援 .pdf · 可一次多份</p>
+      <input type="file" id="file-input" accept="application/pdf,.pdf" multiple hidden>
+    </div>
+
+    <!-- 引擎初次載入提示 -->
+    <p class="engine-status" id="engine-status" hidden>初次載入壓縮引擎（約數 MB），請稍候…</p>
+
+    <!-- 結果 -->
+    <section class="results" id="results" hidden>
+      <div class="section-rule">
+        <span class="tag">壓縮結果</span>
+      </div>
+
+      <div class="results-bar">
+        <p class="results-summary" id="results-summary"></p>
+        <div class="results-actions">
+          <button type="button" class="btn" id="clear-all">清空</button>
+          <button type="button" class="btn btn-accent" id="download-all">全部下載</button>
+        </div>
+      </div>
+
+      <ul class="result-list" id="result-list"></ul>
+    </section>
+  </main>
+
+  <script type="module" src="./script.js?v=202606112235"></script>
+</body>
+</html>

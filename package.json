@@ -4,7 +4,7 @@
   "description": "設計師工具箱：多個純前端微型工具，共用一套設計系統",
   "private": true,
   "scripts": {
-    "compile:css": "sass shared/styles/shared.scss:shared/styles/shared.css index.scss:index.css services/social-size/style.scss:services/social-size/style.css services/device-size/style.scss:services/device-size/style.css services/image-compress/style.scss:services/image-compress/style.css services/svg-to-font/style.scss:services/svg-to-font/style.css services/grid-flex/style.scss:services/grid-flex/style.css services/image-crop/style.scss:services/image-crop/style.css services/favicon/style.scss:services/favicon/style.css services/qr-code/style.scss:services/qr-code/style.css services/color-palette/style.scss:services/color-palette/style.css services/color-convert/style.scss:services/color-convert/style.css services/type-scale/style.scss:services/type-scale/style.css services/lorem/style.scss:services/lorem/style.css services/word-count/style.scss:services/word-count/style.css services/shadow/style.scss:services/shadow/style.css services/gradient/style.scss:services/gradient/style.css services/image-convert/style.scss:services/image-convert/style.css services/decision-spinner/style.scss:services/decision-spinner/style.css services/fake-update/style.scss:services/fake-update/style.css services/message-board/style.scss:services/message-board/style.css --no-source-map",
+    "compile:css": "sass shared/styles/shared.scss:shared/styles/shared.css index.scss:index.css services/social-size/style.scss:services/social-size/style.css services/device-size/style.scss:services/device-size/style.css services/image-compress/style.scss:services/image-compress/style.css services/svg-to-font/style.scss:services/svg-to-font/style.css services/grid-flex/style.scss:services/grid-flex/style.css services/image-crop/style.scss:services/image-crop/style.css services/favicon/style.scss:services/favicon/style.css services/qr-code/style.scss:services/qr-code/style.css services/color-palette/style.scss:services/color-palette/style.css services/color-convert/style.scss:services/color-convert/style.css services/type-scale/style.scss:services/type-scale/style.css services/lorem/style.scss:services/lorem/style.css services/word-count/style.scss:services/word-count/style.css services/shadow/style.scss:services/shadow/style.css services/gradient/style.scss:services/gradient/style.css services/image-convert/style.scss:services/image-convert/style.css services/decision-spinner/style.scss:services/decision-spinner/style.css services/fake-update/style.scss:services/fake-update/style.css services/message-board/style.scss:services/message-board/style.css services/pdf-compress/style.scss:services/pdf-compress/style.css services/white-noise/style.scss:services/white-noise/style.css services/pomodoro/style.scss:services/pomodoro/style.css --no-source-map",
     "stamp": "node stamp-version.js",
     "build:css": "npm run compile:css && npm run stamp",
     "watch:css": "npm run compile:css -- --watch",
@@ -12,5 +12,9 @@
   },
   "devDependencies": {
     "sass": "^1.100.0"
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.0.227"
   }
 }

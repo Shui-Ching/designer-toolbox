@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP） -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>環境音 · 設計師工具箱</title>
+  <meta name="description" content="即時合成雨聲與風聲環境音，可自由混音幫助專注。零外部音檔，全部在瀏覽器端生成。">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202606112235">
+  <link rel="stylesheet" href="./style.css?v=202606112235">
+
+  <!-- Umami 匿名分析（cookieless） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="white-noise">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 21</span>
+        <h1 class="tool-head-title">環境音</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      把雨聲與風聲交疊出<strong>專屬的專注背景音</strong>。<br>
+      所有聲音都在瀏覽器端<strong>即時合成</strong>——不下載、不外連任何音檔。
+    </p>
+
+    <!-- 主控台 -->
+    <div class="nz-console">
+      <button type="button" class="nz-play" id="nz-play" aria-pressed="false" aria-label="播放或暫停">
+        <svg class="nz-play-icon nz-icon-play" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8 5v14l11-7z"></path>
+        </svg>
+        <svg class="nz-play-icon nz-icon-pause" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 5h3v14H7zM14 5h3v14h-3z"></path>
+        </svg>
+      </button>
+
+      <label class="nz-master">
+        <span class="nz-master-label">主音量</span>
+        <input class="nz-master-vol" id="nz-master-vol" type="range" min="0" max="100" value="80" aria-label="主音量">
+      </label>
+
+      <label class="nz-autostop">
+        <span class="nz-autostop-label">自動停止</span>
+        <select class="nz-autostop-select" id="nz-autostop" aria-label="自動停止時間">
+          <option value="0">關閉</option>
+          <option value="15">15 分鐘</option>
+          <option value="30">30 分鐘</option>
+          <option value="60">60 分鐘</option>
+          <option value="90">90 分鐘</option>
+        </select>
+      </label>
+    </div>
+
+    <!-- 快速情境 -->
+    <div class="nz-presets">
+      <span class="nz-presets-label">快速情境</span>
+      <div class="nz-presets-list" id="nz-presets" role="group" aria-label="快速情境組合"></div>
+    </div>
+
+    <!-- 聲音頻道 -->
+    <p class="nz-grid-label">聲音頻道 · 點擊開關，拖曳調整音量</p>
+    <div class="nz-grid" id="nz-grid"></div>
+  </main>
+
+  <script type="module" src="./script.js?v=202606112235"></script>
+</body>
+</html>

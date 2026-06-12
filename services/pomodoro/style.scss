@@ -1,0 +1,213 @@
+@use '../../shared/styles/tokens' as *;
+
+// ── 工具介紹 ──────────────────────────────────────
+.tool-intro {
+  margin-bottom: $space-5;
+  line-height: 1.7;
+  color: $color-ink-soft;
+
+  strong { color: $color-ink; }
+}
+
+// ── 模式分頁 ──────────────────────────────────────
+.pm-modes {
+  display: flex;
+  gap: $space-2;
+  justify-content: center;
+  margin-bottom: $space-5;
+}
+
+.pm-mode {
+  padding: $space-2 $space-4;
+  border: $border-fine;
+  border-radius: $radius;
+  background: $color-paper-deep;
+  color: $color-ink-soft;
+  font-family: $font-body;
+  font-size: $fs-base;
+  cursor: pointer;
+  transition: border-color $dur $ease, background $dur $ease, color $dur $ease;
+
+  &:hover { border-color: $color-ink-soft; color: $color-ink; }
+
+  &.is-active {
+    border-color: $color-accent;
+    background: $color-accent;
+    color: #f4f1e8;
+  }
+}
+
+// ── 計時器 ────────────────────────────────────────
+.pm-clock {
+  position: relative;
+  width: 280px;
+  max-width: 80vw;
+  aspect-ratio: 1;
+  margin: 0 auto $space-5;
+  display: grid;
+  place-items: center;
+}
+
+.pm-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg); // 從正上方開始走
+}
+
+.pm-ring-track {
+  fill: none;
+  stroke: $color-line;
+  stroke-width: 8;
+}
+
+.pm-ring-fill {
+  fill: none;
+  stroke: $color-accent;
+  stroke-width: 8;
+  stroke-linecap: round;
+  // dasharray / dashoffset 由 JS 設定，offset 變化平滑過渡
+  transition: stroke-dashoffset 0.25s linear, stroke $dur $ease;
+}
+
+// 休息模式換成芥黃環，與專注的硃紅區隔
+.pm-clock[data-mode='short'] .pm-ring-fill,
+.pm-clock[data-mode='long'] .pm-ring-fill {
+  stroke: $color-mark;
+}
+
+.pm-clock-center {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.pm-time {
+  display: block;
+  font-size: clamp(3rem, 14vw, 4.5rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: $color-ink;
+  line-height: 1;
+}
+
+.pm-phase {
+  display: block;
+  margin-top: $space-2;
+  font-size: $fs-xs;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: $color-ink-soft;
+}
+
+// 計時中讓中心字微微呼吸
+.pm-clock.is-running .pm-time {
+  animation: pm-pulse 2s $ease infinite;
+}
+
+@keyframes pm-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.7; }
+}
+
+// 完成瞬間閃一下
+.pm-clock.is-done .pm-clock-center {
+  animation: pm-flash 0.45s $ease 2;
+}
+
+@keyframes pm-flash {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-clock.is-running .pm-time,
+  .pm-clock.is-done .pm-clock-center { animation: none; }
+}
+
+// ── 控制鈕 ────────────────────────────────────────
+.pm-controls {
+  display: flex;
+  gap: $space-3;
+  justify-content: center;
+  margin-bottom: $space-4;
+}
+
+.pm-start { min-width: 140px; }
+
+// ── 今日收成 ──────────────────────────────────────
+.pm-harvest {
+  text-align: center;
+  color: $color-ink-soft;
+  font-size: $fs-base;
+
+  strong {
+    color: $color-accent;
+    font-size: $fs-lg;
+  }
+}
+
+// ── 設定 ──────────────────────────────────────────
+.pm-settings {
+  margin-top: $space-3;
+}
+
+.pm-settings-summary {
+  cursor: pointer;
+  font-size: $fs-xs;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: $color-ink-soft;
+  padding: $space-2 0;
+
+  &:hover { color: $color-ink; }
+  &:focus-visible { outline: 2px solid $color-accent; outline-offset: 2px; }
+}
+
+.pm-settings-body {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $space-3;
+  margin-top: $space-3;
+}
+
+.pm-field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+
+  label {
+    font-size: $fs-xs;
+    color: $color-ink-soft;
+  }
+
+  input {
+    padding: $space-2 $space-3;
+    border: $border-fine;
+    border-radius: $radius;
+    background: $color-paper;
+    font-family: $font-body;
+    font-size: $fs-base;
+    color: $color-ink;
+
+    &:focus { outline: none; border-color: $color-ink; }
+  }
+}
+
+.pm-check {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $fs-base;
+  color: $color-ink;
+  cursor: pointer;
+
+  input { accent-color: $color-accent; width: 18px; height: 18px; cursor: pointer; }
+}
+
+@media (max-width: 480px) {
+  .pm-settings-body { grid-template-columns: 1fr; }
+}

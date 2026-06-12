@@ -1,0 +1,236 @@
+:root {
+  --color-paper: #f4f1e8;
+  --color-paper-deep: #ece7d9;
+  --color-ink: #1c1b18;
+  --color-ink-soft: #6b665b;
+  --color-line: #d9d3c3;
+  --color-accent: #d8442a;
+  --color-accent-deep: #b0331d;
+  --color-mark: #e0a92e;
+  --font-display: Inter, Noto Sans TC, sans-serif;
+  --font-body: Inter, Noto Sans TC, sans-serif;
+  --font-mono: Inter, Noto Sans TC, sans-serif;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.tool-intro {
+  margin-bottom: 40px;
+  line-height: 1.7;
+  color: #6b665b;
+}
+.tool-intro strong {
+  color: #1c1b18;
+}
+
+.pm-modes {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.pm-mode {
+  padding: 8px 24px;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  background: #ece7d9;
+  color: #6b665b;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), background 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.pm-mode:hover {
+  border-color: #6b665b;
+  color: #1c1b18;
+}
+.pm-mode.is-active {
+  border-color: #d8442a;
+  background: #d8442a;
+  color: #f4f1e8;
+}
+
+.pm-clock {
+  position: relative;
+  width: 280px;
+  max-width: 80vw;
+  aspect-ratio: 1;
+  margin: 0 auto 40px;
+  display: grid;
+  place-items: center;
+}
+
+.pm-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.pm-ring-track {
+  fill: none;
+  stroke: #d9d3c3;
+  stroke-width: 8;
+}
+
+.pm-ring-fill {
+  fill: none;
+  stroke: #d8442a;
+  stroke-width: 8;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.25s linear, stroke 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.pm-clock[data-mode=short] .pm-ring-fill,
+.pm-clock[data-mode=long] .pm-ring-fill {
+  stroke: #e0a92e;
+}
+
+.pm-clock-center {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.pm-time {
+  display: block;
+  font-size: clamp(3rem, 14vw, 4.5rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: #1c1b18;
+  line-height: 1;
+}
+
+.pm-phase {
+  display: block;
+  margin-top: 8px;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #6b665b;
+}
+
+.pm-clock.is-running .pm-time {
+  animation: pm-pulse 2s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+}
+
+@keyframes pm-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+.pm-clock.is-done .pm-clock-center {
+  animation: pm-flash 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) 2;
+}
+
+@keyframes pm-flash {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pm-clock.is-running .pm-time,
+  .pm-clock.is-done .pm-clock-center {
+    animation: none;
+  }
+}
+.pm-controls {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.pm-start {
+  min-width: 140px;
+}
+
+.pm-harvest {
+  text-align: center;
+  color: #6b665b;
+  font-size: 1rem;
+}
+.pm-harvest strong {
+  color: #d8442a;
+  font-size: 1.25rem;
+}
+
+.pm-settings {
+  margin-top: 16px;
+}
+
+.pm-settings-summary {
+  cursor: pointer;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #6b665b;
+  padding: 8px 0;
+}
+.pm-settings-summary:hover {
+  color: #1c1b18;
+}
+.pm-settings-summary:focus-visible {
+  outline: 2px solid #d8442a;
+  outline-offset: 2px;
+}
+
+.pm-settings-body {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.pm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.pm-field label {
+  font-size: 1rem;
+  color: #6b665b;
+}
+.pm-field input {
+  padding: 8px 16px;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  background: #f4f1e8;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #1c1b18;
+}
+.pm-field input:focus {
+  outline: none;
+  border-color: #1c1b18;
+}
+
+.pm-check {
+  grid-column: 1/-1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  color: #1c1b18;
+  cursor: pointer;
+}
+.pm-check input {
+  accent-color: #d8442a;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .pm-settings-body {
+    grid-template-columns: 1fr;
+  }
+}
