@@ -305,7 +305,7 @@
   }
   .feedback-ticker-track {
     animation: none;
-    flex-wrap: wrap;
+    flex-direction: column;
     width: auto;
   }
   .feedback-item.is-clone {
@@ -313,6 +313,14 @@
   }
   .feedback-item {
     white-space: normal;
+    flex-wrap: wrap;
+  }
+  .feedback-item-tag {
+    white-space: nowrap;
+  }
+  .feedback-item-text {
+    flex: 1;
+    min-width: 12ch;
   }
   .feedback-ticker-viewport {
     overflow: visible;

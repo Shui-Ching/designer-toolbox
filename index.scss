@@ -301,12 +301,20 @@
   .feedback-ticker { animation: none; }
   .feedback-ticker-track {
     animation: none;
-    flex-wrap: wrap;
+    flex-direction: column;   // 改為直向清單，每則一列，窄螢幕不互相擠壓
     width: auto;
   }
   .feedback-item.is-clone { display: none; }
   // 靜態呈現時允許文字折行、解除裁切，避免窄螢幕被切掉
-  .feedback-item { white-space: normal; }
+  .feedback-item {
+    white-space: normal;
+    flex-wrap: wrap;          // tag／內文／日期放不下時整塊換到下一行
+  }
+  .feedback-item-tag { white-space: nowrap; }  // 標籤保持單行，避免被擠成一字一行
+  .feedback-item-text {
+    flex: 1;
+    min-width: 12ch;          // 內文保有最小可讀寬度，不足就觸發換行
+  }
   .feedback-ticker-viewport {
     overflow: visible;
     -webkit-mask-image: none;
