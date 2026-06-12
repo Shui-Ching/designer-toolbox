@@ -311,7 +311,11 @@
   .feedback-item.is-clone {
     display: none;
   }
+  .feedback-item {
+    white-space: normal;
+  }
   .feedback-ticker-viewport {
+    overflow: visible;
     -webkit-mask-image: none;
     mask-image: none;
   }
@@ -495,6 +499,9 @@
 @media (max-width: 640px) {
   .index-bar {
     flex-wrap: wrap;
+  }
+  .index-search {
+    flex: 1 0 100%;
   }
   .index-grid {
     grid-template-columns: 1fr;

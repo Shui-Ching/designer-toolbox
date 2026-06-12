@@ -305,7 +305,10 @@
     width: auto;
   }
   .feedback-item.is-clone { display: none; }
+  // 靜態呈現時允許文字折行、解除裁切，避免窄螢幕被切掉
+  .feedback-item { white-space: normal; }
   .feedback-ticker-viewport {
+    overflow: visible;
     -webkit-mask-image: none;
             mask-image: none;
   }
@@ -466,6 +469,8 @@
 
 @media (max-width: 640px) {
   .index-bar { flex-wrap: wrap; }
+  // 搜尋框獨佔一整行，排序與計數並列於下一行，避免被擠成小方塊
+  .index-search { flex: 1 0 100%; }
   .index-grid { grid-template-columns: 1fr; }
   .tool-card { min-height: 200px; }
 }
