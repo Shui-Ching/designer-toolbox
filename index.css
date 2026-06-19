@@ -292,6 +292,24 @@
   color: #1c1b18;
 }
 
+.feedback-item-reply {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 1rem;
+  font-style: italic;
+  color: #6b665b;
+}
+.feedback-item-reply::before {
+  content: "↳ 管理員：";
+  flex: none;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-style: normal;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  color: #d8442a;
+}
+
 .feedback-item-date {
   font-family: "Inter", "Noto Sans TC", sans-serif;
   font-size: 1rem;
@@ -321,6 +339,11 @@
   .feedback-item-text {
     flex: 1;
     min-width: 12ch;
+  }
+  .feedback-item-reply {
+    flex: 1 1 100%;
+    min-width: 12ch;
+    white-space: normal;
   }
   .feedback-ticker-viewport {
     overflow: visible;

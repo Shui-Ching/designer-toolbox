@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>金額轉大寫 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202606192107">
+  <link rel="stylesheet" href="./style.css?v=202606192107">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="amount-words">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 27</span>
+        <h1 class="tool-head-title">金額轉大寫</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      輸入金額，即時轉成 <span class="tag">中文大寫</span>（正式財務格式，含元角分與「整」）
+      與英文大寫，開立發票、支票、合約金額用得上。全程在瀏覽器端計算，數字不上傳。
+    </p>
+
+    <div class="amount-layout">
+
+      <!-- 輸入區 -->
+      <section class="amount-input-pane" aria-label="金額輸入">
+        <label class="amount-field">
+          <span class="amount-field-label">金額（最多兩位小數）</span>
+          <span class="amount-input-wrap">
+            <span class="amount-currency" aria-hidden="true">$</span>
+            <input
+              id="amount-input"
+              class="amount-input"
+              type="text"
+              inputmode="decimal"
+              placeholder="例如 12345.67"
+              autocomplete="off"
+              aria-label="輸入金額">
+          </span>
+        </label>
+        <p class="amount-error" id="amount-error" aria-live="polite"></p>
+      </section>
+
+      <!-- 結果區 -->
+      <section class="result-list" aria-label="轉換結果">
+
+        <div class="result-row">
+          <div class="result-meta">
+            <span class="result-label">阿拉伯數字 · Number</span>
+            <button class="result-copy" type="button" data-copy="num" aria-label="複製阿拉伯數字">複製</button>
+          </div>
+          <p class="result-value result-value-num" id="out-num">—</p>
+        </div>
+
+        <div class="result-row">
+          <div class="result-meta">
+            <span class="result-label">中文大寫 · 財務格式</span>
+            <button class="result-copy" type="button" data-copy="cn" aria-label="複製中文大寫">複製</button>
+          </div>
+          <p class="result-value result-value-cn" id="out-cn">—</p>
+        </div>
+
+        <div class="result-row">
+          <div class="result-meta">
+            <span class="result-label">英文大寫 · English</span>
+            <button class="result-copy" type="button" data-copy="en" aria-label="複製英文大寫">複製</button>
+          </div>
+          <p class="result-value result-value-en" id="out-en">—</p>
+        </div>
+
+        <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot">
+    <a href="https://forms.gle/VAFZCfakxrVvpTdq6" target="_blank" rel="noopener noreferrer" class="btn btn-accent">意見回饋</a>
+    <span class="site-foot-copy">© 2026 Andrew Cheng. All rights reserved.</span>
+  </footer>
+
+  <script type="module" src="./script.js?v=202606192107"></script>
+</body>
+</html>

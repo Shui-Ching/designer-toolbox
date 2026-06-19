@@ -34,6 +34,8 @@ const TOOL_POPULARITY = {
   'services/pomodoro/index.html': 2500,
   'services/watermark/index.html': 1700,
   'services/unit-convert/index.html': 2300,
+  'services/text-case/index.html': 0,
+  'services/amount-words/index.html': 0,
   'services/video-compress/index.html': 0,
 };
 

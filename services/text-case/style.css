@@ -1,0 +1,170 @@
+:root {
+  --color-paper: #f4f1e8;
+  --color-paper-deep: #ece7d9;
+  --color-ink: #1c1b18;
+  --color-ink-soft: #6b665b;
+  --color-line: #d9d3c3;
+  --color-accent: #d8442a;
+  --color-accent-deep: #b0331d;
+  --color-mark: #e0a92e;
+  --font-display: Inter, Noto Sans TC, sans-serif;
+  --font-body: Inter, Noto Sans TC, sans-serif;
+  --font-mono: Inter, Noto Sans TC, sans-serif;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.tool-intro {
+  max-width: 64ch;
+  margin-block: 24px 40px;
+  color: #6b665b;
+}
+
+.case-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 40px;
+  align-items: start;
+}
+
+.editor-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.editor-toolbar-label {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  color: #6b665b;
+  font-variant-numeric: tabular-nums;
+}
+
+.editor-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.text-area {
+  width: 100%;
+  min-height: 420px;
+  padding: 24px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  line-height: 1.85;
+  color: #1c1b18;
+  background: #f4f1e8;
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+  box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
+  resize: vertical;
+  transition: border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.text-area::placeholder {
+  color: #6b665b;
+}
+.text-area:focus {
+  outline: none;
+  border-color: #d8442a;
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: 0;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #d8442a;
+}
+
+.case-pane {
+  position: sticky;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  background: #ece7d9;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+}
+.case-pane .section-rule {
+  margin-top: 0;
+}
+
+.case-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.case-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: 8px 16px;
+  text-align: left;
+  background: #f4f1e8;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), background-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.case-btn:hover {
+  border-color: #d8442a;
+  transform: translateX(2px);
+}
+.case-btn:active {
+  transform: translateX(0);
+}
+.case-btn:focus-visible {
+  outline: 2px solid #d8442a;
+  outline-offset: 2px;
+}
+
+.case-btn-name {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #1c1b18;
+}
+
+.case-btn-en {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: #6b665b;
+}
+
+.case-note {
+  margin: 24px 0 0;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #6b665b;
+}
+
+@media (max-width: 860px) {
+  .case-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .case-pane {
+    position: static;
+  }
+  .text-area {
+    min-height: 320px;
+  }
+  .case-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

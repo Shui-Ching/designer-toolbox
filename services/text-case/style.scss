@@ -1,0 +1,180 @@
+// ============================================================
+// 26 大小寫轉換 — 工具特有樣式
+// 共用元件（tool-head / btn / tag / section-rule）直接套 class，這裡補輸入區與轉換面板
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+}
+
+// — 版面：左輸入、右轉換鈕；窄螢幕改上下堆疊 —
+.case-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: $space-5;
+  align-items: start;
+}
+
+// ============================================================
+// 左側輸入區（與字數統計工具同語彙）
+// ============================================================
+.editor-pane {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  min-width: 0;
+}
+
+// 工具列：左即時計數、右動作鈕
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+}
+
+.editor-toolbar-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+  font-variant-numeric: tabular-nums;
+}
+
+.editor-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+// — 稿紙輸入框 —
+.text-area {
+  width: 100%;
+  min-height: 420px;
+  padding: $space-4;
+  font-family: $font-body;
+  font-size: $fs-base;
+  line-height: 1.85;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
+  resize: vertical;
+  transition: border-color $dur $ease;
+
+  &::placeholder { color: $color-ink-soft; }
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// ============================================================
+// 右側轉換面板（黏頂，捲動時跟著）
+// ============================================================
+.case-pane {
+  position: sticky;
+  top: $space-4;
+  display: flex;
+  flex-direction: column;
+  padding: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+
+  // 面板內首個區段標題去掉預設上緣外距，貼齊面板上緣
+  .section-rule { margin-top: 0; }
+}
+
+.case-actions {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+// — 單一轉換鈕：中文名在上、英文示例在下 —
+.case-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: $space-2 $space-3;
+  text-align: left;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: border-color $dur $ease, background-color $dur $ease, transform $dur $ease;
+
+  &:hover {
+    border-color: $color-accent;
+    transform: translateX(2px);
+  }
+
+  &:active { transform: translateX(0); }
+
+  &:focus-visible {
+    outline: 2px solid $color-accent;
+    outline-offset: 2px;
+  }
+}
+
+.case-btn-name {
+  font-family: $font-body;
+  font-size: $fs-base;
+  color: $color-ink;
+}
+
+.case-btn-en {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.02em;
+  color: $color-ink-soft;
+}
+
+.case-note {
+  margin: $space-4 0 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  line-height: 1.6;
+  color: $color-ink-soft;
+}
+
+// ============================================================
+// 窄螢幕：上下堆疊，轉換面板取消黏頂
+// ============================================================
+@media (max-width: 860px) {
+  .case-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-4;
+  }
+
+  .case-pane {
+    position: static;
+  }
+
+  .text-area {
+    min-height: 320px;
+  }
+
+  // 窄螢幕轉換鈕改兩欄並排，節省垂直空間
+  .case-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

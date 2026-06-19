@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>大小寫轉換 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202606192107">
+  <link rel="stylesheet" href="./style.css?v=202606192107">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="text-case">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 26</span>
+        <h1 class="tool-head-title">大小寫轉換</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      貼上英文文字，一鍵切換 <span class="tag">大寫</span>、小寫、句首大寫、標題式（Title Case）等
+      常見格式。全程在瀏覽器端處理，文字不上傳。
+    </p>
+
+    <div class="case-layout">
+
+      <!-- 左：輸入區 -->
+      <section class="editor-pane" aria-label="文字輸入">
+        <div class="editor-toolbar">
+          <span class="editor-toolbar-label" id="live-count">0 字元 · 0 字</span>
+          <div class="editor-toolbar-actions">
+            <button class="btn" id="sample-btn" type="button">載入範例</button>
+            <button class="btn" id="copy-btn" type="button">複製文字</button>
+            <button class="btn" id="clear-btn" type="button">清空</button>
+          </div>
+        </div>
+        <textarea
+          id="text-input"
+          class="text-area"
+          placeholder="在這裡輸入或貼上文字…例如 the quick brown fox"
+          spellcheck="false"
+          aria-label="文字輸入區"></textarea>
+        <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+      </section>
+
+      <!-- 右：轉換方式 -->
+      <aside class="case-pane" aria-label="轉換方式">
+        <div class="section-rule"><span class="tag">轉換方式</span></div>
+        <div class="case-actions" id="case-actions">
+          <button class="case-btn" type="button" data-case="sentence">
+            <span class="case-btn-name">句首大寫</span>
+            <span class="case-btn-en">Sentence case</span>
+          </button>
+          <button class="case-btn" type="button" data-case="lower">
+            <span class="case-btn-name">全部小寫</span>
+            <span class="case-btn-en">lower case</span>
+          </button>
+          <button class="case-btn" type="button" data-case="upper">
+            <span class="case-btn-name">全部大寫</span>
+            <span class="case-btn-en">UPPER CASE</span>
+          </button>
+          <button class="case-btn" type="button" data-case="capitalized">
+            <span class="case-btn-name">每字首大寫</span>
+            <span class="case-btn-en">Capitalized Case</span>
+          </button>
+          <button class="case-btn" type="button" data-case="title">
+            <span class="case-btn-name">標題式</span>
+            <span class="case-btn-en">Title Case</span>
+          </button>
+          <button class="case-btn" type="button" data-case="alternating">
+            <span class="case-btn-name">交替大小寫</span>
+            <span class="case-btn-en">aLtErNaTiNg</span>
+          </button>
+          <button class="case-btn" type="button" data-case="inverse">
+            <span class="case-btn-name">反轉大小寫</span>
+            <span class="case-btn-en">InVeRsE cAsE</span>
+          </button>
+        </div>
+        <p class="case-note">
+          轉換會直接套用到左側文字，可連續切換不同格式。
+          「標題式」會略過 a／the／of 等英文小詞，僅首尾字一定大寫。
+        </p>
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot">
+    <a href="https://forms.gle/VAFZCfakxrVvpTdq6" target="_blank" rel="noopener noreferrer" class="btn btn-accent">意見回饋</a>
+    <span class="site-foot-copy">© 2026 Andrew Cheng. All rights reserved.</span>
+  </footer>
+
+  <script type="module" src="./script.js?v=202606192107"></script>
+</body>
+</html>

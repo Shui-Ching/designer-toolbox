@@ -289,6 +289,27 @@
   color: $color-ink;
 }
 
+// 管理員回覆：仿手冊「編按」眉批，緊接該則心聲，與使用者原話拉出層次
+.feedback-item-reply {
+  display: inline-flex;
+  align-items: baseline;
+  gap: $space-1;
+  font-size: $fs-sm;
+  font-style: italic;
+  color: $color-ink-soft;
+
+  // 前綴標記回覆來源：等寬字呼應技術標籤，硃紅點題
+  &::before {
+    content: '↳ 管理員：';
+    flex: none;
+    font-family: $font-mono;
+    font-style: normal;
+    font-size: $fs-xs;
+    letter-spacing: 0.04em;
+    color: $color-accent;
+  }
+}
+
 .feedback-item-date {
   font-family: $font-mono;
   font-size: $fs-xs;
@@ -314,6 +335,11 @@
   .feedback-item-text {
     flex: 1;
     min-width: 12ch;          // 內文保有最小可讀寬度，不足就觸發換行
+  }
+  .feedback-item-reply {
+    flex: 1 1 100%;           // 回覆獨佔整列，長句完整呈現不被裁切
+    min-width: 12ch;
+    white-space: normal;
   }
   .feedback-ticker-viewport {
     overflow: visible;

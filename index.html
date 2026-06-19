@@ -16,8 +16,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="shared/styles/shared.css?v=202606121911">
-  <link rel="stylesheet" href="index.css?v=202606121911">
+  <link rel="stylesheet" href="shared/styles/shared.css?v=202606192107">
+  <link rel="stylesheet" href="index.css?v=202606192107">
 
   <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
@@ -54,38 +54,100 @@
             2. 把同一則也複製到「第 2、3 組」（兩處各一份），且務必帶上 class="is-clone" 與 aria-hidden="true"。
                ↳ 三組內容需完全一致，無縫循環才不會跳格；複製組僅供視覺，不讓螢幕報讀重複念。
             3. date 用 <time datetime="YYYY-MM-DD">，顯示文字可依手冊風寫成 2026/06/11。
+            4. 如需附管理員回覆，在 .feedback-item-text 之後、.feedback-item-date 之前加一行
+               <span class="feedback-item-reply">…</span>（同樣三組都要帶）。
           -->
           <ul class="feedback-ticker-track">
             <!-- 第 1 組：供螢幕報讀的真實內容 -->
             <li class="feedback-item">
               <span class="feedback-item-tag">功能許願池</span>
+              <span class="feedback-item-text">你好~我覺得金額轉換中文大寫、或英文大寫也很不錯~另外還有把英文大寫轉換成小寫，或者是 title case 也不錯。我通常是用這邊的網站：https://convertcase.net/ 覺得在你這邊也蠻適合加設！很棒的工具箱！</span>
+              <span class="feedback-item-reply">已新增 工具24、25，歡迎試用～</span>
+              <time class="feedback-item-date" datetime="2026-06-19">2026/06/19</time>
+            </li>
+            <li class="feedback-item">
+              <span class="feedback-item-tag">功能許願池</span>
+              <span class="feedback-item-text">圖片改尺寸希望可以變大張，可以選擇原本圖片不等比放大、等比放大，以及指定長寬的功能，謝謝！(✿◡‿◡)</span>
+              <span class="feedback-item-reply">不建議放大，容易失去照片品質。工具 6 指定寬度可以自由調整，無論比例或是拖拉裁切。</span>
+              <time class="feedback-item-date" datetime="2026-06-16">2026/06/16</time>
+            </li>
+            <li class="feedback-item">
+              <span class="feedback-item-tag">功能許願池</span>
+              <span class="feedback-item-text">影片壓縮，感謝！</span>
+              <span class="feedback-item-reply">抱歉目前技術無法克服，深感抱歉 ><</span>
+              <time class="feedback-item-date" datetime="2026-06-12">2026/06/12</time>
+            </li>
+            <li class="feedback-item">
+              <span class="feedback-item-tag">功能許願池</span>
               <span class="feedback-item-text">pt 單位換算器（pt → cm、cm/mm → pt）</span>
+              <span class="feedback-item-reply">已新增 工具23，謝謝您的回饋！</span>
               <time class="feedback-item-date" datetime="2026-06-11">2026/06/11</time>
             </li>
             <li class="feedback-item">
               <span class="feedback-item-tag">其他</span>
               <span class="feedback-item-text">謝謝你做的工具！！！超棒超好用幫了大忙～😊</span>
+              <span class="feedback-item-reply">謝謝您的支持，是我繼續走下去的動力！</span>
               <time class="feedback-item-date" datetime="2026-06-11">2026/06/11</time>
             </li>
             <!-- 第 2、3 組：純為無縫循環的視覺複製，對輔助技術隱藏 -->
             <li class="feedback-item is-clone" aria-hidden="true">
               <span class="feedback-item-tag">功能許願池</span>
-              <span class="feedback-item-text">pt 單位換算器（pt → cm、cm/mm → pt）</span>
-              <time class="feedback-item-date" datetime="2026-06-11">2026/06/11</time>
+              <span class="feedback-item-text">你好~我覺得金額轉換中文大寫、或英文大寫也很不錯~另外還有把英文大寫轉換成小寫，或者是 title case 也不錯。我通常是用這邊的網站：https://convertcase.net/ 覺得在你這邊也蠻適合加設！很棒的工具箱！</span>
+              <span class="feedback-item-reply">已新增 工具24、25，歡迎試用～</span>
+              <time class="feedback-item-date" datetime="2026-06-19">2026/06/19</time>
             </li>
             <li class="feedback-item is-clone" aria-hidden="true">
-              <span class="feedback-item-tag">其他</span>
-              <span class="feedback-item-text">謝謝你做的工具！！！超棒超好用幫了大忙～😊</span>
-              <time class="feedback-item-date" datetime="2026-06-11">2026/06/11</time>
+              <span class="feedback-item-tag">功能許願池</span>
+              <span class="feedback-item-text">圖片改尺寸希望可以變大張，可以選擇原本圖片不等比放大、等比放大，以及指定長寬的功能，謝謝！(✿◡‿◡)</span>
+              <span class="feedback-item-reply">不建議放大，容易失去照片品質。工具 6 指定寬度可以自由調整，無論比例或是拖拉裁切。</span>
+              <time class="feedback-item-date" datetime="2026-06-16">2026/06/16</time>
+            </li>
+            <li class="feedback-item is-clone" aria-hidden="true">
+              <span class="feedback-item-tag">功能許願池</span>
+              <span class="feedback-item-text">影片壓縮，感謝！</span>
+              <span class="feedback-item-reply">抱歉目前技術無法克服，深感抱歉 ><</span>
+              <time class="feedback-item-date" datetime="2026-06-12">2026/06/12</time>
             </li>
             <li class="feedback-item is-clone" aria-hidden="true">
               <span class="feedback-item-tag">功能許願池</span>
               <span class="feedback-item-text">pt 單位換算器（pt → cm、cm/mm → pt）</span>
+              <span class="feedback-item-reply">已新增 工具23，謝謝您的回饋！</span>
               <time class="feedback-item-date" datetime="2026-06-11">2026/06/11</time>
             </li>
             <li class="feedback-item is-clone" aria-hidden="true">
               <span class="feedback-item-tag">其他</span>
               <span class="feedback-item-text">謝謝你做的工具！！！超棒超好用幫了大忙～😊</span>
+              <span class="feedback-item-reply">謝謝您的支持，是我繼續走下去的動力！</span>
+              <time class="feedback-item-date" datetime="2026-06-11">2026/06/11</time>
+            </li>
+            <li class="feedback-item is-clone" aria-hidden="true">
+              <span class="feedback-item-tag">功能許願池</span>
+              <span class="feedback-item-text">你好~我覺得金額轉換中文大寫、或英文大寫也很不錯~另外還有把英文大寫轉換成小寫，或者是 title case 也不錯。我通常是用這邊的網站：https://convertcase.net/ 覺得在你這邊也蠻適合加設！很棒的工具箱！</span>
+              <span class="feedback-item-reply">已新增 工具24、25，歡迎試用～</span>
+              <time class="feedback-item-date" datetime="2026-06-19">2026/06/19</time>
+            </li>
+            <li class="feedback-item is-clone" aria-hidden="true">
+              <span class="feedback-item-tag">功能許願池</span>
+              <span class="feedback-item-text">圖片改尺寸希望可以變大張，可以選擇原本圖片不等比放大、等比放大，以及指定長寬的功能，謝謝！(✿◡‿◡)</span>
+              <span class="feedback-item-reply">不建議放大，容易失去照片品質。工具 6 指定寬度可以自由調整，無論比例或是拖拉裁切。</span>
+              <time class="feedback-item-date" datetime="2026-06-16">2026/06/16</time>
+            </li>
+            <li class="feedback-item is-clone" aria-hidden="true">
+              <span class="feedback-item-tag">功能許願池</span>
+              <span class="feedback-item-text">影片壓縮，感謝！</span>
+              <span class="feedback-item-reply">抱歉目前技術無法克服，深感抱歉 ><</span>
+              <time class="feedback-item-date" datetime="2026-06-12">2026/06/12</time>
+            </li>
+            <li class="feedback-item is-clone" aria-hidden="true">
+              <span class="feedback-item-tag">功能許願池</span>
+              <span class="feedback-item-text">pt 單位換算器（pt → cm、cm/mm → pt）</span>
+              <span class="feedback-item-reply">已新增 工具23，謝謝您的回饋！</span>
+              <time class="feedback-item-date" datetime="2026-06-11">2026/06/11</time>
+            </li>
+            <li class="feedback-item is-clone" aria-hidden="true">
+              <span class="feedback-item-tag">其他</span>
+              <span class="feedback-item-text">謝謝你做的工具！！！超棒超好用幫了大忙～😊</span>
+              <span class="feedback-item-reply">謝謝您的支持，是我繼續走下去的動力！</span>
               <time class="feedback-item-date" datetime="2026-06-11">2026/06/11</time>
             </li>
           </ul>
@@ -122,7 +184,7 @@
           </select>
         </label>
 
-        <span class="index-count" id="tool-count">23 項工具</span>
+        <span class="index-count" id="tool-count">25 項工具</span>
       </div>
 
       <!-- 分類篩選：依領域切換工具，與搜尋列為交集篩選 -->
@@ -455,7 +517,33 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
-        <!-- 25 影片壓縮：暫時隱藏，要重新上架時取消註解並把計數 23 改回 24 -->
+        <a class="tool-card" href="services/text-case/index.html" data-category="text" data-keywords="大小寫 轉換 case 英文 大寫 小寫 uppercase lowercase 句首 sentence case title case 標題 capitalize 交替 反轉 convertcase 文字格式">
+          <div class="tool-card-top">
+            <span class="tool-card-no">24</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">大小寫轉換</h2>
+            <span class="tool-card-en">Text Case</span>
+          </div>
+          <p class="tool-card-desc">英文文字一鍵切換大寫、小寫、句首大寫與標題式（Title Case），可連續套用。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/amount-words/index.html" data-category="text" data-keywords="金額 大寫 中文大寫 國字 壹貳參 財務 發票 支票 合約 數字 轉 文字 英文大寫 number to words 元角分 整 capitalize amount">
+          <div class="tool-card-top">
+            <span class="tool-card-no">25</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">金額轉大寫</h2>
+            <span class="tool-card-en">Amount in Words</span>
+          </div>
+          <p class="tool-card-desc">金額即時轉中文財務大寫（含元角分與「整」）與英文大寫，開發票、支票、合約用。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <!-- 26 影片壓縮：暫時隱藏，要重新上架時取消註解並把計數 25 改回 26 -->
         <!--
         <a class="tool-card" href="services/video-compress/index.html" data-category="image" data-keywords="影片 壓縮 video compress mp4 mov webm 縮小 體積 轉檔 webcodecs h264 上傳 寄信 簡報 錄影 螢幕錄影">
           <div class="tool-card-top">
@@ -490,6 +578,6 @@
   <button class="go-top" id="go-top" aria-label="回到頂端">↑</button>
 
   <!-- 首頁工具搜尋（外部檔，符合 CSP script-src 'self'） -->
-  <script defer src="home.js?v=202606121911"></script>
+  <script defer src="home.js?v=202606192107"></script>
 </body>
 </html>

@@ -1,0 +1,190 @@
+// ============================================================
+// 27 金額轉大寫 — 工具特有樣式
+// 共用元件（tool-head / btn / tag）直接套 class，這裡補輸入欄與結果列
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+}
+
+// — 版面：上輸入、下結果，置中收窄 —
+.amount-layout {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+  max-width: 720px;
+}
+
+// ============================================================
+// 輸入區
+// ============================================================
+.amount-field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.amount-field-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+// 貨幣符號 + 輸入框，整體當一個墨框
+.amount-input-wrap {
+  display: flex;
+  align-items: stretch;
+  border: $border-ink;
+  border-radius: $radius;
+  background: $color-paper;
+  box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
+  transition: border-color $dur $ease;
+
+  &:focus-within { border-color: $color-accent; }
+}
+
+.amount-currency {
+  display: grid;
+  place-items: center;
+  padding-inline: $space-4;
+  font-family: $font-display;
+  font-size: $fs-xl;
+  font-weight: 600;
+  color: $color-ink-soft;
+  border-right: $border-fine;
+}
+
+.amount-input {
+  flex: 1;
+  min-width: 0;
+  padding: $space-3 $space-4;
+  font-family: $font-display;
+  font-size: $fs-2xl;
+  font-weight: 600;
+  line-height: 1.1;
+  color: $color-ink;
+  background: transparent;
+  border: 0;
+  font-variant-numeric: tabular-nums;
+
+  &::placeholder {
+    font-weight: 400;
+    color: $color-ink-soft;
+  }
+
+  &:focus { outline: none; }
+}
+
+// 輸入超出範圍／格式錯誤時的提示與框色
+.amount-error {
+  min-height: 1.4em;
+  margin: 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+.amount-input-wrap.is-invalid {
+  border-color: $color-accent;
+  box-shadow: 6px 6px 0 color-mix(in srgb, $color-accent 18%, transparent);
+}
+
+// ============================================================
+// 結果列
+// ============================================================
+.result-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.result-row {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  padding: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+.result-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+}
+
+.result-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+// 複製鈕：沿用 back-link 的低調語彙
+.result-copy {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: color $dur $ease;
+
+  &:hover { color: $color-accent; }
+
+  &:focus-visible {
+    outline: 2px solid $color-accent;
+    outline-offset: 2px;
+  }
+}
+
+// 轉換結果文字：可換行、可選取
+.result-value {
+  margin: 0;
+  font-family: $font-body;
+  font-size: $fs-lg;
+  line-height: 1.5;
+  color: $color-ink;
+  word-break: break-word;
+}
+
+// 空值（—）以淡墨呈現
+.result-value.is-empty { color: $color-ink-soft; }
+
+.result-value-num { font-variant-numeric: tabular-nums; }
+
+.result-value-cn {
+  letter-spacing: 0.04em; // 中文大寫拉開字距，逐字辨識更清楚
+}
+
+.result-value-en {
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// ============================================================
+// 窄螢幕
+// ============================================================
+@media (max-width: 600px) {
+  .amount-input { font-size: $fs-xl; }
+  .amount-currency { font-size: $fs-lg; padding-inline: $space-3; }
+}
