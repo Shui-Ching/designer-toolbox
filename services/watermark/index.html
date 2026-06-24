@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
@@ -16,8 +16,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202606192107">
-  <link rel="stylesheet" href="./style.css?v=202606192107">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202606241628">
+  <link rel="stylesheet" href="./style.css?v=202606241628">
 
   <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
@@ -26,7 +26,7 @@
   <main class="container">
     <div class="tool-head">
       <div>
-        <span class="tag tag-accent">Tool / 23</span>
+        <span class="tag tag-accent">Tool / 22</span>
         <h1 class="tool-head-title">浮水印</h1>
       </div>
       <div class="tool-head-actions">
@@ -72,6 +72,46 @@
             <div class="color-row">
               <input type="color" id="text-color" class="color-swatch" value="#ffffff">
               <input type="text" id="text-color-hex" class="text-input color-hex" value="#FFFFFF" spellcheck="false" maxlength="7">
+            </div>
+
+            <!-- 描邊 -->
+            <span class="control-label">描邊 · stroke</span>
+            <div class="chip-group" id="stroke-group">
+              <button class="chip is-active" type="button" data-stroke="off">關</button>
+              <button class="chip" type="button" data-stroke="on">開</button>
+            </div>
+            <div class="sub-block" id="stroke-extra" hidden>
+              <span class="control-label">描邊顏色</span>
+              <div class="color-row">
+                <input type="color" id="stroke-color" class="color-swatch" value="#000000">
+                <input type="text" id="stroke-color-hex" class="text-input color-hex" value="#000000" spellcheck="false" maxlength="7">
+              </div>
+              <span class="control-label">描邊粗細
+                <span class="control-label-value"><span id="val-stroke">6</span></span>
+              </span>
+              <input class="range-input" type="range" id="stroke-weight" min="1" max="30" step="1" value="6">
+            </div>
+
+            <!-- 陰影 -->
+            <span class="control-label">陰影 · shadow</span>
+            <div class="chip-group" id="shadow-group">
+              <button class="chip is-active" type="button" data-shadow="off">關</button>
+              <button class="chip" type="button" data-shadow="on">開</button>
+            </div>
+            <div class="sub-block" id="shadow-extra" hidden>
+              <span class="control-label">陰影顏色</span>
+              <div class="color-row">
+                <input type="color" id="shadow-color-pick" class="color-swatch" value="#000000">
+                <input type="text" id="shadow-color-hex" class="text-input color-hex" value="#000000" spellcheck="false" maxlength="7">
+              </div>
+              <span class="control-label">模糊
+                <span class="control-label-value"><span id="val-shadow-blur">15</span></span>
+              </span>
+              <input class="range-input" type="range" id="shadow-blur" min="0" max="50" step="1" value="15">
+              <span class="control-label">位移
+                <span class="control-label-value"><span id="val-shadow-offset">8</span></span>
+              </span>
+              <input class="range-input" type="range" id="shadow-offset" min="0" max="30" step="1" value="8">
             </div>
           </div>
 
@@ -135,17 +175,22 @@
 
           <!-- 平鋪間距（平鋪模式）-->
           <div class="control-block" id="gap-block" hidden>
-            <span class="control-label">平鋪間距
-              <span class="control-label-value"><span id="val-gap">10</span>%</span>
+            <span class="control-label">水平間距 · gap X
+              <span class="control-label-value"><span id="val-gap-x">10</span>%</span>
             </span>
-            <input class="range-input" type="range" id="gap" min="0" max="40" step="1" value="10">
+            <input class="range-input" type="range" id="gap-x" min="0" max="60" step="1" value="10">
+            <span class="control-label">垂直間距 · gap Y
+              <span class="control-label-value"><span id="val-gap-y">10</span>%</span>
+            </span>
+            <input class="range-input" type="range" id="gap-y" min="0" max="60" step="1" value="10">
           </div>
 
           <!-- 輸出格式 -->
           <div class="control-block control-section">
             <span class="control-label">輸出格式 · format</span>
             <div class="chip-group" id="format-group">
-              <button class="chip is-active" type="button" data-format="image/png">PNG</button>
+              <button class="chip is-active" type="button" data-format="auto">原始格式</button>
+              <button class="chip" type="button" data-format="image/png">PNG</button>
               <button class="chip" type="button" data-format="image/jpeg">JPEG</button>
               <button class="chip" type="button" data-format="image/webp">WebP</button>
             </div>
@@ -177,11 +222,8 @@
   </main>
 
   <!-- 頁尾 -->
-  <footer class="container site-foot">
-    <a href="https://forms.gle/VAFZCfakxrVvpTdq6" target="_blank" rel="noopener noreferrer" class="btn btn-accent">意見回饋</a>
-    <span class="site-foot-copy">© 2026 Andrew Cheng. All rights reserved.</span>
-  </footer>
+  <footer class="container site-foot"></footer>
 
-  <script type="module" src="./script.js?v=202606192107"></script>
+  <script type="module" src="./script.js?v=202606241628"></script>
 </body>
 </html>

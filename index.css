@@ -479,6 +479,25 @@
   color: #d8442a;
 }
 
+.site-foot-privacy {
+  width: 100%;
+  margin: 0;
+  padding-top: 8px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+  text-align: center;
+  opacity: 0.6;
+}
+.site-foot-privacy a {
+  color: inherit;
+  text-underline-offset: 3px;
+}
+.site-foot-privacy a:hover {
+  color: #d8442a;
+  opacity: 1;
+}
+
 .home-foot {
   padding-block: 24px;
   border-top: 1.5px solid #1c1b18;

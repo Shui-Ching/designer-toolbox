@@ -3,7 +3,7 @@
 // 單一真實來源：每個類別以「基準單位」保存目前數值（state.bases[cat]），
 // 編輯任一欄即換算回基準、再回填其餘欄位。零相依、全在瀏覽器端運算。
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202606192107';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202606241628';
 
 // — DOM —
 const tabsEl = document.getElementById('unit-tabs');
@@ -107,6 +107,39 @@ const CATEGORIES = {
       { id: 'km2', name: '平方公里', sym: 'km²', factor: 1e6 },
       { id: 'in2', name: '平方英吋', sym: 'in²', factor: 0.00064516 },
       { id: 'ft2', name: '平方英尺', sym: 'ft²', factor: 0.09290304 },
+    ],
+  },
+  data: {
+    label: '資料量', tag: '資料量', base: 'B', default: 1048576,
+    note: '採 1 KB = 1024 B（二進位制，常見於檔案大小與記憶體描述）。1 MB = 1024 KB、1 GB = 1024 MB、1 TB = 1024 GB。',
+    units: () => [
+      { id: 'b', name: '位元組', sym: 'B', factor: 1 },
+      { id: 'kb', name: '千位元組', sym: 'KB', factor: 1024 },
+      { id: 'mb', name: '百萬位元組', sym: 'MB', factor: 1024 ** 2 },
+      { id: 'gb', name: '十億位元組', sym: 'GB', factor: 1024 ** 3 },
+      { id: 'tb', name: '兆位元組', sym: 'TB', factor: 1024 ** 4 },
+    ],
+  },
+  angle: {
+    label: '角度', tag: '角度', base: '°', default: 180,
+    note: '1 rad = 180/π° ≈ 57.296°；1 turn = 360°；1 grad = 0.9°（公制百分度，直角 = 100 grad）。',
+    units: () => [
+      { id: 'deg', name: '度', sym: '°', factor: 1 },
+      { id: 'rad', name: '弧度', sym: 'rad', factor: 180 / Math.PI },
+      { id: 'turn', name: '圈', sym: 'turn', factor: 360 },
+      { id: 'grad', name: '百分度', sym: 'grad', factor: 0.9 },
+    ],
+  },
+  time: {
+    label: '時間', tag: '時間', base: 's', default: 60,
+    note: '以秒為基準：1min = 60s、1hr = 3600s、1day = 86400s、1week = 604800s。',
+    units: () => [
+      { id: 'ms', name: '毫秒', sym: 'ms', factor: 0.001 },
+      { id: 's', name: '秒', sym: 's', factor: 1 },
+      { id: 'min', name: '分', sym: 'min', factor: 60 },
+      { id: 'hr', name: '時', sym: 'hr', factor: 3600 },
+      { id: 'day', name: '天', sym: 'day', factor: 86400 },
+      { id: 'week', name: '週', sym: 'week', factor: 604800 },
     ],
   },
 };

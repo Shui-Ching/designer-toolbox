@@ -3,7 +3,17 @@
 > 每次收工更新此檔。下次接續時，這裡是進度的單一真實來源。
 > 架構決策與設計 token 另存於 project skill（見最下方）。
 
-最後更新：2026-06-19（完成 **26 大小寫轉換** 與 **27 金額轉大寫** 兩個文字工具，皆零相依、純前端、文字不上傳，沿用手冊風設計系統。**26 大小寫轉換**（`services/text-case`，`data-category="text"`，卡片顯示編號 **24**、tool-head `Tool / 26`）：左輸入框 + 右轉換面板（沿用字數統計 13 的 `.editor-pane`／`.text-area`／黏頂面板語彙），七種轉換直接套用到輸入框可連續切換——句首大寫、全大寫、全小寫、每字首大寫、**標題式 Title Case**（略過 a/the/of 等小詞但首尾字一定大寫）、交替大小寫、反轉大小寫；即時字元／字數計數沿用 13 的中文逐字、英數連續串各算一詞規則。**27 金額轉大寫**（`services/amount-words`，`data-category="text"`，卡片顯示編號 **25**、tool-head `Tool / 27`）：使用者拍板**正式財務格式**（含元角分與「整」、零的正確處理）。**關鍵：以字串切整數／小數處理，避免浮點誤差**；中文用 4 位一節 + 萬億兆大單位（支援到 16 位數＝兆級），節內前導零與整節為零都補單一「零」隔開、最後修剪結尾多餘零（已 Node 驗證 12345.67→壹萬貳仟參佰肆拾伍元陸角柒分、10005→壹萬零伍元整、100000005→壹億零伍元整、100.05→壹佰元零伍分、0.56→伍角陸分 等案例）；英文用 BigInt 每 3 位一組 + thousand～quadrillion，支票格式整數 + 小數 `XX/100`，一律大寫呈現。三列結果（阿拉伯數字千分位／中文大寫／英文大寫）各附複製鈕、解析失敗輸入框轉硃紅並提示。共同收尾：入口頁 `index.html` 補兩張卡片（接在單位換算卡 23 之後）＋搜尋計數 23→**25**、`home.js` 熱門度表補兩個 key（暫填 0）、`package.json` 補兩條 scss:css 編譯映射並 `npm run build:css`、隱藏的影片壓縮註解編號順移為 26）
+最後更新：2026-06-24（完成 **26 盤古之白**（`services/pangu`，`data-category="text"`，卡片顯示編號 **26**、tool-head `Tool / 26`）：輸入中英混排文字，「加入空格」按鈕以純 Regex 在 CJK 字符（中日韓及注音等各主要 Unicode 區塊）與半形英文字母／阿拉伯數字之間插入半角空格；「移除空格」做反向操作；按鈕視覺以「中·A」／「中A」示範差異；執行後以 `.pangu-stat` 顯示插入／移除數量，無需調整時亦有提示；右側面板黏頂，窄螢幕改上下堆疊；`data-category="text"`＋搜尋計數 25→**26**＋`home.js` 熱門度表補 key＋`package.json` 補編譯映射＋`npm run stamp` 更新版本戳記至 v=202606241628）
+
+前次更新：2026-06-24（**單位換算新增三個類別**：**資料量**（B／KB／MB／GB／TB，1 KB = 1024 B 二進位制）、**角度**（°／rad／turn／grad）、**時間**（ms／s／min／hr／day／week）。三個類別全走既有 ratio 模式，直接插入 `CATEGORIES` 物件渲染，工具分頁從 6 個擴充為 9 個。工具頁 intro 與主頁 `data-keywords`／卡片描述同步更新，`npm run stamp` 更新版本戳記至 v=202606241609。）
+
+前次更新：2026-06-24（**`TOOL_POPULARITY` 換成 Umami 真實數據**：到 Umami 後台 Pages 報表，將 `home.js` 的 `TOOL_POPULARITY` 快照表由範例數字全部換成真實 pageviews（截至 2026-06-24），熱門排序前五名：偷懶神器 292、決策轉盤 220、我的留言板 218、社群尺寸建議 193、壓縮圖片 187。）
+
+前次更新：2026-06-24（**浮水印三項選配功能**完成。①**文字描邊**（stroke toggle + 顏色 + 粗細滑桿 1–30，以 `W/1000` 比例縮放）：描邊先於填色繪製（`strokeText` → 清 shadow → `fillText`），平鋪迴圈每格都重設 shadow 確保一致；②**文字陰影**（shadow toggle + 顏色 + 模糊 0–50 + 位移 0–30）：只在描邊前套用，讓填色不重複出現陰影層；③**平鋪間距細控**：單一 `gapPct` 拆成 `gapXPct`（水平）／`gapYPct`（垂直）兩個獨立滑桿，最大值 40→**60%**，加 `Math.max(5, step)` 防 step≤0 無限迴圈；④**輸出保留原始格式**：格式選項新增「原始格式」（預設），載入時 `normalizeFormat(file.type)` 存 `origFormat`（AVIF／GIF fallback PNG），`resolveFormat(it)` 在輸出時決定實際格式，批次下載各圖各用自己的格式，`exportItem` 改回傳 `{ blob, fmt }` 確保檔名副檔名正確。）
+
+前次更新：2026-06-24（兩項維護作業。①**移除 環境音、影片壓縮**：兩工具的入口頁卡片（含原 HTML 註解區塊）與 `home.js` `TOOL_POPULARITY` 項目完全移除，資料夾 `services/video-compress/` 保留於磁碟但不對外開放；`services/white-noise/` 已於 2026-06-24 完全刪除，現有工具數由 25 項維持不變（環境音、影片壓縮本已隱藏，移除不影響計數）。②**內頁 Tool / 編號對齊**：兩工具移除後，入口頁卡片編號 21–25 與各內頁 `Tool / XX` 標籤出現落差（原始開發流水號仍含已移除的兩項），修正 pomodoro（22→21）、watermark（23→22）、unit-convert（24→23）、text-case（26→24）、amount-words（27→25），全站 25 個工具的列表編號與內頁標籤現已完全一致）
+
+前次更新：2026-06-19（完成 **26 大小寫轉換** 與 **27 金額轉大寫** 兩個文字工具，皆零相依、純前端、文字不上傳，沿用手冊風設計系統。**26 大小寫轉換**（`services/text-case`，`data-category="text"`，卡片顯示編號 **24**、tool-head `Tool / 26`）：左輸入框 + 右轉換面板（沿用字數統計 13 的 `.editor-pane`／`.text-area`／黏頂面板語彙），七種轉換直接套用到輸入框可連續切換——句首大寫、全大寫、全小寫、每字首大寫、**標題式 Title Case**（略過 a/the/of 等小詞但首尾字一定大寫）、交替大小寫、反轉大小寫；即時字元／字數計數沿用 13 的中文逐字、英數連續串各算一詞規則。**27 金額轉大寫**（`services/amount-words`，`data-category="text"`，卡片顯示編號 **25**、tool-head `Tool / 27`）：使用者拍板**正式財務格式**（含元角分與「整」、零的正確處理）。**關鍵：以字串切整數／小數處理，避免浮點誤差**；中文用 4 位一節 + 萬億兆大單位（支援到 16 位數＝兆級），節內前導零與整節為零都補單一「零」隔開、最後修剪結尾多餘零（已 Node 驗證 12345.67→壹萬貳仟參佰肆拾伍元陸角柒分、10005→壹萬零伍元整、100000005→壹億零伍元整、100.05→壹佰元零伍分、0.56→伍角陸分 等案例）；英文用 BigInt 每 3 位一組 + thousand～quadrillion，支票格式整數 + 小數 `XX/100`，一律大寫呈現。三列結果（阿拉伯數字千分位／中文大寫／英文大寫）各附複製鈕、解析失敗輸入框轉硃紅並提示。共同收尾：入口頁 `index.html` 補兩張卡片（接在單位換算卡 23 之後）＋搜尋計數 23→**25**、`home.js` 熱門度表補兩個 key（暫填 0）、`package.json` 補兩條 scss:css 編譯映射並 `npm run build:css`、隱藏的影片壓縮註解編號順移為 26）
 
 前次更新：2026-06-12（完成 **25 影片壓縮**：純前端拖放上傳影片，**WebCodecs 硬體加速重新編碼**（2026-06-12 使用者拍板方案一，捨棄 ffmpeg.wasm——30MB 下載、純軟編慢、SharedArrayBuffer 需 COOP/COEP 靜態主機做不到）。`mediabunny@1.46`（MPL-2.0，附授權檔）單檔 0.6MB vendor 至 `services/video-compress/vendor/`（維持 CSP script-src 'self'，首次拖檔才動態 import），負責 demux→原生 VideoDecoder/VideoEncoder 重編 H.264→重組 MP4（`fastStart: 'in-memory'`）；**聲音能複製就原樣複製、不行才自動轉碼，被捨棄時該列以芥黃提醒**。兩根槓桿沿用 20 PDF 壓縮的 UI 語彙：解析度檔位（原始／1080p／720p／480p，**限制「短邊」等比縮小、絕不放大、取偶數**）＋品質滑桿（放開才重壓）。**目標位元率＝輸出像素 × fps × bpp（品質 10–100% 映射 0.033–0.15 bpp），並 clamp 在來源視訊位元率的 85% 以下**避免重編反而變大；fps／來源位元率以 `computePacketStats(120)` 取樣前段封包估算。runToken 佇列邏輯與 20 相同，另對進行中的 `Conversion.cancel()`；首格縮圖走 `CanvasSink`；`BlobSource` 從磁碟串流不佔記憶體、>300MB 大檔提示；啟動偵測 `VideoEncoder`，不支援即亮硃紅 notice 並停用拖放區（Chrome/Edge 94+、Safari 16.4+、Firefox 130+）。輸出 `*-compressed.mp4`，下載埋 `track('use')`；入口頁卡片顯示編號 **24**（接在單位換算 23 之後）＋`data-category="image"`＋搜尋計數 23→24、home.js 熱門度表補 key、package.json 補編譯映射、tool-head 標 `Tool / 25`）
 
@@ -62,11 +72,11 @@ npm run dev
   `.gitignore` 含 `.env` / `node_modules`
 
 **上線前待辦：**
-- [ ] 註冊 https://cloud.umami.is，把全部 HTML 的 `YOUR-UMAMI-WEBSITE-ID` 換成實際 Website ID
+- [x] 註冊 https://cloud.umami.is，把全部 HTML 的 `YOUR-UMAMI-WEBSITE-ID` 換成實際 Website ID
 - [ ] 若 Umami 腳本網域非 `cloud.umami.is`（如 EU 區 `eu.umami.is`），同步改各頁 CSP 的 `script-src` / `connect-src`
 - [x] **07 favicon 已套基線**：補上 `data-tool="favicon"`、CSP meta、Umami 腳本、分享按鈕、下載時 `track('use')`；
   並把 `services/favicon/script.js` 卡片 `${r.name}` 改為 `escapeHtml(r.name)`（修掉同類檔名 XSS）
-- [ ] （選配）首頁 footer 加一行隱私揭露：使用 Umami 匿名統計、不放 cookie、不蒐集個資
+- [x] （選配）首頁 footer 加一行隱私揭露：使用 Umami 匿名統計、不放 cookie、不蒐集個資
 
 **新增工具時，除既有步驟外，務必同步加上這 5 項：**
 1. `<body data-tool="<name>">`
@@ -160,9 +170,10 @@ tool/
   - **2026-06-12 入口頁暫時隱藏**：`index.html` 中整張卡片已用 HTML 註解包起、不再露出（工具本體與分析串接保留）。要復活時：拿掉 `index.html` 的卡片註解、把編號改回 21（屆時番茄鐘改回 22）、搜尋計數初始值改回 22
 - [x] 22 番茄鐘（環境音隱藏後，入口頁編號往前遞補為 21）：專注／短休／長休三模式，SVG 進度環倒數（rAF 以時間戳計算避免分頁節流誤差）、`document.title` 同步倒數可在背景分頁看；時間到自動接續（每 interval 輪走長休息）、**Web Audio 合成提示音**（專注結束上行三音、休息兩音）、可選桌面通知（`Notification` 權限）；設定與今日番茄數存 localStorage（跨日自動歸零）；專注段完成埋 `track('use')`；入口頁徽章 is-live＋`data-category="focus"`＋package.json 補編譯映射
 - [x] 23 浮水印（入口頁顯示編號 22）：替圖片壓上客製化浮水印，沿用「解碼→canvas→toBlob」管線、全程瀏覽器端不上傳。**文字**（內容／顏色／粗體）或**上傳 logo 圖**兩種；**單顆**走九宮格定位或直接在預覽拖曳（拖曳即 `anchor='free'`、存 0..1 中心座標），**平鋪整張**旋轉後以對角線範圍鋪滿、間距可調；大小／透明度／旋轉可調。**所有尺寸性參數以「佔圖寬比例」與 0..1 座標儲存**，故同一組設定能一致套到尺寸不同的批次圖（預覽縮放畫布長邊 ≤720px、輸出原圖尺寸，共用同一 `drawTo()`）；批次縮圖列切換 active、單張移除／清空／新增；輸出 PNG／JPEG／WebP（JPEG 鋪白底），下載埋 `track('use')`；首繪前 `await document.fonts.ready`。`data-category="image"`＋搜尋計數改 22、package.json 補編譯映射
-  - 後續可選：文字描邊／陰影增強深色背景上的可讀性、平鋪密度的更細控制、輸出時保留原始格式自動對應——目前皆未做，留待使用者提出
+  - ✅ 後續選配（2026-06-24 完成）：文字描邊（顏色＋粗細）、文字陰影（顏色＋模糊＋位移）、平鋪水平／垂直間距分離（最大 60%）、輸出保留原始格式（auto 選項，各圖按自己 MIME 下載）
 - [x] 24 單位換算（入口頁顯示編號 23）：多類別即時雙向互轉，沿用 10 色彩格式轉換的「單一真實來源＋即時互算」手法、零相依全在瀏覽器端。分頁切換 6 類別——**網頁字級**（px／rem／em／pt／%）、**印刷物理**（mm／cm／in／pt／px）、**長度**、**重量**、**溫度**、**面積**（含坪／公頃）。每類別以一個「基準單位」存目前數值（`state.bases[cat]`），編輯哪欄即換算回基準、再回填其餘（略過正在輸入的欄位避免游標跳動）。**ratio 類別每單位給「對基準的倍率」factor、`base=值×factor`／`欄=base÷factor`；溫度為含位移的 special 類別、自訂 `toBase`／`fromBase`**。網頁類別 rem／em／% 倍率隨「根字級／參考字級」設定變動、印刷類別 px 倍率隨「DPI」設定變動（72／96／150／300 快捷鈕），改設定保留基準值只重算欄位。CSS 規範 1pt=96/72px≈1.333px（與裝置 DPI 無關）、印刷 1pt=1/72in≈0.3528mm，**滿足 pt↔cm／mm 換算**（72pt=2.54cm、1cm=28.35pt）。數字以 `fmt()` 收斂浮點雜訊去尾零、極大／極小才用有效位數；每欄附複製鈕（埋 `track('use')`）、解析失敗欄位邊框轉硃紅。`data-category="reference"`＋搜尋計數改 23、package.json 補編譯映射、tool-head 標 `Tool / 24`
-  - 後續可選：自訂單位／我的最愛、資料量單位（KB／MB／GB）、角度（deg／rad／turn／grad）、時間單位——目前皆未做，留待使用者提出
+  - ✅ 後續選配（2026-06-24 完成）：資料量（B／KB／MB／GB／TB）、角度（°／rad／turn／grad）、時間（ms／s／min／hr／day／week）
+  - 後續可選：自訂單位／我的最愛——目前未做，留待使用者提出
 - [x] 25 影片壓縮（入口頁顯示編號 24）：純前端拖放上傳影片，**WebCodecs 硬體加速重新編碼**（2026-06-12 使用者拍板方案一，捨棄 ffmpeg.wasm：30MB 下載、純軟編慢、SharedArrayBuffer 需 COOP/COEP 靜態主機做不到）。`mediabunny@1.46`（MPL-2.0，附授權檔）單檔 0.6MB vendor 至 `services/video-compress/vendor/`（維持 CSP script-src 'self'，首次拖檔才動態 import），demux→原生 VideoDecoder/VideoEncoder 重編 H.264→重組 MP4（`fastStart: 'in-memory'`）；聲音能複製就原樣複製、不行才自動轉碼，被捨棄時該列芥黃提醒。解析度檔位（原始／1080p／720p／480p，限制「短邊」等比縮小、不放大、取偶數）＋品質滑桿（放開才重壓）；目標位元率＝輸出像素 × fps × bpp（品質映射 0.033–0.15 bpp）並 clamp 在來源視訊位元率 85% 以下，fps／來源位元率以 `computePacketStats(120)` 估算。runToken 佇列同 20，另對進行中 `Conversion.cancel()`；`CanvasSink` 首格縮圖；`BlobSource` 串流讀檔、>300MB 大檔提示；啟動偵測 `VideoEncoder` 不支援即亮硃紅 notice 並停用拖放區。輸出 `*-compressed.mp4`，下載埋 `track('use')`；入口頁卡片編號 24＋`data-category="image"`＋搜尋計數 23→24、home.js 熱門度表補 key（暫填 0，待 Umami 快照）、package.json 補編譯映射、tool-head 標 `Tool / 25`
 
 ## 入口頁功能
@@ -201,7 +212,7 @@ tool/
 - 後續可選：記住使用者上次選的排序（localStorage）、把熱門度改為「本機使用次數」自動累積——目前皆未做
 
 ### 未來擴充
-- [ ] （待定）其他工具，新增 `services/<name>/` 資料夾即可
+- [x] 26 盤古之白（入口頁顯示編號 26）：輸入中英混排文字，自動在 CJK 字符與半形英數／數字之間插入半角空格；支援反向操作（移除已插入的空格）；純 Regex 實作、零相依，維持 CSP `script-src 'self'`；`data-category="text"`
 
 ### 回饋管道（全站功能）
 - [x] 在入口頁 footer 加「意見回饋」入口（Bug 回報 / 優化建議 / 功能許願池，2026-06-07 完成）

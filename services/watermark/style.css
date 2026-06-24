@@ -68,6 +68,14 @@
   border-top: 1px solid #d9d3c3;
 }
 
+.sub-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 16px;
+  border-left: 2px solid #d9d3c3;
+}
+
 .chip-group {
   display: flex;
   flex-wrap: wrap;

@@ -1,7 +1,7 @@
 // ============================================================
 // 03 社群尺寸建議 — 載入資料、平台篩選、點卡片複製尺寸
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202606192107';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202606241628';
 
 const filterBar = document.getElementById('filter-bar');
 const platformList = document.getElementById('platform-list');

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
@@ -12,8 +12,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202606192107">
-  <link rel="stylesheet" href="./style.css?v=202606192107">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202606241628">
+  <link rel="stylesheet" href="./style.css?v=202606241628">
 
   <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
@@ -22,7 +22,7 @@
   <main class="container">
     <div class="tool-head">
       <div>
-        <span class="tag tag-accent">Tool / 24</span>
+        <span class="tag tag-accent">Tool / 23</span>
         <h1 class="tool-head-title">單位換算</h1>
       </div>
       <div class="tool-head-actions">
@@ -34,7 +34,7 @@
     <p class="tool-intro">
       網頁字級（<span class="tag">px</span><span class="tag">rem</span><span class="tag">em</span><span class="tag">pt</span><span class="tag">%</span>）、
       印刷物理（<span class="tag">mm</span><span class="tag">cm</span><span class="tag">in</span><span class="tag">pt</span><span class="tag">px</span>）、
-      以及長度／重量／溫度／面積即時雙向互轉。改任一欄其餘自動跟著換算，全程在瀏覽器端運算、不上傳任何資料。
+      長度／重量／溫度／面積、資料量（<span class="tag">KB</span><span class="tag">MB</span><span class="tag">GB</span><span class="tag">TB</span>）、角度（<span class="tag">deg</span><span class="tag">rad</span><span class="tag">turn</span>）、時間（<span class="tag">s</span><span class="tag">min</span><span class="tag">hr</span>）即時雙向互轉。改任一欄其餘自動跟著換算，全程在瀏覽器端運算、不上傳任何資料。
     </p>
 
     <section class="converter" aria-label="單位換算">
@@ -47,6 +47,9 @@
         <button class="unit-tab" type="button" role="tab" data-cat="weight" aria-selected="false">重量</button>
         <button class="unit-tab" type="button" role="tab" data-cat="temp" aria-selected="false">溫度</button>
         <button class="unit-tab" type="button" role="tab" data-cat="area" aria-selected="false">面積</button>
+        <button class="unit-tab" type="button" role="tab" data-cat="data" aria-selected="false">資料量</button>
+        <button class="unit-tab" type="button" role="tab" data-cat="angle" aria-selected="false">角度</button>
+        <button class="unit-tab" type="button" role="tab" data-cat="time" aria-selected="false">時間</button>
       </div>
 
       <!-- 設定列（依類別動態顯示，例如根字級、DPI） -->
@@ -64,11 +67,8 @@
   </main>
 
   <!-- 頁尾 -->
-  <footer class="container site-foot">
-    <a href="https://forms.gle/VAFZCfakxrVvpTdq6" target="_blank" rel="noopener noreferrer" class="btn btn-accent">意見回饋</a>
-    <span class="site-foot-copy">© 2026 Andrew Cheng. All rights reserved.</span>
-  </footer>
+  <footer class="container site-foot"></footer>
 
-  <script type="module" src="./script.js?v=202606192107"></script>
+  <script type="module" src="./script.js?v=202606241628"></script>
 </body>
 </html>

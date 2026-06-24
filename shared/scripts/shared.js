@@ -44,6 +44,16 @@ export function track(event, data = {}) {
   window.umami?.track(event, tool ? { tool, ...data } : data);
 }
 
+// 掛載全站共用頁尾（所有頁面統一，包含隱私說明）
+function mountFooter() {
+  const el = document.querySelector('footer.site-foot');
+  if (!el) return;
+  el.innerHTML =
+    '<a href="https://forms.gle/VAFZCfakxrVvpTdq6" target="_blank" rel="noopener noreferrer" class="btn btn-accent">意見回饋</a>' +
+    '<span class="site-foot-copy">© 2026 Andrew Cheng. All rights reserved.</span>' +
+    '<p class="site-foot-privacy">本站使用 <a href="https://umami.is" target="_blank" rel="noopener noreferrer">Umami</a> 匿名統計，不放 cookie、不蒐集個人資料。</p>';
+}
+
 // 為帶 data-share 的按鈕綁定「分享此工具」：優先用系統分享，否則退回複製網址
 function wireShareButtons() {
   document.querySelectorAll('[data-share]').forEach((btn) => {
@@ -66,9 +76,10 @@ function wireShareButtons() {
 
 if (typeof document !== 'undefined') {
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', wireShareButtons);
+    document.addEventListener('DOMContentLoaded', () => { wireShareButtons(); mountFooter(); });
   } else {
     wireShareButtons();
+    mountFooter();
   }
 }
 

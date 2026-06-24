@@ -1,0 +1,256 @@
+// ============================================================
+// 26 盤古之白 — 工具特有樣式
+// 共用元件（tool-head / btn / tag / section-rule / site-foot）直接套 class，
+// 這裡補輸入區與操作面板
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+}
+
+// — 版面：左輸入、右操作；窄螢幕上下堆疊 —
+.pangu-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: $space-5;
+  align-items: start;
+}
+
+// ============================================================
+// 左側輸入區（沿用大小寫轉換 / 字數統計的 editor-pane 語彙）
+// ============================================================
+.editor-pane {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  min-width: 0;
+}
+
+// 工具列：左即時計數、右動作鈕
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+}
+
+.editor-toolbar-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+  font-variant-numeric: tabular-nums;
+}
+
+.editor-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+// — 稿紙輸入框 —
+.text-area {
+  width: 100%;
+  min-height: 420px;
+  padding: $space-4;
+  font-family: $font-body;
+  font-size: $fs-base;
+  line-height: 1.85;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
+  resize: vertical;
+  transition: border-color $dur $ease;
+
+  &::placeholder { color: $color-ink-soft; }
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// ============================================================
+// 右側操作面板（黏頂）
+// ============================================================
+.pangu-pane {
+  position: sticky;
+  top: $space-4;
+  display: flex;
+  flex-direction: column;
+  padding: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+
+  .section-rule { margin-top: 0; }
+}
+
+// — 兩顆操作鈕：並排 —
+.pangu-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-2;
+  margin-bottom: $space-3;
+}
+
+// — 單一操作鈕 —
+.pangu-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-3 $space-2;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color $dur $ease, transform $dur $ease;
+
+  &:hover {
+    border-color: $color-accent;
+    transform: translateY(-2px);
+  }
+
+  &:active { transform: translateY(0); }
+
+  &:focus-visible {
+    outline: 2px solid $color-accent;
+    outline-offset: 2px;
+  }
+}
+
+// — 按鈕內的視覺示範（中文 ◼ A） —
+.pangu-btn-demo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-body;
+  font-size: $fs-lg;
+  line-height: 1;
+  color: $color-ink;
+  height: 2rem;
+}
+
+// 加入空格按鈕的間距指示條
+.pangu-btn:not(.is-remove) .demo-gap {
+  display: inline-block;
+  width: 6px;
+  height: 1.2em;
+  margin: 0 2px;
+  background: $color-accent;
+  border-radius: 1px;
+  opacity: 0.35;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+// 移除空格按鈕：示範字符緊貼，穿插刪除線
+.pangu-btn.is-remove .pangu-btn-demo {
+  position: relative;
+
+  // 在中、A 之間覆蓋一條紅色細線，暗示「去除間距」
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1px;
+    height: 100%;
+    background: $color-accent;
+    opacity: 0.3;
+  }
+}
+
+// — 按鈕文字 —
+.pangu-btn-label {
+  font-family: $font-body;
+  font-size: $fs-sm;
+  color: $color-ink;
+  line-height: 1.3;
+}
+
+.pangu-btn-sub {
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+  color: $color-ink-soft;
+}
+
+// — 執行結果統計 —
+.pangu-stat {
+  margin: $space-2 0 $space-3;
+  padding: $space-2 $space-3;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.03em;
+  color: $color-ink-soft;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+  line-height: 1.5;
+
+  &[data-type="added"]   { color: $color-accent; border-color: $color-accent; }
+  &[data-type="removed"] { border-color: $color-mark; }
+  &[data-type="none"]    { color: $color-ink-soft; }
+}
+
+// — 說明區 —
+.pangu-note {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  line-height: 1.7;
+  color: $color-ink-soft;
+
+  p { margin: 0 0 $space-2; }
+
+  ul {
+    margin: 0 0 $space-2 $space-3;
+    padding: 0;
+
+    li {
+      list-style: disc;
+      margin-bottom: 2px;
+    }
+  }
+}
+
+.pangu-note-hint {
+  color: $color-ink-soft;
+  opacity: 0.75;
+}
+
+// ============================================================
+// 窄螢幕：上下堆疊，操作面板取消黏頂
+// ============================================================
+@media (max-width: 860px) {
+  .pangu-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-4;
+  }
+
+  .pangu-pane {
+    position: static;
+  }
+
+  .text-area {
+    min-height: 320px;
+  }
+}

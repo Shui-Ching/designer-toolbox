@@ -452,6 +452,24 @@
 .tool-card:hover .tool-card-cta { gap: $space-3; color: $color-accent; }
 
 // — 頁尾 —
+.site-foot-privacy {
+  width: 100%;
+  margin: 0;
+  padding-top: $space-2;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  text-align: center;
+  opacity: 0.6;
+
+  a {
+    color: inherit;
+    text-underline-offset: 3px;
+
+    &:hover { color: $color-accent; opacity: 1; }
+  }
+}
+
 .home-foot {
   padding-block: $space-4;
   border-top: $border-ink;

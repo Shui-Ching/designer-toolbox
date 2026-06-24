@@ -3,7 +3,7 @@
 // 與 01／06／16 共用「解碼→canvas→toBlob」圖片管線；浮水印參數一律以「佔圖寬比例」儲存，
 // 故同一組設定可一致套用到尺寸不同的批次圖片（預覽用縮放畫布、輸出用原圖尺寸，數學相同）
 // ============================================================
-import { downloadBlob, bindDropzone, escapeHtml, track } from '../../shared/scripts/shared.js?v=202606192107';
+import { downloadBlob, bindDropzone, escapeHtml, track } from '../../shared/scripts/shared.js?v=202606241628';
 
 const dropzone = document.getElementById('dropzone');
 const fileInput = document.getElementById('file-input');
@@ -22,11 +22,29 @@ const logoName = document.getElementById('logo-name');
 const sizeSlider = document.getElementById('size');
 const opacitySlider = document.getElementById('opacity');
 const rotateSlider = document.getElementById('rotate');
-const gapSlider = document.getElementById('gap');
+const gapXSlider = document.getElementById('gap-x');
+const gapYSlider = document.getElementById('gap-y');
 const valSize = document.getElementById('val-size');
 const valOpacity = document.getElementById('val-opacity');
 const valRotate = document.getElementById('val-rotate');
-const valGap = document.getElementById('val-gap');
+const valGapX = document.getElementById('val-gap-x');
+const valGapY = document.getElementById('val-gap-y');
+
+const strokeGroup = document.getElementById('stroke-group');
+const strokeExtra = document.getElementById('stroke-extra');
+const strokeColorPick = document.getElementById('stroke-color');
+const strokeColorHex = document.getElementById('stroke-color-hex');
+const strokeWeightSlider = document.getElementById('stroke-weight');
+const valStroke = document.getElementById('val-stroke');
+
+const shadowGroup = document.getElementById('shadow-group');
+const shadowExtra = document.getElementById('shadow-extra');
+const shadowColorPick = document.getElementById('shadow-color-pick');
+const shadowColorHex = document.getElementById('shadow-color-hex');
+const shadowBlurSlider = document.getElementById('shadow-blur');
+const shadowOffsetSlider = document.getElementById('shadow-offset');
+const valShadowBlur = document.getElementById('val-shadow-blur');
+const valShadowOffset = document.getElementById('val-shadow-offset');
 
 const modeGroup = document.getElementById('mode-group');
 const posBlock = document.getElementById('pos-block');
@@ -59,8 +77,16 @@ const settings = {
   mode: 'single',        // single | tile
   anchor: 'br',          // 九宮格鍵；'free' = 拖曳後的自訂位置
   pos: { x: 0.92, y: 0.92 }, // anchor='free' 時的浮水印中心（0..1）
-  gapPct: 10,            // 平鋪間距 = 圖寬的 N%
-  format: 'image/png',
+  gapXPct: 10,           // 水平平鋪間距 = 圖寬的 N%
+  gapYPct: 10,           // 垂直平鋪間距 = 圖寬的 N%
+  format: 'auto',        // auto | image/png | image/jpeg | image/webp
+  strokeEnabled: false,  // 文字描邊
+  strokeColor: '#000000',
+  strokeWeight: 6,       // 粗細（以圖寬 /1000 為基準單位）
+  shadowEnabled: false,  // 文字陰影
+  shadowColor: '#000000',
+  shadowBlur: 15,        // 模糊（同上）
+  shadowOffset: 8,       // 位移（同上）
 };
 
 let logoImg = null;       // 已載入的 logo 圖（Image）
@@ -125,7 +151,61 @@ async function init() {
   sizeSlider.addEventListener('input', () => { settings.sizePct = Number(sizeSlider.value); valSize.textContent = sizeSlider.value; paint(); });
   opacitySlider.addEventListener('input', () => { settings.opacity = Number(opacitySlider.value) / 100; valOpacity.textContent = opacitySlider.value; paint(); });
   rotateSlider.addEventListener('input', () => { settings.rotate = Number(rotateSlider.value); valRotate.textContent = rotateSlider.value; paint(); });
-  gapSlider.addEventListener('input', () => { settings.gapPct = Number(gapSlider.value); valGap.textContent = gapSlider.value; paint(); });
+  gapXSlider.addEventListener('input', () => { settings.gapXPct = Number(gapXSlider.value); valGapX.textContent = gapXSlider.value; paint(); });
+  gapYSlider.addEventListener('input', () => { settings.gapYPct = Number(gapYSlider.value); valGapY.textContent = gapYSlider.value; paint(); });
+
+  // 描邊
+  strokeGroup.addEventListener('click', (e) => {
+    const btn = e.target.closest('.chip');
+    if (!btn) return;
+    settings.strokeEnabled = btn.dataset.stroke === 'on';
+    setActive(strokeGroup, btn);
+    strokeExtra.hidden = !settings.strokeEnabled;
+    paint();
+  });
+  strokeColorPick.addEventListener('input', () => {
+    settings.strokeColor = strokeColorPick.value;
+    strokeColorHex.value = strokeColorPick.value.toUpperCase();
+    paint();
+  });
+  strokeColorHex.addEventListener('input', () => {
+    const v = strokeColorHex.value.trim();
+    if (/^#[0-9a-fA-F]{6}$/.test(v)) { settings.strokeColor = v; strokeColorPick.value = v; paint(); }
+  });
+  strokeWeightSlider.addEventListener('input', () => {
+    settings.strokeWeight = Number(strokeWeightSlider.value);
+    valStroke.textContent = strokeWeightSlider.value;
+    paint();
+  });
+
+  // 陰影
+  shadowGroup.addEventListener('click', (e) => {
+    const btn = e.target.closest('.chip');
+    if (!btn) return;
+    settings.shadowEnabled = btn.dataset.shadow === 'on';
+    setActive(shadowGroup, btn);
+    shadowExtra.hidden = !settings.shadowEnabled;
+    paint();
+  });
+  shadowColorPick.addEventListener('input', () => {
+    settings.shadowColor = shadowColorPick.value;
+    shadowColorHex.value = shadowColorPick.value.toUpperCase();
+    paint();
+  });
+  shadowColorHex.addEventListener('input', () => {
+    const v = shadowColorHex.value.trim();
+    if (/^#[0-9a-fA-F]{6}$/.test(v)) { settings.shadowColor = v; shadowColorPick.value = v; paint(); }
+  });
+  shadowBlurSlider.addEventListener('input', () => {
+    settings.shadowBlur = Number(shadowBlurSlider.value);
+    valShadowBlur.textContent = shadowBlurSlider.value;
+    paint();
+  });
+  shadowOffsetSlider.addEventListener('input', () => {
+    settings.shadowOffset = Number(shadowOffsetSlider.value);
+    valShadowOffset.textContent = shadowOffsetSlider.value;
+    paint();
+  });
 
   // 排列方式
   modeGroup.addEventListener('click', (e) => {
@@ -188,7 +268,7 @@ function handleFiles(fileList) {
   files.forEach((file) => {
     const img = new Image();
     img.onload = () => {
-      const item = { id: nextId++, name: file.name.replace(/\.[^.]+$/, '') || 'image', img };
+      const item = { id: nextId++, name: file.name.replace(/\.[^.]+$/, '') || 'image', img, origFormat: normalizeFormat(file.type) };
       items.push(item);
       if (activeId === null) activeId = item.id;
       done();
@@ -238,7 +318,28 @@ function drawTo(c, base, W, H) {
     c.fillStyle = settings.color;
     c.textAlign = 'center';
     c.textBaseline = 'middle';
-    drawMark(c, W, H, textMetrics(c, W), (x, y) => c.fillText(settings.text, x, y));
+    drawMark(c, W, H, textMetrics(c, W), (x, y) => {
+      // 每次呼叫都重設（平鋪迴圈中描完邊會清掉 shadow，下一格需重新套用）
+      if (settings.shadowEnabled) {
+        const sPx = settings.shadowOffset * (W / 1000);
+        c.shadowColor = settings.shadowColor;
+        c.shadowOffsetX = sPx;
+        c.shadowOffsetY = sPx;
+        c.shadowBlur = settings.shadowBlur * (W / 1000);
+      }
+      if (settings.strokeEnabled) {
+        c.lineWidth = settings.strokeWeight * (W / 1000);
+        c.strokeStyle = settings.strokeColor;
+        c.lineJoin = 'round';
+        c.strokeText(settings.text, x, y);
+        // 描完邊後關掉陰影，讓填色不重複出現陰影
+        c.shadowColor = 'transparent';
+        c.shadowBlur = 0;
+        c.shadowOffsetX = 0;
+        c.shadowOffsetY = 0;
+      }
+      c.fillText(settings.text, x, y);
+    });
   }
   c.restore();
 }
@@ -270,11 +371,12 @@ function drawLogoAt(c, x, y, m) {
 // — 單顆或平鋪的共同骨架；single 走九宮格／拖曳定位，tile 旋轉後鋪滿 —
 function drawMark(c, W, H, m, draw) {
   const rad = (settings.rotate * Math.PI) / 180;
-  const gap = (settings.gapPct / 100) * W;
+  const gapX = (settings.gapXPct / 100) * W;
+  const gapY = (settings.gapYPct / 100) * W;
 
   if (settings.mode === 'tile') {
-    const stepX = m.stepX + gap;
-    const stepY = m.stepY + gap;
+    const stepX = Math.max(5, m.stepX + gapX);
+    const stepY = Math.max(5, m.stepY + gapY);
     const diag = Math.hypot(W, H);
     c.translate(W / 2, H / 2);
     c.rotate(rad);
@@ -397,6 +499,16 @@ function backToDropzone() {
 // ============================================================
 // 輸出：以原圖尺寸重繪（數學與預覽相同），再 toBlob 下載
 // ============================================================
+function normalizeFormat(mime) {
+  if (mime === 'image/jpeg') return 'image/jpeg';
+  if (mime === 'image/webp') return 'image/webp';
+  return 'image/png';
+}
+
+function resolveFormat(it) {
+  return settings.format === 'auto' ? it.origFormat : settings.format;
+}
+
 function exportItem(it) {
   return new Promise((resolve) => {
     const W = it.img.naturalWidth;
@@ -405,30 +517,31 @@ function exportItem(it) {
     out.width = W;
     out.height = H;
     const octx = out.getContext('2d');
+    const fmt = resolveFormat(it);
     // JPEG 無透明通道：先鋪白底避免透明區變黑
-    if (settings.format === 'image/jpeg') {
+    if (fmt === 'image/jpeg') {
       octx.fillStyle = '#ffffff';
       octx.fillRect(0, 0, W, H);
     }
     drawTo(octx, it.img, W, H);
-    const quality = settings.format === 'image/png' ? undefined : 0.92;
-    out.toBlob((blob) => resolve(blob), settings.format, quality);
+    const quality = fmt === 'image/png' ? undefined : 0.92;
+    out.toBlob((blob) => resolve({ blob, fmt }), fmt, quality);
   });
 }
 
 async function downloadActive() {
   const it = activeItem();
   if (!it) return;
-  const blob = await exportItem(it);
-  if (blob) { downloadBlob(blob, `${it.name}-watermark.${EXT[settings.format]}`); track('use'); }
+  const { blob, fmt } = await exportItem(it);
+  if (blob) { downloadBlob(blob, `${it.name}-watermark.${EXT[fmt]}`); track('use'); }
 }
 
 async function downloadAll() {
   if (!items.length) return;
   for (let i = 0; i < items.length; i++) {
     const it = items[i];
-    const blob = await exportItem(it);
-    if (blob) setTimeout(() => downloadBlob(blob, `${it.name}-watermark.${EXT[settings.format]}`), i * 150);
+    const { blob, fmt } = await exportItem(it);
+    if (blob) setTimeout(() => downloadBlob(blob, `${it.name}-watermark.${EXT[fmt]}`), i * 150);
   }
   track('use');
 }
