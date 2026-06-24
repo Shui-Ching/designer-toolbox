@@ -50,8 +50,7 @@ function mountFooter() {
   if (!el) return;
   el.innerHTML =
     '<a href="https://forms.gle/VAFZCfakxrVvpTdq6" target="_blank" rel="noopener noreferrer" class="btn btn-accent">意見回饋</a>' +
-    '<span class="site-foot-copy">© 2026 Andrew Cheng. All rights reserved.</span>' +
-    '<p class="site-foot-privacy">本站使用 <a href="https://umami.is" target="_blank" rel="noopener noreferrer">Umami</a> 匿名統計，不放 cookie、不蒐集個人資料。</p>';
+    '<span class="site-foot-copy">© 2026 Andrew Cheng. All rights reserved.</span>';
 }
 
 // 為帶 data-share 的按鈕綁定「分享此工具」：優先用系統分享，否則退回複製網址
