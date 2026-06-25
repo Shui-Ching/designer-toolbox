@@ -60,9 +60,9 @@ const TOOL_POPULARITY = {
     text: (card.textContent + ' ' + (card.dataset.keywords || '')).toLowerCase(),
   }));
 
-  // 目前選取的分類與排序，預設為「全部」「由舊到新」
+  // 目前選取的分類與排序，預設為「全部」「由新到舊」（最新功能在前）
   let activeCategory = 'all';
-  let activeSort = 'old';
+  let activeSort = 'new';
 
   // 依排序模式重排 DOM：appendChild 會搬移既有節點，達到重新排列
   // 熱門度相同時退回原始順序（穩定）
@@ -116,6 +116,9 @@ const TOOL_POPULARITY = {
   });
 
   input.addEventListener('input', apply);
+
+  // 初始化：套用預設排序（由新到舊），讓最新功能在進站時就排在最前
+  applySort();
 })();
 
 // — 回到頂端 —
