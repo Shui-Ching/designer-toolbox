@@ -1,0 +1,288 @@
+:root {
+  --color-paper: #f4f1e8;
+  --color-paper-deep: #ece7d9;
+  --color-ink: #1c1b18;
+  --color-ink-soft: #6b665b;
+  --color-line: #d9d3c3;
+  --color-accent: #d8442a;
+  --color-accent-deep: #b0331d;
+  --color-mark: #e0a92e;
+  --font-display: Inter, Noto Sans TC, sans-serif;
+  --font-body: Inter, Noto Sans TC, sans-serif;
+  --font-mono: Inter, Noto Sans TC, sans-serif;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.tool-intro {
+  max-width: 64ch;
+  margin-block: 24px 40px;
+  color: #6b665b;
+}
+
+.editor-layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  background: #ece7d9;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+}
+
+.control-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.control-label {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b665b;
+}
+
+.color-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.color-input {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 36px;
+  padding: 0;
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+  background: #f4f1e8;
+  cursor: pointer;
+}
+
+.hex-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 8px 16px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #1c1b18;
+  background: #f4f1e8;
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+  transition: border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.hex-input:focus {
+  outline: none;
+  border-color: #d8442a;
+}
+.hex-input.is-invalid {
+  border-color: #d8442a;
+}
+
+.control-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  min-height: 180px;
+  padding: 24px;
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+  box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
+  transition: background-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.preview-large {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.preview-normal {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.preview-chip {
+  margin-top: 4px;
+  padding: 4px 16px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  border-radius: 2px;
+  transition: background-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.output {
+  min-width: 0;
+}
+.output .section-rule:first-child {
+  margin-top: 0;
+}
+
+.ratio-display {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.ratio-value {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 2.75rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  color: #1c1b18;
+}
+
+.ratio-unit {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #6b665b;
+}
+
+.ratio-caption {
+  margin-left: auto;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6b665b;
+}
+
+.verdict-list {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.verdict-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid #d9d3c3;
+}
+.verdict-row:first-child {
+  border-top: 1px solid #d9d3c3;
+}
+
+.verdict-name {
+  font-size: 1rem;
+  color: #1c1b18;
+}
+
+.verdict-threshold {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+  font-variant-numeric: tabular-nums;
+}
+
+.verdict-chip {
+  justify-self: end;
+  min-width: 5.5em;
+  padding: 4px 8px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  text-align: center;
+  border: 1.5px solid transparent;
+  border-radius: 2px;
+}
+
+.verdict-row.is-pass .verdict-chip {
+  color: #f4f1e8;
+  background: #1c1b18;
+  border-color: #1c1b18;
+}
+
+.verdict-row.is-fail .verdict-chip {
+  color: #d8442a;
+  background: transparent;
+  border-color: #d8442a;
+}
+
+.verdict-note {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #6b665b;
+}
+
+.cvd-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.cvd-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+}
+
+.cvd-swatch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 72px;
+  padding: 8px;
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+  transition: background-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.cvd-sample {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.cvd-label {
+  margin-top: 4px;
+  font-size: 1rem;
+  color: #1c1b18;
+}
+
+.cvd-sub {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: #6b665b;
+}
+
+@media (max-width: 720px) {
+  .editor-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .cvd-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

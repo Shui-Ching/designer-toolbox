@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>Cubic Bezier 產生器 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202606252340">
+  <link rel="stylesheet" href="./style.css?v=202606252340">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="cubic-bezier">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 28</span>
+        <h1 class="tool-head-title">Cubic Bezier 產生器</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      拖曳兩個控制點調出緩動曲線，即時預覽動畫節奏，一鍵複製可直接貼用的
+      <span class="tag">cubic-bezier()</span>。內建常用緩動預設，全程在瀏覽器端運算。
+    </p>
+
+    <div class="bezier-layout">
+
+      <!-- 左：控制台 -->
+      <section class="controls" aria-label="曲線控制">
+
+        <!-- 預設緩動 -->
+        <div class="control-block">
+          <span class="control-label">預設緩動 · presets</span>
+          <div class="chip-group" id="preset-group">
+            <button class="chip" type="button" data-preset="linear">linear</button>
+            <button class="chip" type="button" data-preset="ease">ease</button>
+            <button class="chip" type="button" data-preset="ease-in">ease-in</button>
+            <button class="chip" type="button" data-preset="ease-out">ease-out</button>
+            <button class="chip" type="button" data-preset="ease-in-out">ease-in-out</button>
+            <button class="chip" type="button" data-preset="swift">急促 swift</button>
+            <button class="chip" type="button" data-preset="back-in">回彈進</button>
+            <button class="chip" type="button" data-preset="back-out">回彈出</button>
+            <button class="chip" type="button" data-preset="back-in-out">回彈進出</button>
+          </div>
+        </div>
+
+        <!-- 四個控制座標 -->
+        <div class="control-block control-section">
+          <span class="control-label">控制點座標 · P1 / P2
+            <span class="control-label-value coord-hint">X 限 0–1，Y 可超出</span>
+          </span>
+          <div class="coord-grid">
+            <label class="coord-field">
+              <span class="coord-name">P1 x</span>
+              <input class="text-input coord-input" type="number" id="x1" step="0.01" min="0" max="1" value="0.25">
+            </label>
+            <label class="coord-field">
+              <span class="coord-name">P1 y</span>
+              <input class="text-input coord-input" type="number" id="y1" step="0.01" value="0.1">
+            </label>
+            <label class="coord-field">
+              <span class="coord-name">P2 x</span>
+              <input class="text-input coord-input" type="number" id="x2" step="0.01" min="0" max="1" value="0.25">
+            </label>
+            <label class="coord-field">
+              <span class="coord-name">P2 y</span>
+              <input class="text-input coord-input" type="number" id="y2" step="0.01" value="1">
+            </label>
+          </div>
+        </div>
+
+        <!-- 預覽動畫時長 -->
+        <div class="control-block control-section">
+          <span class="control-label">預覽時長 · duration
+            <span class="control-label-value"><span id="val-dur">1.2</span>s</span>
+          </span>
+          <input class="range-input" type="range" id="duration" min="0.3" max="3" step="0.1" value="1.2">
+        </div>
+
+      </section>
+
+      <!-- 右：曲線編輯器 + 預覽 + 輸出 -->
+      <section class="output" aria-label="曲線與預覽">
+
+        <div class="stage-bar">
+          <span class="tag">Curve</span>
+          <span class="stage-hint">拖曳 ● 兩個控制點</span>
+        </div>
+
+        <!-- SVG 曲線編輯器：viewBox 0 0 300 630（上下各留 165 容納超出 0–1 的回彈） -->
+        <div class="curve-wrap">
+          <svg class="curve" id="curve" viewBox="0 0 300 630" role="img" aria-label="緩動曲線編輯器" touch-action="none">
+            <!-- 超出 0–1 的緩衝區（回彈會跑進這裡） -->
+            <rect class="curve-overshoot" x="0" y="0" width="300" height="165"></rect>
+            <rect class="curve-overshoot" x="0" y="465" width="300" height="165"></rect>
+
+            <!-- 0–1 主框 -->
+            <rect class="curve-box" x="0" y="165" width="300" height="300"></rect>
+
+            <!-- 內部刻度格線 -->
+            <g class="curve-grid">
+              <line x1="75" y1="165" x2="75" y2="465"></line>
+              <line x1="150" y1="165" x2="150" y2="465"></line>
+              <line x1="225" y1="165" x2="225" y2="465"></line>
+              <line x1="0" y1="240" x2="300" y2="240"></line>
+              <line x1="0" y1="315" x2="300" y2="315"></line>
+              <line x1="0" y1="390" x2="300" y2="390"></line>
+            </g>
+
+            <!-- linear 對角參考線 -->
+            <line class="curve-diagonal" x1="0" y1="465" x2="300" y2="165"></line>
+
+            <!-- 控制把手導引線 -->
+            <line class="curve-guide" id="guide1" x1="0" y1="465" x2="75" y2="435"></line>
+            <line class="curve-guide" id="guide2" x1="300" y1="165" x2="225" y2="165"></line>
+
+            <!-- 緩動曲線本體 -->
+            <path class="curve-path" id="curve-path" fill="none" d=""></path>
+
+            <!-- 兩端固定點 -->
+            <circle class="curve-anchor" cx="0" cy="465" r="4"></circle>
+            <circle class="curve-anchor" cx="300" cy="165" r="4"></circle>
+
+            <!-- 可拖曳控制點 -->
+            <circle class="curve-handle" id="handle1" data-handle="1" cx="75" cy="435" r="11" tabindex="0" role="slider" aria-label="控制點 P1"></circle>
+            <circle class="curve-handle" id="handle2" data-handle="2" cx="225" cy="165" r="11" tabindex="0" role="slider" aria-label="控制點 P2"></circle>
+          </svg>
+        </div>
+
+        <!-- 動畫預覽：球依緩動曲線往返 -->
+        <div class="stage-bar preview-bar">
+          <span class="tag">Preview</span>
+          <button class="chip" type="button" id="replay-btn">↻ 重播</button>
+        </div>
+        <div class="preview-track">
+          <span class="preview-ball" id="preview-ball"></span>
+        </div>
+
+        <div class="section-rule"><span class="tag">CSS</span></div>
+        <div class="code-wrap">
+          <pre class="code-block" id="code-out">cubic-bezier(0.25, 0.1, 0.25, 1)</pre>
+          <button class="btn btn-accent code-copy" type="button" id="copy-btn">複製</button>
+        </div>
+        <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202606252340"></script>
+</body>
+</html>

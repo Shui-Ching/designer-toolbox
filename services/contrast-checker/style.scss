@@ -1,0 +1,301 @@
+// ============================================================
+// 27 對比度檢查器 — 工具特有樣式
+// 共用元件（tool-head / btn / tag / section-rule）直接套 class，這裡只補差異
+// 左控制面板沿用 10 色彩格式轉換的 .controls / .control-block / .control-label / .color-row
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+}
+
+// — 版面：左控制、右輸出；窄螢幕改上下堆疊 —
+.editor-layout {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: $space-5;
+  align-items: start;
+}
+
+// ============================================================
+// 左側控制面板
+// ============================================================
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  padding: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+.control-block {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.control-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.color-row {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.color-input {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 36px;
+  padding: 0;
+  border: $border-ink;
+  border-radius: $radius;
+  background: $color-paper;
+  cursor: pointer;
+}
+
+// 各色 HEX 輸入框
+.hex-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: $space-2 $space-3;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  transition: border-color $dur $ease;
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+
+  // 解析失敗時邊框轉硃紅提示
+  &.is-invalid { border-color: $color-accent; }
+}
+
+// — 動作鈕 —
+.control-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+// — 大型預覽：背景為背景色、文字為前景色 —
+.preview {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: $space-2;
+  min-height: 180px;
+  padding: $space-4;
+  border: $border-ink;
+  border-radius: $radius;
+  box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
+  transition: background-color $dur $ease, color $dur $ease;
+}
+
+.preview-large {
+  margin: 0;
+  font-size: $fs-xl;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.preview-normal {
+  margin: 0;
+  font-size: $fs-base;
+  line-height: 1.5;
+}
+
+// UI 元件示意：以前景色填底、背景色為字（與大字反向），驗證 3:1 門檻
+.preview-chip {
+  margin-top: $space-1;
+  padding: $space-1 $space-3;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  border-radius: $radius;
+  transition: background-color $dur $ease, color $dur $ease;
+}
+
+// ============================================================
+// 右側：對比結果
+// ============================================================
+.output {
+  min-width: 0;
+
+  .section-rule:first-child { margin-top: 0; }
+}
+
+// — 對比值主視覺 —
+.ratio-display {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin-bottom: $space-4;
+}
+
+.ratio-value {
+  font-family: $font-display;
+  font-size: $fs-2xl;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  color: $color-ink;
+}
+
+.ratio-unit {
+  font-family: $font-mono;
+  font-size: $fs-lg;
+  font-weight: 600;
+  color: $color-ink-soft;
+}
+
+.ratio-caption {
+  margin-left: auto;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+// — WCAG 判定清單 —
+.verdict-list {
+  list-style: none;
+  margin: 0 0 $space-3;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.verdict-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-3 0;
+  border-bottom: $border-fine;
+
+  &:first-child { border-top: $border-fine; }
+}
+
+.verdict-name {
+  font-size: $fs-sm;
+  color: $color-ink;
+}
+
+.verdict-threshold {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  font-variant-numeric: tabular-nums;
+}
+
+// 判定徽章：通過＝墨黑實心、未達＝硃紅描邊（不靠顏色單一傳達，附 ✓／✗ 與文字）
+.verdict-chip {
+  justify-self: end;
+  min-width: 5.5em;
+  padding: $space-1 $space-2;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.02em;
+  text-align: center;
+  border: 1.5px solid transparent;
+  border-radius: $radius;
+}
+
+.verdict-row.is-pass .verdict-chip {
+  color: $color-paper;
+  background: $color-ink;
+  border-color: $color-ink;
+}
+
+.verdict-row.is-fail .verdict-chip {
+  color: $color-accent;
+  background: transparent;
+  border-color: $color-accent;
+}
+
+.verdict-note {
+  margin: 0 0 $space-2;
+  font-size: $fs-xs;
+  line-height: 1.5;
+  color: $color-ink-soft;
+}
+
+// ============================================================
+// 色盲模擬
+// ============================================================
+.cvd-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: $space-3;
+}
+
+.cvd-card {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  text-align: center;
+}
+
+.cvd-swatch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 72px;
+  padding: $space-2;
+  border: $border-ink;
+  border-radius: $radius;
+  transition: background-color $dur $ease, color $dur $ease;
+}
+
+.cvd-sample {
+  font-size: $fs-sm;
+  font-weight: 600;
+}
+
+.cvd-label {
+  margin-top: $space-1;
+  font-size: $fs-xs;
+  color: $color-ink;
+}
+
+.cvd-sub {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.02em;
+  color: $color-ink-soft;
+}
+
+// ============================================================
+// 窄螢幕
+// ============================================================
+@media (max-width: 720px) {
+  .editor-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-4;
+  }
+
+  .cvd-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

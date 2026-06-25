@@ -223,8 +223,6 @@
 }
 
 .stage-wrap {
-  position: sticky;
-  top: 24px;
   min-width: 0;
   display: flex;
   flex-direction: column;

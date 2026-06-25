@@ -16,8 +16,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="shared/styles/shared.css?v=202606241628">
-  <link rel="stylesheet" href="index.css?v=202606241628">
+  <link rel="stylesheet" href="shared/styles/shared.css?v=202606252340">
+  <link rel="stylesheet" href="index.css?v=202606252340">
 
   <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
@@ -202,7 +202,7 @@
           </select>
         </label>
 
-        <span class="index-count" id="tool-count">26 項工具</span>
+        <span class="index-count" id="tool-count">28 項工具</span>
       </div>
 
       <!-- 分類篩選：依領域切換工具，與搜尋列為交集篩選 -->
@@ -558,6 +558,32 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
+        <a class="tool-card" href="services/contrast-checker/index.html" data-category="color" data-keywords="對比 對比度 contrast 無障礙 wcag aa aaa 可讀性 色盲 模擬 色弱 a11y accessibility 前景 背景 文字 顏色">
+          <div class="tool-card-top">
+            <span class="tool-card-no">27</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">對比度檢查器</h2>
+            <span class="tool-card-en">Contrast Checker</span>
+          </div>
+          <p class="tool-card-desc">前景 × 背景算出 WCAG 對比值，即時判定 AA／AAA 是否達標，附四種色盲模擬預覽。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/cubic-bezier/index.html" data-category="css" data-keywords="cubic bezier 貝茲 緩動 曲線 easing timing function 動畫 animation transition ease 過場 css 速度曲線">
+          <div class="tool-card-top">
+            <span class="tool-card-no">28</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">Cubic Bezier 產生器</h2>
+            <span class="tool-card-en">Cubic Bezier</span>
+          </div>
+          <p class="tool-card-desc">拖曳控制點調出 CSS 緩動曲線，即時預覽動畫節奏，複製可貼用的 cubic-bezier()。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
       </nav>
 
       <!-- 搜尋無結果時的空狀態 -->
@@ -574,8 +600,8 @@
   <button class="go-top" id="go-top" aria-label="回到頂端">↑</button>
 
   <!-- 共用 JS：掛載頁尾（ES Module，符合 CSP script-src 'self'） -->
-  <script type="module" src="./shared/scripts/shared.js?v=202606241628"></script>
+  <script type="module" src="./shared/scripts/shared.js?v=202606252340"></script>
   <!-- 首頁工具搜尋（外部檔，符合 CSP script-src 'self'） -->
-  <script defer src="home.js?v=202606241628"></script>
+  <script defer src="home.js?v=202606252340"></script>
 </body>
 </html>

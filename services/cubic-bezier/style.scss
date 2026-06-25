@@ -1,0 +1,326 @@
+// ============================================================
+// 28 Cubic Bezier 產生器 — 工具特有樣式
+// 共用元件（tool-head / btn / tag / chip / section-rule）直接套 class
+// 控制台 .controls / .control-block / .chip 等沿用 15 漸層產生器語彙
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+}
+
+// — 版面：左控制台、右曲線；窄螢幕改上下堆疊 —
+.bezier-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+  gap: $space-5;
+  align-items: start;
+}
+
+// ============================================================
+// 左側控制台
+// ============================================================
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  padding: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+  // 捲動時左側控制台固定（grid 已 align-items: start，可正常 sticky）
+  position: sticky;
+  top: $space-4;
+}
+
+.control-block {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.control-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.control-label-value {
+  font-variant-numeric: tabular-nums;
+  color: $color-ink;
+  text-transform: none;
+}
+
+.coord-hint {
+  color: $color-ink-soft;
+  letter-spacing: 0;
+}
+
+.control-section {
+  padding-top: $space-4;
+  border-top: $border-fine;
+}
+
+// — 分段 chip 群（沿用漸層工具）—
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-2;
+}
+
+.chip {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-1 $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+  background: $color-paper;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// — 四座標輸入格 —
+.coord-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $space-2;
+}
+
+.coord-field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.coord-name {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.text-input {
+  width: 100%;
+  min-width: 0;
+  padding: $space-2 $space-3;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  letter-spacing: 0.02em;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  transition: border-color $dur $ease;
+
+  &:focus { outline: none; border-color: $color-accent; }
+  &.is-invalid { border-color: $color-accent; }
+}
+
+// — 滑桿 —
+.range-input {
+  width: 100%;
+  accent-color: $color-accent;
+  cursor: pointer;
+}
+
+// ============================================================
+// 右側：曲線編輯器 + 預覽 + 輸出
+// ============================================================
+.output {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+
+  .section-rule { margin-top: $space-5; }
+}
+
+.stage-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+  margin-bottom: $space-2;
+}
+
+.stage-hint {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+.preview-bar { margin-top: $space-5; }
+
+// — SVG 曲線編輯器 —
+.curve-wrap {
+  padding: $space-3;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+}
+
+.curve {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 360px;
+  margin: 0 auto;
+  touch-action: none; // 拖曳時不被頁面捲動搶走
+  overflow: visible;
+}
+
+// 0–1 主框
+.curve-box {
+  fill: none;
+  stroke: $color-ink;
+  stroke-width: 1.5;
+}
+
+// 超出 0–1 的緩衝區（回彈會跑進這裡）
+.curve-overshoot {
+  fill: $color-paper-deep;
+  opacity: 0.5;
+}
+
+// 內部刻度格線
+.curve-grid line {
+  stroke: $color-line;
+  stroke-width: 1;
+}
+
+// linear 對角參考線
+.curve-diagonal {
+  stroke: $color-ink-soft;
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+  opacity: 0.6;
+}
+
+// 控制把手導引線
+.curve-guide {
+  stroke: $color-accent;
+  stroke-width: 1.5;
+}
+
+// 緩動曲線本體
+.curve-path {
+  stroke: $color-accent;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+// 兩端固定點
+.curve-anchor {
+  fill: $color-ink;
+}
+
+// 可拖曳控制點
+.curve-handle {
+  fill: $color-paper;
+  stroke: $color-accent;
+  stroke-width: 2.5;
+  cursor: grab;
+  transition: fill $dur $ease;
+
+  &:hover { fill: $color-accent; }
+  &:focus-visible { outline: 2px solid $color-ink; outline-offset: 2px; }
+  &.is-active { fill: $color-accent; cursor: grabbing; }
+}
+
+// ============================================================
+// 動畫預覽：球依緩動曲線往返
+// ============================================================
+$ball-size: 32px;
+
+.preview-track {
+  position: relative;
+  height: $ball-size;
+  border: $border-fine;
+  border-radius: $radius;
+  background: $color-paper-deep;
+}
+
+.preview-ball {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: $ball-size;
+  height: $ball-size;
+  border-radius: 50%;
+  background: $color-accent;
+  box-shadow: 2px 2px 0 rgba(28, 27, 24, 0.18);
+  animation: bezier-move var(--bz-dur, 1.2s) linear infinite alternate;
+}
+
+// from→to 走 left，套上 --bz-ease 即可視覺化緩動節奏
+@keyframes bezier-move {
+  from { left: 0; }
+  to { left: calc(100% - #{$ball-size}); }
+}
+
+// — CSS 輸出區（沿用 code-block）—
+.code-wrap { position: relative; }
+
+.code-block {
+  margin: 0;
+  padding: $space-4;
+  padding-right: 96px; // 讓出右上複製鈕空間
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  line-height: 1.7;
+  color: $color-ink;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.code-copy {
+  position: absolute;
+  top: $space-3;
+  right: $space-3;
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: $space-2 0 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// ============================================================
+// 窄螢幕
+// ============================================================
+@media (max-width: 860px) {
+  .bezier-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-4;
+  }
+
+  // 堆疊時取消固定，避免控制台擋住下方內容
+  .controls {
+    position: static;
+    top: auto;
+  }
+}

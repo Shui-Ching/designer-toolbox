@@ -3,7 +3,11 @@
 > 每次收工更新此檔。下次接續時，這裡是進度的單一真實來源。
 > 架構決策與設計 token 另存於 project skill（見最下方）。
 
-最後更新：2026-06-24（完成 **26 盤古之白**（`services/pangu`，`data-category="text"`，卡片顯示編號 **26**、tool-head `Tool / 26`）：輸入中英混排文字，「加入空格」按鈕以純 Regex 在 CJK 字符（中日韓及注音等各主要 Unicode 區塊）與半形英文字母／阿拉伯數字之間插入半角空格；「移除空格」做反向操作；按鈕視覺以「中·A」／「中A」示範差異；執行後以 `.pangu-stat` 顯示插入／移除數量，無需調整時亦有提示；右側面板黏頂，窄螢幕改上下堆疊；`data-category="text"`＋搜尋計數 25→**26**＋`home.js` 熱門度表補 key＋`package.json` 補編譯映射＋`npm run stamp` 更新版本戳記至 v=202606241628）
+最後更新：2026-06-25（完成 **28 Cubic Bezier 產生器**（`services/cubic-bezier`，`data-category="css"`，卡片顯示編號 **28**、tool-head `Tool / 28`）：**SVG 曲線編輯器**（viewBox 0 0 300 630，0–1 主框 300×300、上下各留 165 緩衝容納回彈超出）拖曳兩個控制點即時改 `cubic-bezier()`，附對角 linear 參考線、刻度格線與把手導引線；X 限 0–1、Y 容許 ±0.55 超出（`OVER = PAD/BOX`）。座標映射 `toPx`／`toPy` 雙向，四個座標輸入框與拖曳雙向同步（編輯欄位略過重填防游標跳）。拖曳用 `pointerdown`＋`setPointerCapture` 確保超出把手仍追蹤、放手埋 `track('use')`；把手支援鍵盤方向鍵微調（±0.02、Shift ±0.1）。九組緩動預設（linear／ease／ease-in/out／swift／back-in/out/in-out）一鍵套用，座標完全相符時自動高亮該 chip。**動畫預覽**：球以 `@keyframes bezier-move`（left 0→100%）套 `var(--bz-ease)` `infinite alternate` 往返，改緩動／時長強制 reflow 立即重啟；預覽時長滑桿 0.3–3s。CSS 輸出 `cubic-bezier(x1, y1, x2, y2)`（`fmt()` 去尾零、最多三位小數）複製埋 `track('use')`。沿用 15 漸層的 `.controls`／`.chip`／`.code-block` 語彙。`data-category="css"`＋搜尋計數 27→**28**＋`home.js` 熱門度表補 key（暫填 0）＋`package.json` 補編譯映射＋`npm run build:css` 戳記 v=202606252340）
+
+前次更新：2026-06-25（完成 **27 對比度檢查器**（`services/contrast-checker`，`data-category="color"`，卡片顯示編號 **27**、tool-head `Tool / 27`）：前景／背景各一組色票＋HEX 輸入雙向同步，沿用 10 色彩格式轉換的 `.controls`／`.color-row` 語彙與 hexToRgb 換算。**自寫 WCAG 相對亮度（線性化通道 0.2126/0.7152/0.0722）＋對比值 (L亮+0.05)/(L暗+0.05)**，Node 驗證黑/白＝21.00、#777/白＝4.48、預設墨黑/紙＝15.25。逐條判定 AA 一般(≥4.5)／AA 大型(≥3)／AAA 一般(≥7)／AAA 大型(≥4.5)／UI 元件(≥3)，**通過＝墨黑實心徽章、未達＝硃紅描邊**，附 ✓／✗＋文字不單靠顏色傳達。大型預覽以背景色鋪底、前景色寫大標／內文／UI chip；色盲模擬以業界常用近似矩陣（protan／deuteran／tritan 線性矩陣、achromat 亮度灰階）渲染四張預覽卡。「⇅ 對調」「隨機配色」兩動作鈕（對調埋 `track('use')`）。`data-category="color"`＋搜尋計數 26→**27**＋`home.js` 熱門度表補 key（暫填 0）＋`package.json` 補編譯映射＋`npm run build:css` 戳記 v=202606252333）
+
+前次更新：2026-06-24（完成 **26 盤古之白**（`services/pangu`，`data-category="text"`，卡片顯示編號 **26**、tool-head `Tool / 26`）：輸入中英混排文字，「加入空格」按鈕以純 Regex 在 CJK 字符（中日韓及注音等各主要 Unicode 區塊）與半形英文字母／阿拉伯數字之間插入半角空格；「移除空格」做反向操作；按鈕視覺以「中·A」／「中A」示範差異；執行後以 `.pangu-stat` 顯示插入／移除數量，無需調整時亦有提示；右側面板黏頂，窄螢幕改上下堆疊；`data-category="text"`＋搜尋計數 25→**26**＋`home.js` 熱門度表補 key＋`package.json` 補編譯映射＋`npm run stamp` 更新版本戳記至 v=202606241628）
 
 前次更新：2026-06-24（**單位換算新增三個類別**：**資料量**（B／KB／MB／GB／TB，1 KB = 1024 B 二進位制）、**角度**（°／rad／turn／grad）、**時間**（ms／s／min／hr／day／week）。三個類別全走既有 ratio 模式，直接插入 `CATEGORIES` 物件渲染，工具分頁從 6 個擴充為 9 個。工具頁 intro 與主頁 `data-keywords`／卡片描述同步更新，`npm run stamp` 更新版本戳記至 v=202606241609。）
 
@@ -184,8 +188,8 @@ tool/
 ### 分類篩選 chip（2026-06-06 新增）
 - [x] 各工具依「對象領域」分類，每張 `.tool-card` 標 `data-category`：
   - **image** 圖片：01 壓縮、06 裁切／改尺寸、16 格式轉換、20 PDF 壓縮、23 浮水印
-  - **color** 色彩：09 調色盤、10 色彩格式轉換
-  - **css** CSS：05 Grid／Flex、14 陰影、15 漸層
+  - **color** 色彩：09 調色盤、10 色彩格式轉換、27 對比度檢查器
+  - **css** CSS：05 Grid／Flex、14 陰影、15 漸層、28 Cubic Bezier
   - **text** 文字：11 字級比例、12 Lorem、13 字數統計
   - **reference** 速查：03 社群尺寸、04 裝置尺寸、24 單位換算（入口頁編號 23）
   - **assets** 資產：02 SVG 轉 Font、07 favicon、08 QR Code
@@ -213,6 +217,22 @@ tool/
 
 ### 未來擴充
 - [x] 26 盤古之白（入口頁顯示編號 26）：輸入中英混排文字，自動在 CJK 字符與半形英數／數字之間插入半角空格；支援反向操作（移除已插入的空格）；純 Regex 實作、零相依，維持 CSP `script-src 'self'`；`data-category="text"`
+
+### Phase 6 — 新增工具（已排定開發順序，2026-06-25 規劃）
+
+> 三個核心工具完成後，接續製作潛在缺口工具。
+
+#### 核心工具（優先做）
+- [x] 27 對比度檢查器（`services/contrast-checker`，`data-category="color"`，入口頁顯示編號 **27**，tool-head `Tool / 27`）：前景色 × 背景色 → WCAG AA/AAA 對比值即時判定；色票＋HEX 雙向同步；附色盲模擬（deuteranopia／protanopia／tritanopia／achromatopsia 四種）；自寫零相依色彩換算維持 CSP `script-src 'self'`；`data-category="color"`（2026-06-25 完成）
+- [x] 28 CSS Cubic Bezier 產生器（`services/cubic-bezier`，`data-category="css"`，入口頁顯示編號 **28**，tool-head `Tool / 28`）：可視化拖曳兩個控制點，即時預覽動畫球；輸出 `cubic-bezier(...)` 語法；附常用預設（ease-in-out、回彈 back 等九組）；零相依維持 CSP `script-src 'self'`；`data-category="css"`（2026-06-25 完成）
+- [ ] 29 CSS Clamp 流體排版計算器（`services/clamp-calc`，`data-category="css"`，入口頁顯示編號 **29**，tool-head `Tool / 29`）：輸入「最小螢幕寬度 × 最小字級」＋「最大螢幕寬度 × 最大字級」，自動產出 `clamp(min, vw + rem, max)` 語法；附預覽曲線；零相依；`data-category="css"`
+
+#### 潛在缺口工具（核心完成後接續）
+- [ ] 30 圖片萃取調色盤（`services/color-extractor`，`data-category="color"`，入口頁顯示編號 **30**，tool-head `Tool / 30`）：上傳圖片 → Canvas 取樣 → k-means 群聚輸出 5–10 主色；每色附 HEX/RGB 複製；`data-category="color"`
+- [ ] 31 印刷紙張尺寸速查（`services/paper-size`，`data-category="reference"`，入口頁顯示編號 **31**，tool-head `Tool / 31`）：A0–A8、B 系列、名片、明信片、海報標準尺寸；可選 mm/cm/inch/px（依 DPI）；點列複製；`data-category="reference"`
+- [ ] 32 Base64 編解碼（`services/base64`，`data-category="assets"`，入口頁顯示編號 **32**，tool-head `Tool / 32`）：文字 / 圖片兩模式；文字直接 atob/btoa 雙向；圖片轉 `data:image/...;base64,...` 可貼進 CSS background-image；`data-category="assets"`
+- [ ] 33 SVG 壓縮器（`services/svg-optimizer`，`data-category="image"`，入口頁顯示編號 **33**，tool-head `Tool / 33`）：純前端 SVGO-lite；移除 metadata／comments／空 group、數字精度收斂；顯示壓縮前後 KB 對比，直接下載；`data-category="image"`
+- [ ] 34 抽籤器（`services/lottery`，`data-category="fun"`，入口頁顯示編號 **34**，tool-head `Tool / 34`）：貼上名單（每行一名，支援空行忽略）、設定抽出人數；以 `crypto.getRandomValues` 不重複隨機抽出；結果逐一揭曉動畫（卡片翻轉或名字滾動停止）；可重抽或從剩餘名單繼續抽；零相依維持 CSP `script-src 'self'`；`data-category="fun"`
 
 ### 回饋管道（全站功能）
 - [x] 在入口頁 footer 加「意見回饋」入口（Bug 回報 / 優化建議 / 功能許願池，2026-06-07 完成）

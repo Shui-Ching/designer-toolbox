@@ -38,6 +38,8 @@ const TOOL_POPULARITY = {
   'services/amount-words/index.html': 9,
   'services/text-case/index.html': 6,
   'services/pangu/index.html': 0,
+  'services/contrast-checker/index.html': 0,
+  'services/cubic-bezier/index.html': 0,
 };
 
 (function () {

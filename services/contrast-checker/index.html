@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>對比度檢查器 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202606252340">
+  <link rel="stylesheet" href="./style.css?v=202606252340">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="contrast-checker">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 27</span>
+        <h1 class="tool-head-title">對比度檢查器</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      挑一組<span class="tag">前景</span>與<span class="tag">背景</span>色，即時算出
+      <span class="tag">WCAG</span> 對比值並判定 AA／AAA 是否達標，附四種色盲模擬預覽。
+      所有運算全程自寫、在瀏覽器端進行，不上傳任何資料。
+    </p>
+
+    <div class="editor-layout">
+
+      <!-- 左：兩色控制 + 預覽 -->
+      <section class="controls" aria-label="挑色">
+
+        <div class="control-block">
+          <label class="control-label" for="fg-picker">前景色 · 文字</label>
+          <div class="color-row">
+            <input type="color" class="color-input" id="fg-picker" value="#1c1b18" aria-label="前景色色票">
+            <input type="text" class="hex-input" id="fg-hex" data-color="fg" spellcheck="false" autocomplete="off" aria-label="前景色 HEX">
+          </div>
+        </div>
+
+        <div class="control-block">
+          <label class="control-label" for="bg-picker">背景色 · 底</label>
+          <div class="color-row">
+            <input type="color" class="color-input" id="bg-picker" value="#f4f1e8" aria-label="背景色色票">
+            <input type="text" class="hex-input" id="bg-hex" data-color="bg" spellcheck="false" autocomplete="off" aria-label="背景色 HEX">
+          </div>
+        </div>
+
+        <div class="control-actions">
+          <button type="button" class="btn" id="swap-btn" aria-label="對調前景與背景色">⇅ 對調</button>
+          <button type="button" class="btn" id="random-btn">隨機配色</button>
+        </div>
+
+        <!-- 大型預覽：背景為 bg、文字為 fg -->
+        <div class="preview" id="preview">
+          <p class="preview-large" id="preview-large">大型標題文字 Aa</p>
+          <p class="preview-normal" id="preview-normal">一般內文段落，這是 16px 的示範文字 Sample 123。</p>
+          <span class="preview-chip" id="preview-chip">UI 元件</span>
+        </div>
+      </section>
+
+      <!-- 右：對比結果 + 色盲模擬 -->
+      <section class="output" aria-label="對比結果">
+        <div class="section-rule"><span class="tag">對比結果</span></div>
+
+        <!-- 對比值主視覺 -->
+        <div class="ratio-display">
+          <span class="ratio-value" id="ratio-value" aria-live="polite">21.00</span>
+          <span class="ratio-unit">: 1</span>
+          <span class="ratio-caption">對比值</span>
+        </div>
+
+        <!-- WCAG 判定清單 -->
+        <ul class="verdict-list" id="verdict-list">
+          <li class="verdict-row" data-min="4.5">
+            <span class="verdict-name">AA · 一般文字</span>
+            <span class="verdict-threshold">≥ 4.5</span>
+            <span class="verdict-chip"></span>
+          </li>
+          <li class="verdict-row" data-min="3">
+            <span class="verdict-name">AA · 大型文字</span>
+            <span class="verdict-threshold">≥ 3</span>
+            <span class="verdict-chip"></span>
+          </li>
+          <li class="verdict-row" data-min="7">
+            <span class="verdict-name">AAA · 一般文字</span>
+            <span class="verdict-threshold">≥ 7</span>
+            <span class="verdict-chip"></span>
+          </li>
+          <li class="verdict-row" data-min="4.5">
+            <span class="verdict-name">AAA · 大型文字</span>
+            <span class="verdict-threshold">≥ 4.5</span>
+            <span class="verdict-chip"></span>
+          </li>
+          <li class="verdict-row" data-min="3">
+            <span class="verdict-name">UI 元件／圖形</span>
+            <span class="verdict-threshold">≥ 3</span>
+            <span class="verdict-chip"></span>
+          </li>
+        </ul>
+
+        <p class="verdict-note">
+          大型文字＝ 18.66px（14pt）粗體，或 24px（18pt）以上。UI 元件與圖形物件門檻為 3:1。
+        </p>
+
+        <div class="section-rule"><span class="tag">色盲模擬</span></div>
+
+        <!-- 四種色盲模擬預覽（JS 動態填入背景／文字色） -->
+        <div class="cvd-grid" id="cvd-grid">
+          <div class="cvd-card" data-type="deuteranopia">
+            <div class="cvd-swatch"><span class="cvd-sample">Aa 文字</span></div>
+            <span class="cvd-label">綠色盲</span>
+            <span class="cvd-sub">Deuteranopia</span>
+          </div>
+          <div class="cvd-card" data-type="protanopia">
+            <div class="cvd-swatch"><span class="cvd-sample">Aa 文字</span></div>
+            <span class="cvd-label">紅色盲</span>
+            <span class="cvd-sub">Protanopia</span>
+          </div>
+          <div class="cvd-card" data-type="tritanopia">
+            <div class="cvd-swatch"><span class="cvd-sample">Aa 文字</span></div>
+            <span class="cvd-label">藍黃色盲</span>
+            <span class="cvd-sub">Tritanopia</span>
+          </div>
+          <div class="cvd-card" data-type="achromatopsia">
+            <div class="cvd-swatch"><span class="cvd-sample">Aa 文字</span></div>
+            <span class="cvd-label">全色盲</span>
+            <span class="cvd-sub">Achromatopsia</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202606252340"></script>
+</body>
+</html>
