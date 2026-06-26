@@ -2,8 +2,8 @@
 // 07 favicon 產生器 — Canvas 多尺寸縮放 + ICO / ZIP / manifest 打包
 // 每次控制項變動就重算整組圖示（6 個尺寸，量小可全量重算）
 // ============================================================
-import { downloadBlob, copyText, bindDropzone, escapeHtml, track } from '../../shared/scripts/shared.js?v=202606252340';
-import { buildIco, buildZip } from './pack.js?v=202606252340';
+import { downloadBlob, copyText, bindDropzone, escapeHtml, track } from '../../shared/scripts/shared.js?v=202606261147';
+import { buildIco, buildZip } from './pack.js?v=202606261147';
 
 // 要產生的尺寸清單。inIco 標記的併入 favicon.ico
 const SIZES = [

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>CSS Clamp 流體排版 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202606261147">
+  <link rel="stylesheet" href="./style.css?v=202606261147">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="clamp-calc">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 29</span>
+        <h1 class="tool-head-title">CSS Clamp 流體排版計算器</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      輸入最小／最大螢幕寬度與對應字級，自動產出
+      <span class="tag">clamp()</span> 語法，讓排版在不同裝置上流暢縮放，省去手動設定斷點。
+    </p>
+
+    <div class="clamp-layout">
+
+      <!-- 左：控制台 -->
+      <section class="controls" aria-label="數值輸入">
+
+        <!-- 快速預設 -->
+        <div class="control-block">
+          <span class="control-label">快速預設 · presets</span>
+          <div class="chip-group" id="preset-group">
+            <button class="chip" type="button" data-preset="sm">小字</button>
+            <button class="chip is-active" type="button" data-preset="body">內文</button>
+            <button class="chip" type="button" data-preset="h3">H3</button>
+            <button class="chip" type="button" data-preset="h2">H2</button>
+            <button class="chip" type="button" data-preset="h1">H1</button>
+            <button class="chip" type="button" data-preset="display">Display</button>
+          </div>
+        </div>
+
+        <!-- 螢幕寬度範圍 -->
+        <div class="control-block control-section">
+          <span class="control-label">螢幕寬度範圍 · viewport</span>
+          <div class="input-row">
+            <label class="input-field">
+              <span class="input-name">最小</span>
+              <div class="input-suffix-wrap">
+                <input class="text-input" type="number" id="w-min" min="160" max="2400" step="1" value="320">
+                <span class="input-suffix">px</span>
+              </div>
+            </label>
+            <span class="input-arrow">→</span>
+            <label class="input-field">
+              <span class="input-name">最大</span>
+              <div class="input-suffix-wrap">
+                <input class="text-input" type="number" id="w-max" min="320" max="3840" step="1" value="1440">
+                <span class="input-suffix">px</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- 字級範圍 -->
+        <div class="control-block control-section">
+          <span class="control-label">字級範圍 · font size</span>
+          <div class="input-row">
+            <label class="input-field">
+              <span class="input-name">最小</span>
+              <div class="input-suffix-wrap">
+                <input class="text-input" type="number" id="s-min" min="4" max="300" step="0.5" value="16">
+                <span class="input-suffix">px</span>
+              </div>
+            </label>
+            <span class="input-arrow">→</span>
+            <label class="input-field">
+              <span class="input-name">最大</span>
+              <div class="input-suffix-wrap">
+                <input class="text-input" type="number" id="s-max" min="4" max="400" step="0.5" value="20">
+                <span class="input-suffix">px</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- 根字級 -->
+        <div class="control-block control-section">
+          <span class="control-label">根字級 · root font size
+            <span class="control-label-value" id="base-display">16px</span>
+          </span>
+          <input class="range-input" type="range" id="base-size" min="10" max="20" step="1" value="16">
+        </div>
+
+        <!-- 計算摘要 -->
+        <div class="control-block control-section">
+          <span class="control-label">計算摘要 · breakdown</span>
+          <div class="calc-result">
+            <div class="calc-row">
+              <span class="calc-key">slope</span>
+              <code class="calc-val" id="val-slope">—</code>
+            </div>
+            <div class="calc-row">
+              <span class="calc-key">intercept</span>
+              <code class="calc-val" id="val-intercept">—</code>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- 右：圖表 + 預覽 + 輸出 -->
+      <section class="output" aria-label="結果輸出">
+
+        <div class="stage-bar">
+          <span class="tag">Curve</span>
+          <span class="stage-hint">clamp 縮放曲線（平坦 → 線性上升 → 平坦）</span>
+        </div>
+
+        <!-- SVG 曲線圖 -->
+        <div class="chart-wrap">
+          <svg id="clamp-chart" class="clamp-chart" viewBox="0 0 500 260" role="img" aria-label="clamp 縮放曲線圖"></svg>
+        </div>
+
+        <!-- 即時字級預覽 -->
+        <div class="stage-bar preview-bar">
+          <span class="tag">Preview</span>
+          <span class="stage-hint">目前視窗 <span id="live-w">—</span>px → 字級 <span id="live-size">—</span>px</span>
+        </div>
+        <div class="preview-text-wrap">
+          <p class="preview-text" id="preview-text">設計讓複雜變簡單 · Typography scales with viewport</p>
+        </div>
+
+        <!-- CSS 輸出 -->
+        <div class="section-rule"><span class="tag">CSS</span></div>
+        <div class="code-wrap">
+          <pre class="code-block" id="code-css">—</pre>
+          <button class="btn btn-accent code-copy" type="button" id="copy-css">複製</button>
+        </div>
+        <p class="copy-hint" id="hint-css" aria-live="polite"></p>
+
+        <!-- SCSS 輸出 -->
+        <div class="section-rule"><span class="tag">SCSS</span></div>
+        <div class="code-wrap">
+          <pre class="code-block" id="code-scss">—</pre>
+          <button class="btn btn-accent code-copy" type="button" id="copy-scss">複製</button>
+        </div>
+        <p class="copy-hint" id="hint-scss" aria-live="polite"></p>
+
+      </section>
+    </div>
+  </main>
+
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202606261147"></script>
+</body>
+</html>

@@ -1,0 +1,310 @@
+// ============================================================
+// 29 CSS Clamp 流體排版計算器 — 工具特有樣式
+// 共用元件（tool-head / btn / tag / chip / section-rule）直接套 class
+// 控制台 .controls / .control-block / .chip 等沿用 28 Cubic Bezier 語彙
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+}
+
+// — 版面：左控制台、右圖表；窄螢幕改上下堆疊 —
+.clamp-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
+  gap: $space-5;
+  align-items: start;
+}
+
+// ============================================================
+// 左側控制台（與 cubic-bezier 共用結構語彙）
+// ============================================================
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  padding: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+  position: sticky;
+  top: $space-4;
+}
+
+.control-block {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.control-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.control-label-value {
+  font-variant-numeric: tabular-nums;
+  color: $color-ink;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.control-section {
+  padding-top: $space-4;
+  border-top: $border-fine;
+}
+
+// — chip 群（沿用漸層／cubic-bezier）—
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.chip {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-1 $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+  background: $color-paper;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// — 並排輸入列（最小 → 最大）—
+.input-row {
+  display: flex;
+  align-items: flex-end;
+  gap: $space-2;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  flex: 1;
+  min-width: 0;
+}
+
+.input-name {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.input-suffix-wrap {
+  position: relative;
+}
+
+.text-input {
+  width: 100%;
+  min-width: 0;
+  padding: $space-2 $space-3;
+  padding-right: 36px; // 右側留給 px 單位標籤
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  letter-spacing: 0.02em;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  transition: border-color $dur $ease;
+
+  &:focus { outline: none; border-color: $color-accent; }
+  &.is-invalid { border-color: $color-accent; }
+}
+
+.input-suffix {
+  position: absolute;
+  right: $space-3;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  pointer-events: none;
+  user-select: none;
+}
+
+// 中間的箭頭符號
+.input-arrow {
+  flex-shrink: 0;
+  color: $color-ink-soft;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  padding-bottom: $space-2; // 對齊 input 底部
+}
+
+// — 根字級滑桿 —
+.range-input {
+  width: 100%;
+  accent-color: $color-accent;
+  cursor: pointer;
+}
+
+// — 計算摘要 —
+.calc-result {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  padding: $space-3;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+.calc-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: $space-2;
+}
+
+.calc-key {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.calc-val {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  font-style: normal;
+  color: $color-ink;
+  text-align: right;
+}
+
+// ============================================================
+// 右側：圖表 + 預覽 + 輸出
+// ============================================================
+.output {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+
+  .section-rule { margin-top: $space-5; }
+}
+
+.stage-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+  margin-bottom: $space-2;
+}
+
+.stage-hint {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+.preview-bar { margin-top: $space-5; }
+
+// — SVG 圖表 —
+.chart-wrap {
+  padding: $space-3;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+}
+
+.clamp-chart {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+// — 即時字級文字預覽 —
+.preview-text-wrap {
+  min-height: 80px;
+  padding: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+  display: flex;
+  align-items: center;
+}
+
+.preview-text {
+  margin: 0;
+  color: $color-ink;
+  line-height: 1.4;
+  transition: font-size 0.12s $ease;
+}
+
+// — CSS / SCSS 輸出區（沿用 code-block 語彙）—
+.code-wrap { position: relative; }
+
+.code-block {
+  margin: 0;
+  padding: $space-4;
+  padding-right: 96px; // 讓出右上複製鈕空間
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  line-height: 1.7;
+  color: $color-ink;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.code-copy {
+  position: absolute;
+  top: $space-3;
+  right: $space-3;
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: $space-2 0 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// ============================================================
+// 窄螢幕
+// ============================================================
+@media (max-width: 860px) {
+  .clamp-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-4;
+  }
+
+  .controls {
+    position: static;
+    top: auto;
+  }
+}

@@ -1,0 +1,256 @@
+// ============================================================
+// 31 印刷紙張尺寸速查 — 工具特有樣式
+// 共用元件（tag / badge / tool-head / section-rule…）直接套 class，這裡只補差異
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-3;
+  color: $color-ink-soft;
+}
+
+// — 控制列：系列篩選 + 單位切換，黏頂方便長表捲動時操作 —
+.query-bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding-block: $space-3;
+  background: $color-paper;
+  border-bottom: $border-fine;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+// — 系列篩選列 —
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+// 單一篩選鈕（等寬技術標籤風，沿用入口頁 filter-chip 語彙）
+.filter-chip {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-1 $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+  background: transparent;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// — 單位切換列 —
+.unit-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-2;
+}
+
+.unit-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.unit-chips,
+.dpi-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-1;
+}
+
+// 單位／DPI 切換鈕（與 filter-chip 同語彙，字體略小）
+.unit-chip {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: 2px $space-2;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+  background: transparent;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// DPI 列容器（整列與 unit-bar 同一行）
+.dpi-bar {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  margin-left: $space-2;
+  padding-left: $space-2;
+  border-left: $border-fine;
+}
+
+// — 規格表 —
+.table-wrap {
+  overflow-x: auto;
+}
+
+.paper-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: $fs-sm;
+  white-space: nowrap;
+
+  th, td {
+    padding: $space-3;
+    text-align: left;
+    border-bottom: $border-fine;
+  }
+}
+
+// 表頭：等寬小字
+.paper-table thead th {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+  border-bottom: $border-ink;
+  user-select: none;
+}
+
+.th-ratio { width: 60px; }
+.th-size  { min-width: 160px; }
+.th-copy  { width: 1px; }
+
+// 表身列：可點擊複製，hover 換底色
+.paper-table tbody tr {
+  cursor: pointer;
+  transition: background-color $dur $ease;
+
+  &:hover { background: $color-paper-deep; }
+
+  &.is-copied { background: color-mix(in srgb, $color-accent 10%, $color-paper); }
+}
+
+.cell-name { font-weight: 500; }
+
+// 數值欄走等寬，對齊好讀
+.cell-mono {
+  font-family: $font-mono;
+  font-variant-numeric: tabular-nums;
+}
+
+// — 比例縮圖 SVG —
+.ratio-thumb {
+  display: block;
+  // 以 SVG 的 rect 呈現紙張比例
+  rect {
+    fill: none;
+    stroke: $color-ink;
+    stroke-width: 1.5px;
+  }
+}
+
+// — 系列膠囊 —
+.series-pill {
+  display: inline-block;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: 2px $space-2;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+}
+
+.series-iso-a {
+  border-color: $color-accent;
+  color: $color-accent;
+}
+
+.series-iso-b {
+  border-color: $color-mark;
+  color: color-mix(in srgb, $color-mark 70%, $color-ink);
+}
+
+.series-jis-b {
+  border-color: $color-ink;
+  color: $color-ink;
+}
+
+.series-us {
+  border-color: $color-ink-soft;
+  color: $color-ink-soft;
+}
+
+.series-common {
+  border-color: color-mix(in srgb, $color-accent 50%, $color-mark);
+  color: color-mix(in srgb, $color-accent 50%, $color-mark);
+}
+
+// 複製提示：hover 該列才浮現的等寬小字
+.cell-copy { text-align: right; }
+
+.copy-hint {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+  opacity: 0;
+  transition: opacity $dur $ease, color $dur $ease;
+}
+
+.paper-table tbody tr:hover .copy-hint { opacity: 1; }
+
+.paper-table tbody tr.is-copied .copy-hint {
+  opacity: 1;
+  color: $color-accent;
+}
+
+// — 空狀態 —
+.empty-state {
+  padding-block: $space-6 !important;
+  text-align: center;
+  color: $color-ink-soft;
+  white-space: normal;
+}
+
+// — 窄螢幕調整 —
+@media (max-width: 640px) {
+  .unit-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dpi-bar {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+    border-top: $border-fine;
+    padding-top: $space-2;
+  }
+}

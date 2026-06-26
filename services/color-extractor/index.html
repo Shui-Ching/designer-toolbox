@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>圖片萃取調色盤 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202606261147">
+  <link rel="stylesheet" href="./style.css?v=202606261147">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="color-extractor">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 30</span>
+        <h1 class="tool-head-title">圖片萃取調色盤</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      上傳一張圖片，自動以 <span class="tag">k-means</span> 演算法萃取最具代表性的主色調色盤。
+      每色附 HEX 與 RGB 值可一鍵複製，全程在瀏覽器端完成，圖片不上傳。
+    </p>
+
+    <div class="extractor-layout">
+
+      <!-- 左：上傳 + 控制 -->
+      <section class="extractor-input" aria-label="上傳圖片">
+
+        <!-- 拖放區（上傳後隱藏） -->
+        <div class="dropzone" id="dropzone" role="button" tabindex="0"
+             aria-label="拖曳圖片或點擊選擇">
+          <svg class="dropzone-icon" width="32" height="32" viewBox="0 0 32 32" fill="none"
+               aria-hidden="true">
+            <rect x="4" y="8" width="24" height="18" rx="1" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M4 22l6-6 5 5 4-4 9 8" stroke="currentColor" stroke-width="1.5"
+                  stroke-linejoin="round" stroke-linecap="round"/>
+            <circle cx="11" cy="14" r="2" fill="currentColor"/>
+          </svg>
+          <span class="dropzone-hint">拖曳圖片或點擊選擇</span>
+          <span class="dropzone-sub">JPG · PNG · WebP · GIF · AVIF</span>
+          <input type="file" id="file-input" accept="image/*" hidden aria-label="選擇圖片">
+        </div>
+
+        <!-- 圖片預覽（上傳後顯示） -->
+        <div class="image-preview" id="image-preview" hidden>
+          <img id="preview-img" alt="已上傳的圖片預覽">
+          <div class="image-preview-footer">
+            <span class="image-preview-meta tag" id="image-meta"></span>
+            <button type="button" class="btn" id="clear-btn">移除</button>
+          </div>
+        </div>
+
+        <!-- 顏色數量控制（上傳後顯示） -->
+        <div class="control-block" id="controls-block" hidden>
+          <label class="control-label" for="color-count">萃取顏色數量</label>
+          <div class="count-row">
+            <input type="range" id="color-count" min="3" max="10" value="6" step="1"
+                   aria-label="萃取顏色數量 3 到 10">
+            <output for="color-count" id="count-output" aria-live="polite">6</output>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-accent" id="extract-btn" disabled>
+          重新萃取
+        </button>
+
+      </section>
+
+      <!-- 右：調色盤輸出 -->
+      <section class="extractor-output" aria-label="萃取結果">
+
+        <!-- 空狀態 -->
+        <div class="palette-placeholder" id="palette-placeholder">
+          <span class="tag">上傳圖片後，主色將顯示於此</span>
+        </div>
+
+        <!-- 計算中 -->
+        <div class="palette-computing" id="palette-computing" hidden aria-live="polite"
+             aria-label="分析中">
+          <span class="computing-dots">
+            <span></span><span></span><span></span>
+          </span>
+          <span class="tag">分析中</span>
+        </div>
+
+        <!-- 結果 -->
+        <div id="palette-output" hidden>
+          <div class="palette-list" id="palette-list" role="list" aria-label="萃取的主色清單">
+          </div>
+          <div class="palette-actions">
+            <button type="button" class="btn" id="copy-all-btn">複製全部 HEX</button>
+            <span class="palette-sample-note tag" id="sample-note" aria-live="polite"></span>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202606261147"></script>
+</body>
+</html>

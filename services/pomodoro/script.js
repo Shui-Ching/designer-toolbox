@@ -1,4 +1,4 @@
-import { track } from '../../shared/scripts/shared.js?v=202606252340';
+import { track } from '../../shared/scripts/shared.js?v=202606261147';
 
 // ============================================================
 // 番茄鐘 — 番茄工作法計時器

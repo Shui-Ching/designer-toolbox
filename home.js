@@ -40,6 +40,9 @@ const TOOL_POPULARITY = {
   'services/pangu/index.html': 0,
   'services/contrast-checker/index.html': 0,
   'services/cubic-bezier/index.html': 0,
+  'services/clamp-calc/index.html': 0,
+  'services/color-extractor/index.html': 0,
+  'services/paper-size/index.html': 0,
 };
 
 (function () {

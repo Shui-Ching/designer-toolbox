@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
@@ -8,7 +8,7 @@
   <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
 
-  <title>裝置尺寸查詢 · 設計師工具箱</title>
+  <title>印刷紙張尺寸速查 · 設計師工具箱</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
@@ -18,12 +18,12 @@
   <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
 </head>
-<body data-tool="device-size">
+<body data-tool="paper-size">
   <main class="container">
     <div class="tool-head">
       <div>
-        <span class="tag tag-accent">Tool / 04</span>
-        <h1 class="tool-head-title">裝置尺寸查詢</h1>
+        <span class="tag tag-accent">Tool / 31</span>
+        <h1 class="tool-head-title">印刷紙張尺寸速查</h1>
       </div>
       <div class="tool-head-actions">
         <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
@@ -32,35 +32,42 @@
     </div>
 
     <p class="tool-intro">
-      常見手機、平板、桌機的 CSS <span class="tag">viewport</span>、裝置像素比（DPR）與實體解析度速查。
-      點任一列即可複製 viewport 尺寸；下方附響應式斷點刻度尺。
+      ISO A/B 系列、JIS B、美規、名片與明信片的標準印刷尺寸速查。
+      可切換顯示單位（mm / cm / inch / px），點任一列即可複製尺寸。
     </p>
 
-    <!-- 搜尋 + 類型篩選 -->
+    <!-- 控制列（黏頂） -->
     <div class="query-bar">
-      <input type="search" id="search" class="search-input" placeholder="搜尋裝置名稱…" autocomplete="off">
-      <div class="filter-bar" id="filter-bar"></div>
-    </div>
+      <!-- 系列篩選 chip -->
+      <div class="filter-bar" id="filter-bar" role="group" aria-label="依系列篩選紙張"></div>
 
-    <p class="result-count" id="result-count"></p>
+      <!-- 單位切換列 -->
+      <div class="unit-bar">
+        <span class="unit-label">單位</span>
+        <div class="unit-chips" id="unit-chips" role="group" aria-label="切換顯示單位"></div>
+        <!-- px 模式才顯示的 DPI 選項 -->
+        <div class="dpi-bar" id="dpi-bar" hidden>
+          <span class="unit-label">DPI</span>
+          <div class="dpi-chips" id="dpi-chips" role="group" aria-label="選擇 DPI 解析度"></div>
+        </div>
+      </div>
+    </div>
 
     <!-- 規格表（由 JS 渲染） -->
     <div class="table-wrap">
-      <table class="device-table">
+      <table class="paper-table">
         <thead>
-          <tr id="table-head"></tr>
+          <tr>
+            <th>紙張名稱</th>
+            <th>系列</th>
+            <th class="th-ratio">比例</th>
+            <th class="th-size" id="th-size">寬 × 高（mm）</th>
+            <th class="th-copy" aria-hidden="true"></th>
+          </tr>
         </thead>
         <tbody id="table-body"></tbody>
       </table>
     </div>
-
-    <!-- 斷點刻度尺 -->
-    <div class="section-rule">
-      <span class="tag">Breakpoints / Bootstrap 5</span>
-    </div>
-    <p class="bp-intro">以最小寬度（min-width）由下而上套用，是 Bootstrap 5 的預設斷點，亦可作為自訂 RWD 的參考刻度。</p>
-    <div class="bp-scale" id="bp-scale"></div>
-
   </main>
 
   <!-- 頁尾 -->

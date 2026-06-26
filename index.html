@@ -16,8 +16,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="shared/styles/shared.css?v=202606252340">
-  <link rel="stylesheet" href="index.css?v=202606252340">
+  <link rel="stylesheet" href="shared/styles/shared.css?v=202606261147">
+  <link rel="stylesheet" href="index.css?v=202606261147">
 
   <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
@@ -48,15 +48,7 @@
       <div class="container feedback-ticker-inner">
         <span class="feedback-ticker-label">使用者心聲</span>
         <div class="feedback-ticker-viewport">
-          <!--
-            新增一則回饋：
-            1. 在「第 1 組」底下複製一個 <li class="feedback-item"> 區塊，填入 tag／內容／日期。
-            2. 把同一則也複製到「第 2、3 組」（兩處各一份），且務必帶上 class="is-clone" 與 aria-hidden="true"。
-               ↳ 三組內容需完全一致，無縫循環才不會跳格；複製組僅供視覺，不讓螢幕報讀重複念。
-            3. date 用 <time datetime="YYYY-MM-DD">，顯示文字可依手冊風寫成 2026/06/11。
-            4. 如需附管理員回覆，在 .feedback-item-text 之後、.feedback-item-date 之前加一行
-               <span class="feedback-item-reply">…</span>（同樣三組都要帶）。
-          -->
+      
           <ul class="feedback-ticker-track">
             <!-- 第 1 組：供螢幕報讀的真實內容 -->
             <li class="feedback-item">
@@ -202,7 +194,7 @@
           </select>
         </label>
 
-        <span class="index-count" id="tool-count">28 項工具</span>
+        <span class="index-count" id="tool-count">31 項工具</span>
       </div>
 
       <!-- 分類篩選：依領域切換工具，與搜尋列為交集篩選 -->
@@ -584,6 +576,45 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
+        <a class="tool-card" href="services/clamp-calc/index.html" data-category="css" data-keywords="clamp 流體排版 fluid typography 字級 font size viewport 螢幕寬度 響應式 responsive 斷點 breakpoint rem vw css 縮放 scale 計算器">
+          <div class="tool-card-top">
+            <span class="tool-card-no">29</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">CSS Clamp 流體排版</h2>
+            <span class="tool-card-en">Fluid Typography</span>
+          </div>
+          <p class="tool-card-desc">輸入最小／最大螢幕寬度與字級，自動產出 clamp() 語法，讓排版無斷點流暢縮放。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/color-extractor/index.html" data-category="color" data-keywords="圖片 調色盤 主色 萃取 色票 palette color extract kmeans k-means 顏色 配色 hex rgb 設計 品牌色">
+          <div class="tool-card-top">
+            <span class="tool-card-no">30</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">圖片萃取調色盤</h2>
+            <span class="tool-card-en">Color Extractor</span>
+          </div>
+          <p class="tool-card-desc">上傳圖片，自動以 k-means 演算法萃取主色調色盤，每色附 HEX 與 RGB 值可一鍵複製。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/paper-size/index.html" data-category="reference" data-keywords="紙張 尺寸 印刷 paper size a4 a3 a2 a1 a0 b4 b5 iso jis 美規 letter legal 名片 明信片 海報 mm cm inch px dpi 規格 速查">
+          <div class="tool-card-top">
+            <span class="tool-card-no">31</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">印刷紙張尺寸速查</h2>
+            <span class="tool-card-en">Paper Size Reference</span>
+          </div>
+          <p class="tool-card-desc">A0–A8、ISO B、JIS B、美規、名片與明信片標準尺寸，可切換 mm／cm／inch／px 顯示，點列複製。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
       </nav>
 
       <!-- 搜尋無結果時的空狀態 -->
@@ -600,8 +631,8 @@
   <button class="go-top" id="go-top" aria-label="回到頂端">↑</button>
 
   <!-- 共用 JS：掛載頁尾（ES Module，符合 CSP script-src 'self'） -->
-  <script type="module" src="./shared/scripts/shared.js?v=202606252340"></script>
+  <script type="module" src="./shared/scripts/shared.js?v=202606261147"></script>
   <!-- 首頁工具搜尋（外部檔，符合 CSP script-src 'self'） -->
-  <script defer src="home.js?v=202606252340"></script>
+  <script defer src="home.js?v=202606261147"></script>
 </body>
 </html>
