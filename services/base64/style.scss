@@ -1,0 +1,300 @@
+// ============================================================
+// 32 Base64 編解碼 — 工具特有樣式
+// 共用元件（tool-head / btn / tag / section-rule / dropzone / site-foot）直接套 class，
+// 這裡補模式切換、文字雙欄、圖片結果與輸出碼塊
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+}
+
+// ============================================================
+// 模式切換頁籤（手冊風分段按鈕）
+// ============================================================
+.mode-tabs {
+  display: inline-flex;
+  margin-bottom: $space-4;
+  border: $border-ink;
+  border-radius: $radius;
+  overflow: hidden;
+}
+
+.mode-tab {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-2 $space-4;
+  color: $color-ink-soft;
+  background: $color-paper;
+  border: none;
+  border-right: $border-ink;
+  cursor: pointer;
+  transition: color $dur $ease, background-color $dur $ease;
+
+  &:last-child { border-right: none; }
+
+  &:hover { color: $color-ink; }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-ink;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-accent;
+    outline-offset: 2px;
+  }
+}
+
+// ============================================================
+// 文字模式
+// ============================================================
+// — 選項列 —
+.opt-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin-bottom: $space-3;
+}
+
+.opt-chip {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.03em;
+  padding: $space-1 $space-3;
+  color: $color-ink-soft;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  code {
+    font-family: $font-mono;
+    color: $color-accent;
+  }
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+
+    code { color: $color-paper; }
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-accent;
+    outline-offset: 2px;
+  }
+}
+
+// — 兩欄：純文字 ↔ Base64 —
+.convert-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-4;
+  align-items: start;
+}
+
+.convert-pane {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  min-width: 0;
+}
+
+.pane-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+}
+
+// — 文字框（沿用稿紙語彙）—
+.text-area {
+  width: 100%;
+  min-height: 340px;
+  padding: $space-3;
+  font-family: $font-body;
+  font-size: $fs-base;
+  line-height: 1.7;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
+  resize: vertical;
+  transition: border-color $dur $ease;
+
+  &.is-mono {
+    font-family: $font-mono;
+    font-size: $fs-sm;
+    word-break: break-all;
+  }
+
+  &::placeholder { color: $color-ink-soft; }
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+
+  // 解碼失敗：邊框轉硃紅
+  &.is-error {
+    border-color: $color-accent;
+    box-shadow: 6px 6px 0 rgba(216, 68, 42, 0.18);
+  }
+}
+
+.pane-meta {
+  margin: 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.03em;
+  color: $color-ink-soft;
+  font-variant-numeric: tabular-nums;
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: $space-3 0 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// ============================================================
+// 圖片模式
+// ============================================================
+.notice {
+  margin: $space-3 0 0;
+  padding: $space-3;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  line-height: 1.6;
+  color: $color-accent;
+  background: $color-paper;
+  border: 1px solid $color-accent;
+  border-radius: $radius;
+}
+
+.img-result-top {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: $space-4;
+  align-items: start;
+  margin-bottom: $space-4;
+}
+
+// — 預覽框：棋盤底，凸顯透明區 —
+.img-preview-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  background-color: $color-paper;
+  background-image:
+    linear-gradient(45deg, $color-line 25%, transparent 25%),
+    linear-gradient(-45deg, $color-line 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, $color-line 75%),
+    linear-gradient(-45deg, transparent 75%, $color-line 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+
+  img {
+    max-width: 100%;
+    max-height: 180px;
+    display: block;
+  }
+}
+
+// — 資訊定義列表 —
+.img-info {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    gap: $space-3;
+    padding-bottom: $space-2;
+    border-bottom: $border-fine;
+  }
+
+  dt {
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    letter-spacing: 0.03em;
+    color: $color-ink-soft;
+  }
+
+  dd {
+    margin: 0;
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    color: $color-ink;
+    text-align: right;
+    word-break: break-all;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+// — 輸出碼塊（沿用 code-block 語彙）—
+.out-block {
+  margin-bottom: $space-4;
+}
+
+.out-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+  margin-bottom: $space-2;
+}
+
+.code-block {
+  margin: 0;
+  padding: $space-3;
+  max-height: 200px;
+  overflow: auto;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  line-height: 1.6;
+  color: $color-ink;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+// ============================================================
+// 窄螢幕：兩欄改上下堆疊
+// ============================================================
+@media (max-width: 860px) {
+  .convert-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-3;
+  }
+
+  .text-area { min-height: 220px; }
+
+  .img-result-top {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .img-preview-box img { max-height: 220px; }
+}

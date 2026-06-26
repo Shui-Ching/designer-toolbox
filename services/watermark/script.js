@@ -3,7 +3,7 @@
 // 與 01／06／16 共用「解碼→canvas→toBlob」圖片管線；浮水印參數一律以「佔圖寬比例」儲存，
 // 故同一組設定可一致套用到尺寸不同的批次圖片（預覽用縮放畫布、輸出用原圖尺寸，數學相同）
 // ============================================================
-import { downloadBlob, bindDropzone, escapeHtml, track } from '../../shared/scripts/shared.js?v=202606261147';
+import { downloadBlob, bindDropzone, escapeHtml, track } from '../../shared/scripts/shared.js?v=202606262323';
 
 const dropzone = document.getElementById('dropzone');
 const fileInput = document.getElementById('file-input');

@@ -1,0 +1,291 @@
+// ============================================================
+// 34 抽籤器 — 工具特有樣式
+// 共用元件（tool-head / btn / tag）直接套 class，這裡補兩欄版面與結果卡
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+
+  code {
+    font-family: $font-mono;
+    font-size: 0.9em;
+    background: $color-paper-deep;
+    border: $border-fine;
+    border-radius: $radius;
+    padding: 0.1em 0.4em;
+  }
+}
+
+// ============================================================
+// 兩欄版面：左名單面板、右抽籤舞台；窄螢幕垂直堆疊
+// ============================================================
+.lottery-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: $space-5;
+  align-items: start;
+  padding-bottom: $space-6;
+
+  @media (max-width: 720px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ============================================================
+// 左側：名單面板
+// ============================================================
+.names-panel {
+  background: $color-paper-deep;
+  border: $border-fine;
+  padding: $space-4;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  position: sticky;
+  top: $space-4;
+
+  @media (max-width: 720px) {
+    position: static;
+  }
+}
+
+.names-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.names-title {
+  font-weight: 600;
+  font-size: $fs-base;
+}
+
+.names-count {
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  letter-spacing: 0.05em;
+}
+
+// 名單輸入框
+.names-textarea {
+  width: 100%;
+  min-height: 240px;
+  resize: vertical;
+  padding: $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  background: $color-paper;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  line-height: 1.7;
+  color: $color-ink;
+  outline: none;
+  transition: border-color $dur $ease;
+
+  &::placeholder {
+    color: $color-ink-soft;
+  }
+
+  &:focus {
+    border-color: $color-ink;
+  }
+}
+
+// 抽出人數設定列
+.names-settings {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+}
+
+.draw-count-field {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-size: $fs-sm;
+  color: $color-ink;
+}
+
+.draw-count-input {
+  width: 72px;
+  padding: $space-2 $space-2;
+  border: $border-ink;
+  border-radius: $radius;
+  background: $color-paper;
+  font-family: $font-mono;
+  font-size: $fs-base;
+  font-weight: 600;
+  text-align: center;
+  color: $color-ink;
+  outline: none;
+
+  &:focus {
+    border-color: $color-accent;
+  }
+}
+
+.draw-pool {
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+// 底部按鈕列
+.names-footer {
+  display: flex;
+  gap: $space-2;
+
+  .btn {
+    flex: 1;
+    font-size: $fs-xs;
+    justify-content: center;
+    white-space: nowrap;
+  }
+}
+
+// ============================================================
+// 右側：抽籤舞台
+// ============================================================
+.lottery-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $space-4;
+}
+
+// 抽籤按鈕：大型墨黑 CTA，hover 變硃紅並微微上浮
+.draw-btn {
+  appearance: none;
+  background: $color-ink;
+  color: $color-paper;
+  border: none;
+  font-family: $font-display;
+  font-size: $fs-xl;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  padding: $space-3 $space-7;
+  border-radius: $radius;
+  cursor: pointer;
+  transition:
+    background $dur $ease,
+    transform $dur $ease,
+    box-shadow $dur $ease;
+
+  &:hover:not(:disabled) {
+    background: $color-accent;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 16px rgba($color-accent, 0.35);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $color-accent;
+    outline-offset: 3px;
+  }
+}
+
+.lottery-status {
+  font-size: $fs-sm;
+  color: $color-ink-soft;
+  text-align: center;
+  margin: 0;
+}
+
+// ============================================================
+// 結果卡網格
+// ============================================================
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: $space-3;
+  width: 100%;
+}
+
+.result-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  min-height: 64px;
+  padding: $space-3 $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-left: 3px solid $color-line;
+  border-radius: $radius;
+  overflow: hidden;
+}
+
+// 排名編號：等寬技術標籤感
+.result-rank {
+  flex-shrink: 0;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  font-weight: 700;
+  color: $color-ink-soft;
+  min-width: 1.6em;
+  text-align: center;
+}
+
+.result-name {
+  flex: 1;
+  font-family: $font-display;
+  font-size: $fs-lg;
+  font-weight: 700;
+  line-height: 1.2;
+  color: $color-ink;
+  word-break: break-word;
+}
+
+// 輪播中：名字快速跳動，視覺上略微模糊與淡化
+.result-card.is-rolling {
+  .result-name {
+    color: $color-ink-soft;
+    opacity: 0.7;
+    filter: blur(0.4px);
+  }
+}
+
+// 鎖定：硃紅左框 + 彈跳定格
+.result-card.is-locked {
+  border-color: $color-line;
+  border-left-color: $color-accent;
+  background: $color-paper;
+  animation: result-lock 0.42s $ease both;
+
+  .result-name {
+    color: $color-ink;
+  }
+}
+
+@keyframes result-lock {
+  0%   { transform: scale(0.92); }
+  55%  { transform: scale(1.045); }
+  100% { transform: scale(1); }
+}
+
+// ============================================================
+// 抽籤後動作列
+// ============================================================
+.lottery-actions {
+  display: flex;
+  gap: $space-3;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  &[hidden] {
+    display: none;
+  }
+}

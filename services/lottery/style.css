@@ -1,0 +1,268 @@
+:root {
+  --color-paper: #f4f1e8;
+  --color-paper-deep: #ece7d9;
+  --color-ink: #1c1b18;
+  --color-ink-soft: #6b665b;
+  --color-line: #d9d3c3;
+  --color-accent: #d8442a;
+  --color-accent-deep: #b0331d;
+  --color-mark: #e0a92e;
+  --font-display: Inter, Noto Sans TC, sans-serif;
+  --font-body: Inter, Noto Sans TC, sans-serif;
+  --font-mono: Inter, Noto Sans TC, sans-serif;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.tool-intro {
+  margin-block: 24px 40px;
+  color: #6b665b;
+}
+.tool-intro code {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 0.9em;
+  background: #ece7d9;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  padding: 0.1em 0.4em;
+}
+
+.lottery-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 40px;
+  align-items: start;
+  padding-bottom: 64px;
+}
+@media (max-width: 720px) {
+  .lottery-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.names-panel {
+  background: #ece7d9;
+  border: 1px solid #d9d3c3;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 24px;
+}
+@media (max-width: 720px) {
+  .names-panel {
+    position: static;
+  }
+}
+
+.names-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.names-title {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.names-count {
+  font-size: 1rem;
+  color: #6b665b;
+  letter-spacing: 0.05em;
+}
+
+.names-textarea {
+  width: 100%;
+  min-height: 240px;
+  resize: vertical;
+  padding: 16px;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  background: #f4f1e8;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #1c1b18;
+  outline: none;
+  transition: border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.names-textarea::placeholder {
+  color: #6b665b;
+}
+.names-textarea:focus {
+  border-color: #1c1b18;
+}
+
+.names-settings {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.draw-count-field {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  color: #1c1b18;
+}
+
+.draw-count-input {
+  width: 72px;
+  padding: 8px 8px;
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+  background: #f4f1e8;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  color: #1c1b18;
+  outline: none;
+}
+.draw-count-input:focus {
+  border-color: #d8442a;
+}
+
+.draw-pool {
+  font-size: 1rem;
+  color: #6b665b;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.names-footer {
+  display: flex;
+  gap: 8px;
+}
+.names-footer .btn {
+  flex: 1;
+  font-size: 1rem;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.lottery-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.draw-btn {
+  appearance: none;
+  background: #1c1b18;
+  color: #f4f1e8;
+  border: none;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  padding: 16px 96px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.draw-btn:hover:not(:disabled) {
+  background: #d8442a;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 16px rgba(216, 68, 42, 0.35);
+}
+.draw-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+.draw-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.draw-btn:focus-visible {
+  outline: 2px solid #d8442a;
+  outline-offset: 3px;
+}
+
+.lottery-status {
+  font-size: 1rem;
+  color: #6b665b;
+  text-align: center;
+  margin: 0;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+
+.result-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 64px;
+  padding: 16px 24px;
+  background: #ece7d9;
+  border: 1px solid #d9d3c3;
+  border-left: 3px solid #d9d3c3;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.result-rank {
+  flex-shrink: 0;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #6b665b;
+  min-width: 1.6em;
+  text-align: center;
+}
+
+.result-name {
+  flex: 1;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #1c1b18;
+  word-break: break-word;
+}
+
+.result-card.is-rolling .result-name {
+  color: #6b665b;
+  opacity: 0.7;
+  filter: blur(0.4px);
+}
+
+.result-card.is-locked {
+  border-color: #d9d3c3;
+  border-left-color: #d8442a;
+  background: #f4f1e8;
+  animation: result-lock 0.42s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+.result-card.is-locked .result-name {
+  color: #1c1b18;
+}
+
+@keyframes result-lock {
+  0% {
+    transform: scale(0.92);
+  }
+  55% {
+    transform: scale(1.045);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.lottery-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.lottery-actions[hidden] {
+  display: none;
+}

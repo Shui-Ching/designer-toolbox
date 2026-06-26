@@ -2,7 +2,7 @@
 // 13 字數／字元統計 — 即時統計字數・字元・行・段・句與閱讀時間
 // 零相依、純前端計算；維持 CSP script-src 'self'
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202606261147';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202606262323';
 
 // — DOM —
 const textInput = document.getElementById('text-input');

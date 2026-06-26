@@ -43,6 +43,9 @@ const TOOL_POPULARITY = {
   'services/clamp-calc/index.html': 0,
   'services/color-extractor/index.html': 0,
   'services/paper-size/index.html': 0,
+  'services/base64/index.html': 0,
+  'services/svg-optimizer/index.html': 0,
+  'services/lottery/index.html': 0,
 };
 
 (function () {

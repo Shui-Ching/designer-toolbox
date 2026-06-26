@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>抽籤器 · 設計師工具箱</title>
+  <meta name="description" content="貼上名單，設定抽出人數，用密碼學等級亂數不重複抽出。尾牙抽獎、分組、點名——公平交給隨機。">
+
+  <!-- 字體：Inter（英文／數字）/ Noto Sans TC（中文），全站統一 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202606262323">
+  <link rel="stylesheet" href="./style.css?v=202606262323">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="lottery">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 34</span>
+        <h1 class="tool-head-title">抽籤器</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      貼上名單，設定要抽幾位，按下抽籤就好。亂數採瀏覽器原生 <code>crypto</code>
+      密碼學等級隨機、一次抽出不重複。<strong>尾牙、分組、點名，公平交給機率。</strong>
+    </p>
+
+    <div class="lottery-layout">
+
+      <!-- 左側：名單與設定 -->
+      <aside class="names-panel">
+        <div class="names-header">
+          <span class="names-title">名單</span>
+          <span class="names-count" id="names-count">0 個名字</span>
+        </div>
+
+        <textarea
+          class="names-textarea"
+          id="names-input"
+          placeholder="一行一個名字，空行會自動略過…&#10;&#10;王小明&#10;陳大文&#10;林美麗&#10;張志豪"
+          spellcheck="false"
+          aria-label="名單，一行一個名字"></textarea>
+
+        <div class="names-settings">
+          <label class="draw-count-field" for="draw-count">
+            <span>抽出人數</span>
+            <input
+              type="number"
+              id="draw-count"
+              class="draw-count-input"
+              min="1"
+              value="1"
+              inputmode="numeric"
+              autocomplete="off">
+          </label>
+          <span class="draw-pool" id="draw-pool">可抽 0 人</span>
+        </div>
+
+        <div class="names-footer">
+          <button class="btn" id="sample-btn" type="button">載入範例</button>
+          <button class="btn" id="clear-btn" type="button">清空</button>
+        </div>
+      </aside>
+
+      <!-- 右側：抽籤舞台 -->
+      <div class="lottery-stage">
+        <button class="draw-btn" id="draw-btn" type="button" disabled>抽籤</button>
+
+        <p class="lottery-status" id="lottery-status" aria-live="polite">先貼上名單，再開始抽籤。</p>
+
+        <div class="result-grid" id="result-grid" aria-live="polite" aria-atomic="false"></div>
+
+        <div class="lottery-actions" id="lottery-actions" hidden>
+          <button class="btn btn-accent" id="reset-btn" type="button">重新開始（放回全部）</button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202606262323"></script>
+</body>
+</html>

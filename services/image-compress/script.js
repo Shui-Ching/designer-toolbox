@@ -1,7 +1,7 @@
 // ============================================================
 // 01 壓縮圖片 — Canvas 客戶端壓縮：格式 / 品質 / 最大寬度，批次處理與前後對比
 // ============================================================
-import { downloadBlob, formatBytes, bindDropzone, escapeHtml, track } from '../../shared/scripts/shared.js?v=202606261147';
+import { downloadBlob, formatBytes, bindDropzone, escapeHtml, track } from '../../shared/scripts/shared.js?v=202606262323';
 
 const dropzone = document.getElementById('dropzone');
 const fileInput = document.getElementById('file-input');

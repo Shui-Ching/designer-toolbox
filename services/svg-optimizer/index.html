@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>SVG 壓縮器 · 設計師工具箱</title>
+  <meta name="description" content="瀏覽器端 SVG 優化：移除 metadata／註解／空群組、數字精度收斂，壓縮前後大小即時對比，可批次下載，檔案不上傳。">
+
+  <!-- 字體：Inter（英文／數字）/ Noto Sans TC（中文），全站統一 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202606262323">
+  <link rel="stylesheet" href="./style.css?v=202606262323">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="svg-optimizer">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 33</span>
+        <h1 class="tool-head-title">SVG 壓縮器</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      在瀏覽器端清理 SVG：移除 metadata、註解、空群組與編輯器殘留資料，收斂座標數字精度，
+      壓縮前後大小即時對比。<strong>檔案不會離開你的電腦。</strong>
+    </p>
+
+    <!-- 優化設定 -->
+    <section class="controls">
+      <!-- 數字精度 -->
+      <div class="control-row">
+        <span class="control-label">數字精度</span>
+        <div class="chip-group" id="precision-group">
+          <button type="button" class="opt-chip" data-precision="0">整數</button>
+          <button type="button" class="opt-chip" data-precision="1">1 位</button>
+          <button type="button" class="opt-chip is-active" data-precision="2">2 位</button>
+          <button type="button" class="opt-chip" data-precision="3">3 位</button>
+        </div>
+      </div>
+
+      <!-- 優化選項（可多選切換）-->
+      <div class="control-row">
+        <span class="control-label">優化項目</span>
+        <div class="chip-group" id="option-group">
+          <button type="button" class="opt-chip is-active" data-opt="removeComments" aria-pressed="true">移除註解</button>
+          <button type="button" class="opt-chip is-active" data-opt="removeMetadata" aria-pressed="true">移除 metadata</button>
+          <button type="button" class="opt-chip is-active" data-opt="removeEmptyGroups" aria-pressed="true">移除空群組</button>
+          <button type="button" class="opt-chip is-active" data-opt="removeEditorData" aria-pressed="true">移除編輯器資料</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 拖放區 -->
+    <div class="dropzone" id="dropzone">
+      <p class="dropzone-hint">把 SVG 拖進來，或點擊選檔</p>
+      <p class="tag">僅支援 .svg · 可一次多個 · 純前端處理</p>
+      <input type="file" id="file-input" accept=".svg,image/svg+xml" multiple hidden>
+    </div>
+
+    <!-- 結果 -->
+    <section class="results" id="results" hidden>
+      <div class="section-rule">
+        <span class="tag">壓縮結果</span>
+      </div>
+
+      <div class="results-bar">
+        <p class="results-summary" id="results-summary"></p>
+        <div class="results-actions">
+          <button type="button" class="btn" id="clear-all">清空</button>
+          <button type="button" class="btn btn-accent" id="download-all">全部下載</button>
+        </div>
+      </div>
+
+      <ul class="result-list" id="result-list"></ul>
+    </section>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202606262323"></script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>Base64 編解碼 · 設計師工具箱</title>
+  <meta name="description" content="瀏覽器端 Base64 編解碼：文字與 Base64 即時雙向互轉（支援 UTF-8、URL-safe），圖片轉 data URI 可直接貼進 CSS，全程不上傳。">
+
+  <!-- 字體：Inter（英文／數字）/ Noto Sans TC（中文），全站統一 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202606262323">
+  <link rel="stylesheet" href="./style.css?v=202606262323">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="base64">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 32</span>
+        <h1 class="tool-head-title">Base64 編解碼</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      文字與 Base64 即時雙向互轉（正確處理 UTF-8 中文、可選 URL-safe），
+      或把圖片轉成 <span class="tag">data URI</span> 直接貼進 CSS。
+      <strong>全程在瀏覽器端，文字與圖片都不會上傳。</strong>
+    </p>
+
+    <!-- 模式切換 -->
+    <div class="mode-tabs" role="tablist" aria-label="編解碼模式">
+      <button type="button" class="mode-tab is-active" id="tab-text" role="tab" aria-selected="true">文字 / Text</button>
+      <button type="button" class="mode-tab" id="tab-image" role="tab" aria-selected="false">圖片 / Image</button>
+    </div>
+
+    <!-- ============ 文字模式 ============ -->
+    <section class="text-mode" id="text-mode" role="tabpanel" aria-label="文字模式">
+
+      <!-- 選項列 -->
+      <div class="opt-bar">
+        <button type="button" class="opt-chip" id="urlsafe-toggle" aria-pressed="false">
+          URL-safe（<code>-_</code>、去除 <code>=</code>）
+        </button>
+        <button type="button" class="opt-chip" id="swap-btn">⇅ 對調</button>
+        <button type="button" class="opt-chip" id="text-clear">清空</button>
+      </div>
+
+      <!-- 兩欄：純文字 ↔ Base64 -->
+      <div class="convert-grid">
+
+        <!-- 純文字 -->
+        <section class="convert-pane" aria-label="純文字">
+          <div class="pane-head">
+            <span class="tag">純文字 · Plain</span>
+            <button type="button" class="btn pane-copy" data-copy="plain">複製</button>
+          </div>
+          <textarea
+            id="plain"
+            class="text-area"
+            placeholder="在這裡輸入要編碼的文字…例如：設計師工具箱 Toolbox 2026"
+            spellcheck="false"
+            aria-label="純文字輸入"></textarea>
+          <p class="pane-meta" id="plain-meta">0 字元</p>
+        </section>
+
+        <!-- Base64 -->
+        <section class="convert-pane" aria-label="Base64">
+          <div class="pane-head">
+            <span class="tag">Base64</span>
+            <button type="button" class="btn pane-copy" data-copy="b64">複製</button>
+          </div>
+          <textarea
+            id="b64"
+            class="text-area is-mono"
+            placeholder="或在這裡貼上 Base64 字串自動解碼…"
+            spellcheck="false"
+            aria-label="Base64 輸入"></textarea>
+          <p class="pane-meta" id="b64-meta">0 字元</p>
+        </section>
+
+      </div>
+
+      <p class="copy-hint" id="text-hint" aria-live="polite"></p>
+    </section>
+
+    <!-- ============ 圖片模式 ============ -->
+    <section class="image-mode" id="image-mode" role="tabpanel" aria-label="圖片模式" hidden>
+
+      <!-- 拖放區 -->
+      <div class="dropzone" id="img-drop">
+        <p class="dropzone-hint">把圖片拖進來，或點擊選檔</p>
+        <p class="tag">支援 PNG / JPG / WebP / GIF / SVG / AVIF · 單張</p>
+        <input type="file" id="img-input" accept="image/*" hidden>
+      </div>
+
+      <!-- 不是圖片時的提醒 -->
+      <p class="notice" id="img-notice" hidden></p>
+
+      <!-- 結果 -->
+      <section class="img-result" id="img-result" hidden>
+        <div class="section-rule"><span class="tag">轉換結果</span></div>
+
+        <div class="img-result-top">
+          <div class="img-preview-box">
+            <img id="img-preview" alt="圖片預覽">
+          </div>
+          <dl class="img-info" id="img-info"></dl>
+        </div>
+
+        <!-- data URI -->
+        <div class="out-block">
+          <div class="out-head">
+            <span class="tag">Data URI</span>
+            <button type="button" class="btn out-copy" id="copy-datauri">複製</button>
+          </div>
+          <pre class="code-block" id="out-datauri"></pre>
+        </div>
+
+        <!-- CSS background-image -->
+        <div class="out-block">
+          <div class="out-head">
+            <span class="tag">CSS background-image</span>
+            <button type="button" class="btn out-copy" id="copy-css">複製</button>
+          </div>
+          <pre class="code-block" id="out-css"></pre>
+        </div>
+
+        <p class="copy-hint" id="img-hint" aria-live="polite"></p>
+      </section>
+    </section>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202606262323"></script>
+</body>
+</html>
