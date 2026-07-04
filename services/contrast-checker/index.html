@@ -115,6 +115,15 @@
           大型文字＝ 18.66px（14pt）粗體，或 24px（18pt）以上。UI 元件與圖形物件門檻為 3:1。
         </p>
 
+        <!-- 建議色碼：AA 一般文字（4.5:1）未達時，提供最接近原色的達標替代，點擊即套用 -->
+        <div class="suggest" id="suggest" hidden>
+          <div class="section-rule"><span class="tag">建議色碼</span></div>
+          <p class="suggest-intro">
+            目前未達 <strong>AA · 一般文字（4.5:1）</strong>，以下是保留原色系、最接近原色的達標配色，點擊即套用：
+          </p>
+          <div class="suggest-list" id="suggest-list" aria-live="polite"></div>
+        </div>
+
         <div class="section-rule"><span class="tag">色盲模擬</span></div>
 
         <!-- 四種色盲模擬預覽（JS 動態填入背景／文字色） -->

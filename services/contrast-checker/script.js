@@ -17,6 +17,11 @@ const previewChip = document.getElementById('preview-chip');
 const ratioValue = document.getElementById('ratio-value');
 const verdictRows = document.querySelectorAll('.verdict-row');
 const cvdCards = document.querySelectorAll('.cvd-card');
+const suggestBox = document.getElementById('suggest');
+const suggestList = document.getElementById('suggest-list');
+
+// 建議色碼以「AA · 一般文字」門檻為達標基準
+const AA_NORMAL = 4.5;
 
 // 單一真實來源：前景／背景各以整數 RGB 保存
 const state = {
@@ -45,6 +50,168 @@ function rgbToHex({ r, g, b }) {
 
 function rgbToCss({ r, g, b }) {
   return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
+}
+
+// ============================================================
+// RGB ↔ HSL：建議色碼只調亮度、保留色相與飽和度，
+// 讓替代色與原色維持同一色系
+// ============================================================
+function rgbToHsl({ r, g, b }) {
+  const rn = r / 255, gn = g / 255, bn = b / 255;
+  const max = Math.max(rn, gn, bn);
+  const min = Math.min(rn, gn, bn);
+  const l = (max + min) / 2;
+  const d = max - min;
+  let h = 0;
+  let s = 0;
+  if (d !== 0) {
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case rn: h = (gn - bn) / d + (gn < bn ? 6 : 0); break;
+      case gn: h = (bn - rn) / d + 2; break;
+      default: h = (rn - gn) / d + 4;
+    }
+    h /= 6;
+  }
+  return { h, s, l };
+}
+
+function hslToRgb(h, s, l) {
+  if (s === 0) {
+    const v = Math.round(l * 255);
+    return { r: v, g: v, b: v };
+  }
+  const hue2rgb = (p, q, t) => {
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 1 / 2) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+    return p;
+  };
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  return {
+    r: Math.round(hue2rgb(p, q, h + 1 / 3) * 255),
+    g: Math.round(hue2rgb(p, q, h) * 255),
+    b: Math.round(hue2rgb(p, q, h - 1 / 3) * 255),
+  };
+}
+
+// ============================================================
+// 建議色碼：固定色相／飽和度，往某方向（extremeL＝0 調暗、1 調亮）
+// 二分搜尋出「最接近原亮度且達標」的顏色；該方向推到底仍不達標則回傳 null
+// ============================================================
+function candidateTowards(color, other, target, extremeL) {
+  const { h, s, l } = rgbToHsl(color);
+
+  // 推到極端仍不達標 → 此方向無解
+  if (contrastRatio(hslToRgb(h, s, extremeL), other) < target) return null;
+
+  // 二分：fail 端為原亮度（未達標）、pass 端為極端（已達標）
+  let fail = l;
+  let pass = extremeL;
+  for (let i = 0; i < 30; i += 1) {
+    const mid = (fail + pass) / 2;
+    if (contrastRatio(hslToRgb(h, s, mid), other) >= target) pass = mid;
+    else fail = mid;
+  }
+
+  // 整數化後可能微幅低於門檻，往極端方向微調確保實際達標
+  const step = extremeL > l ? 0.003 : -0.003;
+  let cursorL = pass;
+  for (let i = 0; i < 40; i += 1) {
+    const rgb = hslToRgb(h, s, cursorL);
+    if (contrastRatio(rgb, other) >= target) return rgb;
+    cursorL = clamp(cursorL + step, 0, 1);
+  }
+  return hslToRgb(h, s, extremeL);
+}
+
+// 調暗、調亮各取一個候選，回傳視覺變動（亮度差）最小的達標色
+function nearestPassing(color, other, target) {
+  const { l } = rgbToHsl(color);
+  const options = [
+    candidateTowards(color, other, target, 0),
+    candidateTowards(color, other, target, 1),
+  ].filter(Boolean);
+  if (!options.length) return null;
+  options.sort((a, b) => Math.abs(rgbToHsl(a).l - l) - Math.abs(rgbToHsl(b).l - l));
+  return options[0];
+}
+
+// 組一顆可套用的建議按鈕（縮圖以建議配色實際上色）
+function buildSuggestion({ label, applyKey, applyRgb, fg, bg }) {
+  const ratio = contrastRatio(fg, bg);
+  const hexStr = rgbToHex(applyRgb);
+
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'suggest-item';
+  btn.setAttribute('aria-label', `套用建議：${label}為 ${hexStr}，對比值 ${ratio.toFixed(2)} 比 1`);
+
+  const swatch = document.createElement('span');
+  swatch.className = 'suggest-swatch';
+  swatch.style.background = rgbToCss(bg);
+  swatch.style.color = rgbToCss(fg);
+  swatch.setAttribute('aria-hidden', 'true');
+  swatch.textContent = 'Aa';
+
+  const meta = document.createElement('span');
+  meta.className = 'suggest-meta';
+
+  const head = document.createElement('span');
+  head.className = 'suggest-label';
+  head.textContent = label;
+
+  const detail = document.createElement('span');
+  detail.className = 'suggest-detail';
+  detail.textContent = `${hexStr} · ${ratio.toFixed(2)}:1`;
+
+  meta.append(head, detail);
+  btn.append(swatch, meta);
+
+  btn.addEventListener('click', () => {
+    state[applyKey] = applyRgb;
+    render();
+    track('use');
+  });
+
+  return btn;
+}
+
+// 依目前對比值決定是否顯示建議，並填入「調前景／調背景」兩種達標配色
+function renderSuggestions(ratio) {
+  suggestList.replaceChildren();
+
+  // 已達 AA 一般文字門檻 → 不需要建議
+  if (ratio >= AA_NORMAL) {
+    suggestBox.hidden = true;
+    return;
+  }
+  suggestBox.hidden = false;
+
+  const newFg = nearestPassing(state.fg, state.bg, AA_NORMAL);
+  const newBg = nearestPassing(state.bg, state.fg, AA_NORMAL);
+
+  if (newFg) {
+    suggestList.append(buildSuggestion({
+      label: '調整前景',
+      applyKey: 'fg',
+      applyRgb: newFg,
+      fg: newFg,
+      bg: state.bg,
+    }));
+  }
+  if (newBg) {
+    suggestList.append(buildSuggestion({
+      label: '調整背景',
+      applyKey: 'bg',
+      applyRgb: newBg,
+      fg: state.fg,
+      bg: newBg,
+    }));
+  }
 }
 
 // ============================================================
@@ -142,6 +309,9 @@ function render(exceptKey) {
     row.classList.toggle('is-fail', !pass);
     chip.textContent = pass ? '✓ 通過' : '✗ 未達';
   });
+
+  // 未達 AA 一般文字門檻時，附上最接近原色的達標建議
+  renderSuggestions(ratio);
 
   // 色盲模擬：各卡片以模擬後的 fg／bg 上色
   cvdCards.forEach((card) => {

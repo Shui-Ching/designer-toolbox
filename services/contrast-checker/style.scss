@@ -242,6 +242,92 @@
 }
 
 // ============================================================
+// 建議色碼（AA 一般文字未達時出現）
+// ============================================================
+.suggest {
+  margin-bottom: $space-4;
+
+  .section-rule { margin-top: $space-4; }
+}
+
+.suggest-intro {
+  margin: 0 0 $space-3;
+  font-size: $fs-sm;
+  line-height: 1.5;
+  color: $color-ink-soft;
+
+  strong {
+    color: $color-ink;
+    font-weight: 700;
+  }
+}
+
+.suggest-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: $space-3;
+}
+
+// 一顆建議：左縮圖、右色碼與對比值，整顆可點擊套用
+.suggest-item {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  padding: $space-2;
+  font-family: inherit;
+  text-align: left;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: box-shadow $dur $ease, transform $dur $ease;
+
+  &:hover {
+    box-shadow: 4px 4px 0 rgba(28, 27, 24, 0.12);
+    transform: translate(-1px, -1px);
+  }
+
+  &:focus-visible {
+    outline: none;
+    border-color: $color-accent;
+    box-shadow: 0 0 0 3px rgba($color-accent, 0.25);
+  }
+}
+
+.suggest-swatch {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  font-weight: 700;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+.suggest-meta {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  min-width: 0;
+}
+
+.suggest-label {
+  font-size: $fs-sm;
+  color: $color-ink;
+}
+
+.suggest-detail {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.02em;
+  color: $color-ink-soft;
+  font-variant-numeric: tabular-nums;
+}
+
+// ============================================================
 // 色盲模擬
 // ============================================================
 .cvd-grid {
@@ -297,5 +383,9 @@
 
   .cvd-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .suggest-list {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
