@@ -2,7 +2,7 @@
 // 28 Cubic Bezier 產生器 — 拖曳控制點調緩動曲線，輸出 cubic-bezier()
 // 零相依、全在瀏覽器端運算，維持 CSP script-src 'self'
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202606262323';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202607041135';
 
 // — 座標系常數（對應 SVG viewBox 0 0 300 630）—
 const BOX = 300;       // 0–1 主框邊長（像素）

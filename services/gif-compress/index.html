@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>GIF 動畫壓縮 · 設計師工具箱</title>
+  <meta name="description" content="瀏覽器端 GIF 動畫壓縮：自寫解碼與重編碼，可縮放尺寸、減少色彩降低容量，壓縮前後即時對比，檔案不上傳。">
+
+  <!-- 字體：Inter（英文／數字）/ Noto Sans TC（中文），全站統一 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202607041135">
+  <link rel="stylesheet" href="./style.css?v=202607041135">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="gif-compress">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 35</span>
+        <h1 class="tool-head-title">GIF 動畫壓縮</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      在瀏覽器端自行拆解 GIF 每一幀、重新編碼：可等比縮小尺寸、減少色彩數以降低容量，
+      壓縮前後同步播放對比。<strong>檔案不會離開你的電腦。</strong>
+    </p>
+
+    <!-- 壓縮設定 -->
+    <section class="controls">
+      <!-- 縮放比例 -->
+      <div class="control-row">
+        <span class="control-label">縮放比例 <output class="scale-value" id="scale-value">100%</output></span>
+        <input type="range" class="scale-slider" id="scale" min="25" max="100" step="5" value="100">
+      </div>
+
+      <!-- 色彩數量 -->
+      <div class="control-row">
+        <span class="control-label">色彩數量</span>
+        <div class="colors-group" id="colors-group">
+          <button type="button" class="colors-chip" data-colors="256">256 色</button>
+          <button type="button" class="colors-chip is-active" data-colors="128">128 色</button>
+          <button type="button" class="colors-chip" data-colors="64">64 色</button>
+          <button type="button" class="colors-chip" data-colors="32">32 色 <span class="colors-note">最小</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 拖放區 -->
+    <div class="dropzone" id="dropzone">
+      <p class="dropzone-hint">把 GIF 拖進來，或點擊選檔</p>
+      <p class="tag">僅支援 GIF 動畫 · 一次一個</p>
+      <input type="file" id="file-input" accept=".gif,image/gif" hidden>
+    </div>
+
+    <!-- 結果：前後對比 -->
+    <section class="results" id="results" hidden>
+      <div class="section-rule">
+        <span class="tag">壓縮結果</span>
+      </div>
+
+      <div class="results-bar">
+        <p class="results-summary" id="results-summary"></p>
+        <div class="results-actions">
+          <button type="button" class="btn" id="clear">清除</button>
+          <button type="button" class="btn btn-accent" id="download">下載 GIF</button>
+        </div>
+      </div>
+
+      <div class="compare">
+        <figure class="compare-panel">
+          <div class="compare-stage">
+            <img class="compare-img" id="before-img" alt="原始 GIF 預覽">
+          </div>
+          <figcaption class="compare-cap">
+            <span class="compare-tag">原始</span>
+            <span class="compare-meta" id="before-meta"></span>
+          </figcaption>
+        </figure>
+
+        <figure class="compare-panel" id="after-panel">
+          <div class="compare-stage">
+            <img class="compare-img" id="after-img" alt="壓縮後 GIF 預覽">
+            <div class="compare-progress" aria-hidden="true"></div>
+          </div>
+          <figcaption class="compare-cap">
+            <span class="compare-tag is-accent">壓縮後</span>
+            <span class="compare-meta" id="after-meta"></span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202607041135"></script>
+</body>
+</html>

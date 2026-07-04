@@ -46,6 +46,7 @@ const TOOL_POPULARITY = {
   'services/base64/index.html': 0,
   'services/svg-optimizer/index.html': 0,
   'services/lottery/index.html': 0,
+  'services/gif-compress/index.html': 0,
 };
 
 (function () {
