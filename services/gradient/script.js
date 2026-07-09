@@ -2,7 +2,7 @@
 // 15 漸層產生器 — 視覺化編輯漸層色標，即時預覽並輸出 CSS
 // 零相依、純前端運算；維持 CSP script-src 'self'
 // ============================================================
-import { copyText, track as trackEvent } from '../../shared/scripts/shared.js?v=202607041135';
+import { copyText, track as trackEvent } from '../../shared/scripts/shared.js?v=202607092241';
 
 // — DOM —
 const presetGroup = document.getElementById('preset-group');

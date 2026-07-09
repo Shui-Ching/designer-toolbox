@@ -1,0 +1,193 @@
+// ============================================================
+// 36 Claude 指令查找器 — 工具特有樣式
+// 共用元件（tag / badge / tool-head…）直接套 class，這裡只補差異
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-3;
+  color: $color-ink-soft;
+}
+
+// — 搜尋 + 分類篩選列（黏頂方便長清單捲動時操作） —
+.query-bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding-block: $space-3;
+  background: $color-paper;
+  border-bottom: $border-fine;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.search-input {
+  width: 100%;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  padding: $space-2 $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  background: $color-paper-deep;
+  color: $color-ink;
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+
+  &::placeholder { color: $color-ink-soft; }
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+// 單一分類篩選鈕（等寬技術標籤風，沿用全站 filter-chip 語彙）
+.filter-chip {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-1 $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+  background: transparent;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+.result-count {
+  margin-block: $space-3 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+}
+
+// — 分類分區 —
+.category-block {
+  padding-block: $space-5 $space-3;
+  border-bottom: $border-fine;
+
+  &:last-child { border-bottom: 0; }
+}
+
+.category-head {
+  display: flex;
+  align-items: baseline;
+  gap: $space-3;
+  margin-bottom: $space-3;
+}
+
+.category-name {
+  font-family: $font-display;
+  font-size: $fs-xl;
+}
+
+.category-count {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+// — 指令卡片網格 —
+.command-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: $space-3;
+}
+
+.command-card {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  padding: $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  background: $color-paper-deep;
+  cursor: pointer;
+  transition: border-color $dur $ease, transform $dur $ease;
+
+  &:hover {
+    border-color: $color-accent;
+    transform: translateY(-2px);
+  }
+
+  &.is-deprecated {
+    opacity: 0.6;
+
+    .cmd-name { text-decoration: line-through; }
+  }
+}
+
+.cmd-name {
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  font-weight: 500;
+  color: $color-accent;
+}
+
+.cmd-alias {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+.cmd-desc {
+  font-size: $fs-sm;
+  color: $color-ink;
+}
+
+.cmd-usage {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  padding-top: $space-1;
+  border-top: $border-fine;
+}
+
+.cmd-foot {
+  display: flex;
+  justify-content: flex-end;
+}
+
+// 複製提示：hover 卡片才浮現的等寬小字
+.copy-hint {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+  opacity: 0;
+  transition: opacity $dur $ease, color $dur $ease;
+}
+
+.command-card:hover .copy-hint { opacity: 1; }
+
+.command-card.is-copied .copy-hint {
+  opacity: 1;
+  color: $color-accent;
+}
+
+// — 空狀態 —
+.empty-state {
+  padding-block: $space-6;
+  text-align: center;
+  color: $color-ink-soft;
+}

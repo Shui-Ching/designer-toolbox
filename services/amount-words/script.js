@@ -2,7 +2,7 @@
 // 27 金額轉大寫 — 金額轉中文財務大寫與英文大寫
 // 以字串處理整數／小數，避免浮點誤差；零相依，維持 CSP script-src 'self'
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202607041135';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202607092241';
 
 // — DOM —
 const input = document.getElementById('amount-input');

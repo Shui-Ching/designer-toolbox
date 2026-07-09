@@ -16,8 +16,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="shared/styles/shared.css?v=202607041135">
-  <link rel="stylesheet" href="index.css?v=202607041135">
+  <link rel="stylesheet" href="shared/styles/shared.css?v=202607092241">
+  <link rel="stylesheet" href="index.css?v=202607092241">
 
   <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
@@ -194,7 +194,7 @@
           </select>
         </label>
 
-        <span class="index-count" id="tool-count">34 項工具</span>
+        <span class="index-count" id="tool-count">36 項工具</span>
       </div>
 
       <!-- 分類篩選：依領域切換工具，與搜尋列為交集篩選 -->
@@ -667,6 +667,19 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
+        <a class="tool-card" href="services/claude-commands/index.html" data-category="reference" data-keywords="claude code 指令 slash command 斜線指令 大全 查詢 查找 說明 手冊 cheatsheet ai 助理 終端機 cli">
+          <div class="tool-card-top">
+            <span class="tool-card-no">36</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">Claude 指令查找器</h2>
+            <span class="tool-card-en">Claude Commands</span>
+          </div>
+          <p class="tool-card-desc">Claude Code 所有斜線指令的中文白話說明，可搜尋、依分類瀏覽，點卡即可複製指令名稱。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
       </nav>
 
       <!-- 搜尋無結果時的空狀態 -->
@@ -683,8 +696,8 @@
   <button class="go-top" id="go-top" aria-label="回到頂端">↑</button>
 
   <!-- 共用 JS：掛載頁尾（ES Module，符合 CSP script-src 'self'） -->
-  <script type="module" src="./shared/scripts/shared.js?v=202607041135"></script>
+  <script type="module" src="./shared/scripts/shared.js?v=202607092241"></script>
   <!-- 首頁工具搜尋（外部檔，符合 CSP script-src 'self'） -->
-  <script defer src="home.js?v=202607041135"></script>
+  <script defer src="home.js?v=202607092241"></script>
 </body>
 </html>

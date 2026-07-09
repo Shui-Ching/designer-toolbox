@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
@@ -8,7 +8,7 @@
   <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
 
-  <title>Grid / Flex 模擬器 · 設計師工具箱</title>
+  <title>Claude 指令查找器 · 設計師工具箱</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
@@ -18,12 +18,12 @@
   <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
 </head>
-<body data-tool="grid-flex">
+<body data-tool="claude-commands">
   <main class="container">
     <div class="tool-head">
       <div>
-        <span class="tag tag-accent">Tool / 05</span>
-        <h1 class="tool-head-title">Grid / Flex 模擬器</h1>
+        <span class="tag tag-accent">Tool / 36</span>
+        <h1 class="tool-head-title">Claude 指令查找器</h1>
       </div>
       <div class="tool-head-actions">
         <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
@@ -32,43 +32,20 @@
     </div>
 
     <p class="tool-intro">
-      視覺化調整 <span class="tag">flexbox</span> 與 <span class="tag">grid</span> 的容器屬性，即時觀察子項目排列變化，
-      下方自動產生對應的 CSS，一鍵複製。
+      Claude Code 所有斜線指令（<span class="tag">/help</span> 開頭）的中文說明速查，
+      用大白話解釋每個指令在做什麼。點任一卡片即可複製指令名稱。
     </p>
 
-    <!-- 模式切換：Flex / Grid -->
-    <div class="mode-tabs" id="mode-tabs" role="tablist">
-      <button class="mode-tab is-active" data-mode="flex" role="tab">Flexbox</button>
-      <button class="mode-tab" data-mode="grid" role="tab">Grid</button>
+    <!-- 搜尋 + 分類篩選 -->
+    <div class="query-bar">
+      <input type="search" id="search" class="search-input" placeholder="搜尋指令名稱或關鍵字，例如「記憶」「背景」「模型」…" autocomplete="off">
+      <div class="filter-bar" id="filter-bar"></div>
     </div>
 
-    <div class="sim-layout">
-      <!-- 左：控制面板（由 JS 依模式渲染）-->
-      <section class="sim-controls" id="sim-controls" aria-label="屬性控制"></section>
+    <p class="result-count" id="result-count"></p>
 
-      <!-- 右：預覽舞台 + CSS 輸出 -->
-      <section class="sim-output">
-        <div class="stage-bar">
-          <span class="tag">Preview</span>
-          <div class="count-control">
-            <span class="count-label">子項目</span>
-            <button class="count-btn" id="count-minus" aria-label="減少一個">−</button>
-            <span class="count-value" id="count-value">4</span>
-            <button class="count-btn" id="count-plus" aria-label="增加一個">+</button>
-          </div>
-        </div>
-
-        <div class="sim-stage" id="sim-stage"></div>
-
-        <div class="section-rule">
-          <span class="tag">CSS</span>
-        </div>
-        <div class="code-block">
-          <button class="btn btn-accent code-copy" id="code-copy">複製 CSS</button>
-          <pre class="code-out" id="code-out"></pre>
-        </div>
-      </section>
-    </div>
+    <!-- 指令列表（依分類分區，由 JS 渲染） -->
+    <div id="command-list"></div>
   </main>
 
   <!-- 頁尾 -->

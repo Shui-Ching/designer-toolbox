@@ -3,8 +3,8 @@
 // 即時把內容編碼成 QR 矩陣，預覽 SVG，並可下載 SVG / PNG。
 // 全程瀏覽器端；track 只送中性的工具代號，不送使用者輸入內容。
 // ============================================================
-import { downloadBlob, copyText, track } from '../../shared/scripts/shared.js?v=202607041135';
-import { encodeQr } from './qr-encode.js?v=202607041135';
+import { downloadBlob, copyText, track } from '../../shared/scripts/shared.js?v=202607092241';
+import { encodeQr } from './qr-encode.js?v=202607092241';
 
 // — 設定狀態 —
 const state = {
