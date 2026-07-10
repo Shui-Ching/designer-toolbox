@@ -1,8 +1,8 @@
 // ============================================================
 // 35 GIF 動畫壓縮 — 自寫 GIF 解碼／減色／重編碼，縮放 + 減色降容量 + 前後對比
 // ============================================================
-import { downloadBlob, formatBytes, bindDropzone, track } from '../../shared/scripts/shared.js?v=202607101559';
-import { decodeGif, quantizeFrame, encodeGif } from './gif-codec.js?v=202607101559';
+import { downloadBlob, formatBytes, bindDropzone, track } from '../../shared/scripts/shared.js?v=202607101704';
+import { decodeGif, quantizeFrame, encodeGif } from './gif-codec.js?v=202607101704';
 
 const dropzone = document.getElementById('dropzone');
 const fileInput = document.getElementById('file-input');

@@ -1,7 +1,7 @@
 // ============================================================
 // 37 特殊符號複製器 — 載入資料、搜尋、分類篩選、依分類分區、點卡複製符號
 // ============================================================
-import { copyText, escapeHtml, track } from '../../shared/scripts/shared.js?v=202607101559';
+import { copyText, escapeHtml, track } from '../../shared/scripts/shared.js?v=202607101704';
 
 const searchInput = document.getElementById('search');
 const filterBar = document.getElementById('filter-bar');

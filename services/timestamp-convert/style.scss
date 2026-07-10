@@ -1,0 +1,180 @@
+// ============================================================
+// 39 時間戳轉換 — 工具特有樣式
+// 共用元件（tool-head / btn / tag / section-rule）直接套 class；
+// 換算列（.unit-row / .unit-input / .unit-copy）與設定列（.settings）
+// 直接沿用 23 號 unit-convert 的手法，這裡只補時間戳特有的輸入列
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 100%;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+
+  .tag { margin-right: $space-1; }
+}
+
+.converter {
+  max-width: 100%;
+}
+
+// ============================================================
+// 時區設定列（沿用 unit-convert 的 .settings / .setting-block）
+// ============================================================
+.tz-select {
+  width: 100%;
+  max-width: 320px;
+  padding: $space-2 $space-3;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+}
+
+// ============================================================
+// Timestamp 輸入列
+// ============================================================
+.ts-input-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-3;
+  margin-bottom: $space-3;
+}
+
+.ts-main-input {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+.ts-unit-toggle {
+  margin-bottom: $space-4;
+}
+
+// ============================================================
+// 日期時間輸入列
+// ============================================================
+.date-input-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-3;
+  margin-bottom: $space-4;
+}
+
+// 用 .unit-input.date-input 提高優先權，蓋過下方 .unit-input 的 width:100%
+.unit-input.date-input { width: 160px; }
+.unit-input.time-input { width: 140px; }
+
+// ============================================================
+// 單位欄位列表（沿用 unit-convert 的 .unit-list / .unit-row）
+// ============================================================
+.unit-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  margin-bottom: $space-5;
+}
+
+.unit-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 200px) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: $space-3;
+}
+
+.unit-label {
+  font-size: $fs-sm;
+  color: $color-ink;
+}
+
+.unit-input {
+  width: 100%;
+  min-width: 0;
+  padding: $space-2 $space-3;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  letter-spacing: 0.02em;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  font-variant-numeric: tabular-nums;
+  transition: border-color $dur $ease;
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+
+  &.is-invalid { border-color: $color-accent; }
+
+  // 唯讀輸出欄：不接受輸入但仍可點擊全選複製，視覺上略淡化背景
+  &.is-readonly {
+    background: $color-paper-deep;
+    cursor: default;
+  }
+}
+
+.unit-copy {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-2 $space-3;
+  color: $color-ink-soft;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: 0 0 $space-4;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+.unit-note {
+  margin: 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  line-height: 1.6;
+  color: $color-ink-soft;
+}
+
+// ============================================================
+// 窄螢幕
+// 輸出內容多為日期時間／ISO 字串（比 unit-convert 的純數字長），
+// 三欄擠壓易被截斷，故改成標籤／輸入／複製鈕垂直堆疊
+// ============================================================
+@media (max-width: 560px) {
+  .unit-row {
+    grid-template-columns: 1fr;
+    gap: $space-2;
+  }
+
+  .unit-copy {
+    width: 100%;
+  }
+
+  .unit-input.date-input,
+  .unit-input.time-input {
+    width: 100%;
+  }
+}

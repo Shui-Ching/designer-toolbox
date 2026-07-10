@@ -4,7 +4,7 @@
 // 重編 H.264 → 重組 MP4；聲音在格式允許時直接複製、不重新編碼
 // mediabunny 為本機 vendor（維持 CSP script-src 'self'），首次拖檔才動態載入
 // ============================================================
-import { downloadBlob, formatBytes, bindDropzone, escapeHtml, track } from '../../shared/scripts/shared.js?v=202607101559';
+import { downloadBlob, formatBytes, bindDropzone, escapeHtml, track } from '../../shared/scripts/shared.js?v=202607101704';
 
 const dropzone = document.getElementById('dropzone');
 const fileInput = document.getElementById('file-input');

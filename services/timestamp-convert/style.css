@@ -1,0 +1,168 @@
+:root {
+  --color-paper: #f4f1e8;
+  --color-paper-deep: #ece7d9;
+  --color-ink: #1c1b18;
+  --color-ink-soft: #6b665b;
+  --color-line: #d9d3c3;
+  --color-accent: #d8442a;
+  --color-accent-deep: #b0331d;
+  --color-mark: #e0a92e;
+  --font-display: Inter, Noto Sans TC, sans-serif;
+  --font-body: Inter, Noto Sans TC, sans-serif;
+  --font-mono: Inter, Noto Sans TC, sans-serif;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.tool-intro {
+  max-width: 100%;
+  margin-block: 24px 40px;
+  color: #6b665b;
+}
+.tool-intro .tag {
+  margin-right: 4px;
+}
+
+.converter {
+  max-width: 100%;
+}
+
+.tz-select {
+  width: 100%;
+  max-width: 320px;
+  padding: 8px 16px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #1c1b18;
+  background: #f4f1e8;
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+}
+.tz-select:focus {
+  outline: none;
+  border-color: #d8442a;
+}
+
+.ts-input-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.ts-main-input {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+.ts-unit-toggle {
+  margin-bottom: 24px;
+}
+
+.date-input-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.unit-input.date-input {
+  width: 160px;
+}
+
+.unit-input.time-input {
+  width: 140px;
+}
+
+.unit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.unit-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 200px) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.unit-label {
+  font-size: 1rem;
+  color: #1c1b18;
+}
+
+.unit-input {
+  width: 100%;
+  min-width: 0;
+  padding: 8px 16px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: #1c1b18;
+  background: #f4f1e8;
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+  font-variant-numeric: tabular-nums;
+  transition: border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.unit-input:focus {
+  outline: none;
+  border-color: #d8442a;
+}
+.unit-input.is-invalid {
+  border-color: #d8442a;
+}
+.unit-input.is-readonly {
+  background: #ece7d9;
+  cursor: default;
+}
+
+.unit-copy {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  padding: 8px 16px;
+  color: #6b665b;
+  background: #f4f1e8;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.unit-copy:hover {
+  color: #1c1b18;
+  border-color: #1c1b18;
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: 0 0 24px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #d8442a;
+}
+
+.unit-note {
+  margin: 0;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #6b665b;
+}
+
+@media (max-width: 560px) {
+  .unit-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .unit-copy {
+    width: 100%;
+  }
+  .unit-input.date-input,
+  .unit-input.time-input {
+    width: 100%;
+  }
+}

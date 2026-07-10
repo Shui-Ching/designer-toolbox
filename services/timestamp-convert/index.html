@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>時間戳轉換 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202607101704">
+  <link rel="stylesheet" href="./style.css?v=202607101704">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="timestamp-convert">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 39</span>
+        <h1 class="tool-head-title">時間戳轉換</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      Unix timestamp（<span class="tag">秒</span><span class="tag">毫秒</span>）與日期時間雙向即時互轉，可切換時區；下方另提供目前時間戳速查。全程在瀏覽器端運算，不上傳任何資料。
+    </p>
+
+    <section class="converter" aria-label="時間戳轉換">
+
+      <!-- 時區設定 -->
+      <div class="settings" id="settings">
+        <div class="setting-block">
+          <label class="setting-label" for="tz-select">時區</label>
+          <div class="setting-field">
+            <select id="tz-select" class="tz-select" aria-label="時區"></select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 目前時間戳（即時） -->
+      <div class="section-rule"><span class="tag">目前時間戳</span></div>
+      <div class="unit-list" id="now-list"></div>
+
+      <!-- Timestamp → 日期時間 -->
+      <div class="section-rule"><span class="tag">Timestamp → 日期時間</span></div>
+      <div class="ts-input-row">
+        <input
+          type="text"
+          id="ts-input"
+          class="unit-input ts-main-input"
+          inputmode="numeric"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="輸入 Unix timestamp，例如 1751000000">
+        <button type="button" class="btn" id="ts-now-btn">填入現在</button>
+      </div>
+      <div class="unit-tabs ts-unit-toggle" id="ts-unit-toggle" role="tablist" aria-label="時間戳單位">
+        <button class="unit-tab is-active" type="button" role="tab" data-unit="auto" aria-selected="true">自動判斷</button>
+        <button class="unit-tab" type="button" role="tab" data-unit="s" aria-selected="false">秒</button>
+        <button class="unit-tab" type="button" role="tab" data-unit="ms" aria-selected="false">毫秒</button>
+      </div>
+      <div class="unit-list" id="ts-to-date-list"></div>
+
+      <!-- 日期時間 → Timestamp -->
+      <div class="section-rule"><span class="tag">日期時間 → Timestamp</span></div>
+      <div class="date-input-row">
+        <input type="date" id="date-input" class="unit-input date-input" aria-label="日期">
+        <input type="time" id="time-input" class="unit-input time-input" step="1" aria-label="時間">
+        <button type="button" class="btn" id="date-now-btn">填入現在</button>
+      </div>
+      <div class="unit-list" id="date-to-ts-list"></div>
+
+      <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+      <p class="unit-note">時區只影響「日期時間」的顯示與解讀方式，timestamp 本身永遠是 UTC 起算的絕對時刻；跨日期時區換算可能造成日期落在前一天或後一天，屬正常現象。</p>
+
+    </section>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202607101704"></script>
+</body>
+</html>
