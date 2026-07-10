@@ -1,0 +1,269 @@
+// ============================================================
+// 40 文字差異比對 — 工具特有樣式
+// 共用元件（tool-head / btn / tag / section-rule）直接套 class；
+// 輸入區沿用 26 號 pangu／13 號 word-count 的 editor-pane 語彙（改雙欄）；
+// 比對模式分頁沿用 23 號 unit-convert 的 unit-tabs 語彙
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 68ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+}
+
+.diff-tool {
+  max-width: 100%;
+}
+
+// — 頂部共用動作列 —
+.diff-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: $space-2;
+  margin-bottom: $space-4;
+}
+
+// ============================================================
+// 雙欄輸入（沿用 pangu / word-count 的 editor-pane 語彙）
+// ============================================================
+.diff-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-4;
+  margin-bottom: $space-4;
+}
+
+.editor-pane {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  min-width: 0;
+}
+
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+}
+
+.editor-toolbar-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+  font-variant-numeric: tabular-nums;
+}
+
+.text-area {
+  width: 100%;
+  min-height: 280px;
+  padding: $space-4;
+  font-family: $font-body;
+  font-size: $fs-base;
+  line-height: 1.85;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
+  resize: vertical;
+  transition: border-color $dur $ease;
+
+  &::placeholder { color: $color-ink-soft; }
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: $space-2 0 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// ============================================================
+// 比對模式分頁（沿用 unit-convert 的 unit-tabs）
+// ============================================================
+.unit-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  margin-bottom: $space-4;
+}
+
+.unit-tab {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-2 $space-3;
+  color: $color-ink-soft;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// ============================================================
+// 比對結果
+// ============================================================
+.diff-result-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+  margin-bottom: $space-3;
+}
+
+// 新增／刪除統計（新增取硃紅、刪除取芥黃，呼應 26 號 pangu-stat 的配色慣例）
+.diff-stat {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-4;
+  margin: 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.03em;
+}
+
+.diff-stat-add { color: $color-accent; }
+.diff-stat-del { color: $color-mark; }
+
+.diff-result {
+  border: $border-ink;
+  border-radius: $radius;
+  background: $color-paper;
+  overflow: auto;
+  max-height: 640px;
+}
+
+.diff-empty {
+  margin: 0;
+  padding: $space-5 $space-4;
+  text-align: center;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  color: $color-ink-soft;
+}
+
+// — 逐行模式：每行一列，含新舊行號雙欄 gutter —
+.diff-line {
+  display: grid;
+  grid-template-columns: 96px 1.5em 1fr;
+  align-items: start;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  line-height: 1.7;
+  border-bottom: 1px solid rgba(28, 27, 24, 0.06);
+
+  &:last-child { border-bottom: 0; }
+
+  &[data-type="add"] { background: color-mix(in srgb, $color-accent 10%, $color-paper); }
+  &[data-type="del"] { background: color-mix(in srgb, $color-mark 16%, $color-paper); }
+}
+
+.diff-gutter {
+  display: flex;
+  gap: $space-1;
+  padding: 2px $space-2;
+  color: $color-ink-soft;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+  border-right: $border-fine;
+}
+
+.diff-gutter-old,
+.diff-gutter-new {
+  width: 2.4em;
+  text-align: right;
+}
+
+.diff-marker {
+  padding: 2px 0;
+  text-align: center;
+  user-select: none;
+  color: $color-ink-soft;
+}
+
+.diff-line[data-type="add"] .diff-marker { color: $color-accent; }
+.diff-line[data-type="del"] .diff-marker { color: $color-mark; }
+
+.diff-content {
+  padding: 2px $space-2 2px 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: $color-ink;
+}
+
+.diff-line[data-type="del"] .diff-content {
+  color: $color-ink-soft;
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in srgb, $color-mark 70%, $color-ink);
+}
+
+// — 逐字模式：單一流動段落，內嵌新增／刪除色塊 —
+.diff-charflow {
+  padding: $space-4;
+  font-family: $font-body;
+  font-size: $fs-base;
+  line-height: 1.85;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: $color-ink;
+}
+
+.diff-run[data-type="add"] {
+  background: color-mix(in srgb, $color-accent 18%, transparent);
+  color: $color-accent-deep;
+  text-decoration: underline;
+  text-decoration-color: $color-accent;
+}
+
+.diff-run[data-type="del"] {
+  background: color-mix(in srgb, $color-mark 22%, transparent);
+  color: $color-ink-soft;
+  text-decoration: line-through;
+}
+
+// ============================================================
+// 窄螢幕：雙欄輸入改上下堆疊
+// ============================================================
+@media (max-width: 760px) {
+  .diff-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .text-area {
+    min-height: 220px;
+  }
+
+  .diff-line {
+    grid-template-columns: 72px 1.25em 1fr;
+  }
+
+  .diff-gutter-old,
+  .diff-gutter-new {
+    width: 2em;
+  }
+}

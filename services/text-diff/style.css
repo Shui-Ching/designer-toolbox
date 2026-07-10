@@ -1,0 +1,268 @@
+:root {
+  --color-paper: #f4f1e8;
+  --color-paper-deep: #ece7d9;
+  --color-ink: #1c1b18;
+  --color-ink-soft: #6b665b;
+  --color-line: #d9d3c3;
+  --color-accent: #d8442a;
+  --color-accent-deep: #b0331d;
+  --color-mark: #e0a92e;
+  --font-display: Inter, Noto Sans TC, sans-serif;
+  --font-body: Inter, Noto Sans TC, sans-serif;
+  --font-mono: Inter, Noto Sans TC, sans-serif;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.tool-intro {
+  max-width: 68ch;
+  margin-block: 24px 40px;
+  color: #6b665b;
+}
+
+.diff-tool {
+  max-width: 100%;
+}
+
+.diff-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.diff-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.editor-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.editor-toolbar-label {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  color: #6b665b;
+  font-variant-numeric: tabular-nums;
+}
+
+.text-area {
+  width: 100%;
+  min-height: 280px;
+  padding: 24px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  line-height: 1.85;
+  color: #1c1b18;
+  background: #f4f1e8;
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+  box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
+  resize: vertical;
+  transition: border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.text-area::placeholder {
+  color: #6b665b;
+}
+.text-area:focus {
+  outline: none;
+  border-color: #d8442a;
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: 8px 0 0;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #d8442a;
+}
+
+.unit-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.unit-tab {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  padding: 8px 16px;
+  color: #6b665b;
+  background: #f4f1e8;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), background-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.unit-tab:hover {
+  color: #1c1b18;
+  border-color: #1c1b18;
+}
+.unit-tab.is-active {
+  color: #f4f1e8;
+  background: #d8442a;
+  border-color: #d8442a;
+}
+
+.diff-result-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.diff-stat {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 0;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+}
+
+.diff-stat-add {
+  color: #d8442a;
+}
+
+.diff-stat-del {
+  color: #e0a92e;
+}
+
+.diff-result {
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+  background: #f4f1e8;
+  overflow: auto;
+  max-height: 640px;
+}
+
+.diff-empty {
+  margin: 0;
+  padding: 40px 24px;
+  text-align: center;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+}
+
+.diff-line {
+  display: grid;
+  grid-template-columns: 96px 1.5em 1fr;
+  align-items: start;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  border-bottom: 1px solid rgba(28, 27, 24, 0.06);
+}
+.diff-line:last-child {
+  border-bottom: 0;
+}
+.diff-line[data-type=add] {
+  background: color-mix(in srgb, #d8442a 10%, #f4f1e8);
+}
+.diff-line[data-type=del] {
+  background: color-mix(in srgb, #e0a92e 16%, #f4f1e8);
+}
+
+.diff-gutter {
+  display: flex;
+  gap: 4px;
+  padding: 2px 8px;
+  color: #6b665b;
+  font-variant-numeric: tabular-nums;
+  user-select: none;
+  border-right: 1px solid #d9d3c3;
+}
+
+.diff-gutter-old,
+.diff-gutter-new {
+  width: 2.4em;
+  text-align: right;
+}
+
+.diff-marker {
+  padding: 2px 0;
+  text-align: center;
+  user-select: none;
+  color: #6b665b;
+}
+
+.diff-line[data-type=add] .diff-marker {
+  color: #d8442a;
+}
+
+.diff-line[data-type=del] .diff-marker {
+  color: #e0a92e;
+}
+
+.diff-content {
+  padding: 2px 8px 2px 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #1c1b18;
+}
+
+.diff-line[data-type=del] .diff-content {
+  color: #6b665b;
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in srgb, #e0a92e 70%, #1c1b18);
+}
+
+.diff-charflow {
+  padding: 24px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  line-height: 1.85;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #1c1b18;
+}
+
+.diff-run[data-type=add] {
+  background: color-mix(in srgb, #d8442a 18%, transparent);
+  color: #b0331d;
+  text-decoration: underline;
+  text-decoration-color: #d8442a;
+}
+
+.diff-run[data-type=del] {
+  background: color-mix(in srgb, #e0a92e 22%, transparent);
+  color: #6b665b;
+  text-decoration: line-through;
+}
+
+@media (max-width: 760px) {
+  .diff-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .text-area {
+    min-height: 220px;
+  }
+  .diff-line {
+    grid-template-columns: 72px 1.25em 1fr;
+  }
+  .diff-gutter-old,
+  .diff-gutter-new {
+    width: 2em;
+  }
+}

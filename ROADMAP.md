@@ -4,9 +4,9 @@
 > 架構決策、設計 token、新增工具標準步驟另存於 project skill（`.claude/skills/designer-toolbox`）。
 > 收工更新方式：改「最後更新」一行＋在工具總覽補一列；實作細節寫進 git commit 與程式碼註解，不要貼進本檔。
 
-最後更新：2026-07-10 — 完成 **39 時間戳轉換**（Unix timestamp ↔ 日期時間雙向即時互轉，可切換時區；另提供目前時間戳速查列）。時區換算純用原生 `Intl.DateTimeFormat` 的「格式化到目的時區牆上時鐘 → 與 UTC 相減求偏移分鐘數」標準 trick 換算（`zonedTimeToUtc`／`getTzOffsetMinutes`），相對時間用 `Intl.RelativeTimeFormat('zh-Hant')`，零相依。換算模式與版面沿用 23 號 `unit-convert`（settings 時區列 → section-rule → unit-list 輸出列＋複製鈕）。用 Playwright 實際跑過瀏覽器驗證：時區換算數值（含夏令時邊界）、複製到剪貼簿、「填入現在」快捷鈕、無效輸入標紅皆正確；過程中抓到並修掉一個真實 CSS bug——`.date-input`/`.time-input` 的寬度被後寫的 `.unit-input { width:100% }` 蓋掉，改用 `.unit-input.date-input` 提高優先權；另外窄螢幕下原本沿用 unit-convert 的三欄式 `.unit-row` 會把日期時間／ISO 字串截斷，改為此工具專屬的單欄堆疊版面。
+最後更新：2026-07-10 — 完成 **40 文字差異比對**（貼上 A／B 兩段文字，逐行或逐字比對並高亮新增／刪除）。核心是自寫 LCS diff（逆向 DP 求最長共同子序列，從 (0,0) 正向回溯還原 equal/add/del 編輯序列），token 可以是「行」（`split(/\r\n|\r|\n/)`）或「字元」（`Array.from` 碼位切）兩種粒度，靠上方 `unit-tabs` 分頁切換，不做行內再細分（範圍單純、行為好預期）。n×m 乘積設 400 萬上限，超過直接顯示提示放棄計算，避免貼超大文字卡死分頁。雙欄輸入沿用 26 號 `pangu`／13 號 `word-count` 的 `editor-pane` 語彙（左右各一份而非上下）；比對結果全部用 `createElement`＋`textContent` 組 DOM，不經 `innerHTML`，不需要 `escapeHtml()` 也天生免疫 XSS。配色沿用 `pangu-stat` 的慣例：新增＝硃紅、刪除＝芥黃＋刪除線。複製結果依模式輸出 `+ /- ` 前綴（逐行）或 `{+...+}`/`{-...-}`（逐字，wdiff 慣例）純文字。用 Playwright 實際跑過瀏覽器驗證：載入範例、逐行/逐字切換的新增刪除統計與高亮、複製到剪貼簿內容格式、交換 A/B、清空、兩段文字完全相同時顯示「沒有差異」提示，console 皆無錯誤。
 
-## 工具總覽（39 個，全數上線）
+## 工具總覽（40 個，全數上線）
 
 | # | 工具（資料夾） | 分類 | 核心做法一句話 |
 |---|---|---|---|
@@ -49,6 +49,7 @@
 | 37 | 特殊符號複製器（`special-chars`） | text | 讀 special-chars.json（12 分類、185 個符號：中西標點、箭頭、數學、貨幣、勾選、星形、圈碼數字、希臘字母、版權、生活雜項、框線繪製），搜尋＋分類篩選，點卡複製符號 |
 | 38 | JSON 格式化／校驗（`json-formatter`） | text | 貼上自動排版＋即時校驗，`SyntaxError` 訊息解析行號欄號並可點擊跳到錯誤字元；縮排 2／4／Tab 切換＋壓縮成單行 |
 | 39 | 時間戳轉換（`timestamp-convert`） | reference | Unix timestamp（秒／毫秒）↔ 日期時間雙向即時互轉＋時區切換，另提供目前時間戳速查；`Intl.DateTimeFormat`／`Intl.RelativeTimeFormat` 零相依換算，沿用 23 號 `unit-convert` 的速查換算版面 |
+| 40 | 文字差異比對（`text-diff`） | text | 貼上 A／B 兩段文字，逐行／逐字比對並高亮新增／刪除（自寫 LCS diff，零相依），雙欄輸入沿用 26 號 `pangu`／13 號 `word-count` 的 editor-pane 架構 |
 
 共同約定：全部零後端、檔案不上傳；除 02（opentype.js CDN＋SRI）與 20（本機 vendor）外零相依，維持 CSP `script-src 'self'`。
 
@@ -97,9 +98,10 @@ Umami（`cloud.umami.is`，cookieless）＋各頁嚴格 CSP meta 已全站套用
 
 ## 排入排程（已拍板，待實作）
 
+目前無排入項目。
+
 | # | 工具（資料夾） | 分類 | 方向 |
 |---|---|---|---|
-| 40 | 文字差異比對（`text-diff`） | text | 貼上兩段文字，逐行／逐字比對並高亮新增／刪除（自寫 LCS diff 演算法，零相依），雙欄輸入沿用 26 號 `pangu`／13 號 `word-count` 的 editor-pane 架構 |
 
 ## 後續可選（未做，留待提出）
 

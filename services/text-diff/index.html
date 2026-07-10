@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>文字差異比對 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202607101719">
+  <link rel="stylesheet" href="./style.css?v=202607101719">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="text-diff">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 40</span>
+        <h1 class="tool-head-title">文字差異比對</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      貼上兩段文字，即時比對並高亮 <span class="tag">新增</span><span class="tag">刪除</span> 的內容，可切換
+      逐行或逐字比對模式。自寫 LCS 演算法，零相依，全程在瀏覽器端運算，文字不上傳。
+    </p>
+
+    <section class="diff-tool" aria-label="文字差異比對">
+
+      <div class="diff-controls">
+        <button class="btn" id="sample-btn" type="button">載入範例</button>
+        <button class="btn" id="swap-btn" type="button">↔ 交換 A／B</button>
+        <button class="btn" id="clear-btn" type="button">清空全部</button>
+      </div>
+
+      <div class="diff-columns">
+        <!-- A：原始文字 -->
+        <section class="editor-pane" aria-label="原始文字 A">
+          <div class="editor-toolbar">
+            <span class="tag tag-accent">A · 原始</span>
+            <span class="editor-toolbar-label" id="live-count-a">0 字元</span>
+          </div>
+          <textarea
+            id="text-a"
+            class="text-area"
+            placeholder="貼上原始文字…"
+            spellcheck="false"
+            aria-label="原始文字 A"></textarea>
+        </section>
+
+        <!-- B：修改後文字 -->
+        <section class="editor-pane" aria-label="修改後文字 B">
+          <div class="editor-toolbar">
+            <span class="tag tag-accent">B · 修改後</span>
+            <span class="editor-toolbar-label" id="live-count-b">0 字元</span>
+          </div>
+          <textarea
+            id="text-b"
+            class="text-area"
+            placeholder="貼上修改後文字…"
+            spellcheck="false"
+            aria-label="修改後文字 B"></textarea>
+        </section>
+      </div>
+
+      <!-- 比對模式 -->
+      <div class="section-rule"><span class="tag">比對模式</span></div>
+      <div class="unit-tabs" id="mode-toggle" role="tablist" aria-label="比對模式">
+        <button class="unit-tab is-active" type="button" role="tab" data-mode="line" aria-selected="true">逐行比對</button>
+        <button class="unit-tab" type="button" role="tab" data-mode="char" aria-selected="false">逐字比對</button>
+      </div>
+
+      <!-- 比對結果 -->
+      <div class="section-rule"><span class="tag">比對結果</span></div>
+      <div class="diff-result-head">
+        <p class="diff-stat" id="diff-stat" hidden aria-live="polite"></p>
+        <button class="btn" id="copy-btn" type="button">複製結果</button>
+      </div>
+      <div class="diff-result" id="diff-result" aria-live="polite"></div>
+      <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+
+    </section>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202607101719"></script>
+</body>
+</html>

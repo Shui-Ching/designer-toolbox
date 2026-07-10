@@ -1,8 +1,8 @@
 // ============================================================
 // 33 SVG 壓縮器 — 純前端 SVGO-lite：批次優化 SVG，壓縮前後大小對比與下載
 // ============================================================
-import { downloadBlob, copyText, formatBytes, bindDropzone, escapeHtml, track } from '../../shared/scripts/shared.js?v=202607101704';
-import { optimizeSvg } from './svgo-lite.js?v=202607101704';
+import { downloadBlob, copyText, formatBytes, bindDropzone, escapeHtml, track } from '../../shared/scripts/shared.js?v=202607101719';
+import { optimizeSvg } from './svgo-lite.js?v=202607101719';
 
 const dropzone = document.getElementById('dropzone');
 const fileInput = document.getElementById('file-input');
