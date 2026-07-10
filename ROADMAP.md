@@ -4,9 +4,9 @@
 > 架構決策、設計 token、新增工具標準步驟另存於 project skill（`.claude/skills/designer-toolbox`）。
 > 收工更新方式：改「最後更新」一行＋在工具總覽補一列；實作細節寫進 git commit 與程式碼註解，不要貼進本檔。
 
-最後更新：2026-07-09 — 完成 **36 Claude 指令查找器**（讀 `shared/data/claude-commands.json`，搜尋×分類篩選＋依分類分區卡片，點卡複製指令名稱；資料整理自 Claude Code 官方文件）。
+最後更新：2026-07-10 — 完成 **37 特殊符號複製器**（讀 `shared/data/special-chars.json`，12 分類、185 個常用符號，搜尋×分類篩選＋依分類分區卡片，點卡複製符號本身；沿用 36 號的資料驅動＋點卡複製架構）。
 
-## 工具總覽（36 個，全數上線）
+## 工具總覽（37 個，全數上線）
 
 | # | 工具（資料夾） | 分類 | 核心做法一句話 |
 |---|---|---|---|
@@ -46,6 +46,7 @@
 | 34 | 抽籤器（`lottery`） | fun | `crypto.getRandomValues`＋拒絕採樣去模偏差，不重複抽出＋拉霸式逐一揭曉 |
 | 35 | GIF 動畫壓縮（`gif-compress`） | image | 自寫零相依 GIF codec（LZW 解／編碼、disposal 合成、中位切割減色），縮放＋色彩數量兩槓桿 |
 | 36 | Claude 指令查找器（`claude-commands`） | reference | 讀 claude-commands.json（21 分類、96 個指令），搜尋＋分類篩選＋依分類分區卡片，點卡複製 |
+| 37 | 特殊符號複製器（`special-chars`） | text | 讀 special-chars.json（12 分類、185 個符號：中西標點、箭頭、數學、貨幣、勾選、星形、圈碼數字、希臘字母、版權、生活雜項、框線繪製），搜尋＋分類篩選，點卡複製符號 |
 
 共同約定：全部零後端、檔案不上傳；除 02（opentype.js CDN＋SRI）與 20（本機 vendor）外零相依，維持 CSP `script-src 'self'`。
 

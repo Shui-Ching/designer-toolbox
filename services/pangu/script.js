@@ -2,7 +2,7 @@
 // 26 盤古之白 — 在中文字符與英數之間插入／移除半角空格
 // 純 Regex，零相依，全程瀏覽器端
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202607092241';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202607101402';
 
 // CJK 主要字符區塊（Unicode 跳脫序列，BMP 範圍）
 // 不含全形標點（︰-￯）以避免與原有標點後空格衝突

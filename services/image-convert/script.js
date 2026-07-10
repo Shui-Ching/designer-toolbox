@@ -2,7 +2,7 @@
 // 16 圖片格式轉換 — Canvas 客戶端重新編碼：PNG / JPEG / WebP / AVIF 任意對轉
 // 與 01 共用「解碼→canvas→toBlob」流程，但聚焦格式互轉：保留原尺寸、顯示來源→目標格式
 // ============================================================
-import { downloadBlob, formatBytes, bindDropzone, escapeHtml, track } from '../../shared/scripts/shared.js?v=202607092241';
+import { downloadBlob, formatBytes, bindDropzone, escapeHtml, track } from '../../shared/scripts/shared.js?v=202607101402';
 
 const dropzone = document.getElementById('dropzone');
 const fileInput = document.getElementById('file-input');
