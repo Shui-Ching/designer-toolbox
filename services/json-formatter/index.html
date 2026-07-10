@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>JSON 格式化／校驗 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202607101559">
+  <link rel="stylesheet" href="./style.css?v=202607101559">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="json-formatter">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 38</span>
+        <h1 class="tool-head-title">JSON 格式化／校驗</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      貼上 JSON 即自動排版，即時校驗語法並定位錯誤位置（第幾行第幾欄）；也可切換縮排寬度或一鍵壓縮成單行。純字串處理，全程在瀏覽器端運算，內容不上傳。
+    </p>
+
+    <div class="json-layout">
+
+      <!-- 左：輸入／輸出區（原地編輯） -->
+      <section class="editor-pane" aria-label="JSON 輸入">
+        <div class="editor-toolbar">
+          <span class="editor-toolbar-label" id="live-count">0 字元</span>
+          <div class="editor-toolbar-actions">
+            <button class="btn" id="sample-btn" type="button">載入範例</button>
+            <button class="btn" id="copy-btn" type="button">複製內容</button>
+            <button class="btn" id="clear-btn" type="button">清空</button>
+          </div>
+        </div>
+        <textarea
+          id="text-input"
+          class="text-area"
+          placeholder="在這裡貼上或輸入 JSON…"
+          spellcheck="false"
+          aria-label="JSON 輸入區"></textarea>
+        <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+      </section>
+
+      <!-- 右：校驗狀態與操作面板 -->
+      <aside class="json-pane" aria-label="JSON 校驗與操作">
+
+        <!-- 校驗狀態 -->
+        <div class="json-status" data-state="empty" id="json-status">
+          <span class="status-badge" id="status-badge">尚未輸入</span>
+          <p class="status-msg" id="status-msg" aria-live="polite"></p>
+        </div>
+
+        <!-- 縮排設定 -->
+        <div class="section-rule"><span class="tag">縮排</span></div>
+        <div class="indent-group" id="indent-group">
+          <button class="indent-chip is-active" type="button" data-indent="2">2 空格</button>
+          <button class="indent-chip" type="button" data-indent="4">4 空格</button>
+          <button class="indent-chip" type="button" data-indent="tab">Tab</button>
+        </div>
+
+        <!-- 操作 -->
+        <div class="section-rule"><span class="tag">操作</span></div>
+        <div class="action-grid">
+          <button class="btn btn-accent" id="format-btn" type="button">格式化</button>
+          <button class="btn" id="minify-btn" type="button">壓縮成單行</button>
+        </div>
+
+        <!-- 內容資訊 -->
+        <div class="section-rule"><span class="tag">內容資訊</span></div>
+        <div class="stat-grid">
+          <div class="stat-cell">
+            <span class="stat-cell-value" id="stat-chars">0</span>
+            <span class="stat-cell-label">字元數</span>
+          </div>
+          <div class="stat-cell">
+            <span class="stat-cell-value" id="stat-bytes">0 B</span>
+            <span class="stat-cell-label">UTF-8 位元組</span>
+          </div>
+        </div>
+
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202607101559"></script>
+</body>
+</html>

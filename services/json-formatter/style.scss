@@ -1,0 +1,250 @@
+// ============================================================
+// 38 JSON 格式化／校驗 — 工具特有樣式
+// 共用元件（tool-head / btn / tag / section-rule / site-foot）直接套 class，
+// editor-pane / text-area / stat-grid 語彙沿用 pangu、word-count 既有慣例
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+}
+
+// — 版面：左輸入、右校驗與操作；窄螢幕上下堆疊 —
+.json-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: $space-5;
+  align-items: start;
+}
+
+// ============================================================
+// 左側輸入區
+// ============================================================
+.editor-pane {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  min-width: 0;
+}
+
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+}
+
+.editor-toolbar-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+  font-variant-numeric: tabular-nums;
+}
+
+.editor-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+// — JSON 輸入框（等寬字體） —
+.text-area {
+  width: 100%;
+  min-height: 460px;
+  padding: $space-4;
+  font-family: $font-mono;
+  font-size: $fs-base;
+  line-height: 1.7;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
+  resize: vertical;
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: auto;
+  transition: border-color $dur $ease;
+
+  &::placeholder { color: $color-ink-soft; }
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// ============================================================
+// 右側校驗與操作面板（黏頂）
+// ============================================================
+.json-pane {
+  position: sticky;
+  top: $space-4;
+  display: flex;
+  flex-direction: column;
+  padding: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+
+  .section-rule { margin-top: $space-4; }
+  .section-rule:first-of-type { margin-top: 0; }
+}
+
+// — 校驗狀態：badge 沿用對比度檢查器的 pass/fail 語彙（墨色＝正常、硃紅＝錯誤） —
+.json-status {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-self: flex-start;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-1 $space-3;
+  border-radius: $radius;
+  border: 1.5px solid $color-line;
+  color: $color-ink-soft;
+}
+
+.json-status[data-state="valid"] .status-badge {
+  color: $color-paper;
+  background: $color-ink;
+  border-color: $color-ink;
+}
+
+.json-status[data-state="invalid"] .status-badge {
+  color: $color-accent;
+  background: transparent;
+  border-color: $color-accent;
+}
+
+.status-msg {
+  margin: 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  line-height: 1.6;
+  color: $color-ink-soft;
+}
+
+.json-status[data-state="invalid"] .status-msg {
+  color: $color-accent;
+}
+
+.status-msg.is-clickable {
+  cursor: pointer;
+  text-decoration: underline dotted;
+
+  &:hover { color: $color-accent-deep; }
+}
+
+// — 縮排選擇（等寬技術標籤風，沿用全站 filter-chip 語彙） —
+.indent-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.indent-chip {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-1 $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+  background: transparent;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// — 操作按鈕：上下排列填滿寬度 —
+.action-grid {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+
+  .btn {
+    justify-content: center;
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+}
+
+// — 內容資訊：沿用字數統計的次級數據網格 —
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-2;
+}
+
+.stat-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: $space-2 $space-3;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+.stat-cell-value {
+  font-family: $font-mono;
+  font-size: $fs-lg;
+  font-variant-numeric: tabular-nums;
+  color: $color-ink;
+}
+
+.stat-cell-label {
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+// ============================================================
+// 窄螢幕：上下堆疊，操作面板取消黏頂
+// ============================================================
+@media (max-width: 860px) {
+  .json-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-4;
+  }
+
+  .json-pane {
+    position: static;
+  }
+
+  .text-area {
+    min-height: 320px;
+  }
+}

@@ -1,7 +1,7 @@
 // ============================================================
 // 36 Claude 指令查找器 — 載入資料、搜尋、分類篩選、依分類分區、點卡複製指令名稱
 // ============================================================
-import { copyText, escapeHtml, track } from '../../shared/scripts/shared.js?v=202607101402';
+import { copyText, escapeHtml, track } from '../../shared/scripts/shared.js?v=202607101559';
 
 const searchInput = document.getElementById('search');
 const filterBar = document.getElementById('filter-bar');
