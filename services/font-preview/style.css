@@ -1,0 +1,298 @@
+:root {
+  --color-paper: #f4f1e8;
+  --color-paper-deep: #ece7d9;
+  --color-ink: #1c1b18;
+  --color-ink-soft: #6b665b;
+  --color-line: #d9d3c3;
+  --color-accent: #d8442a;
+  --color-accent-deep: #b0331d;
+  --color-mark: #e0a92e;
+  --font-display: Inter, Noto Sans TC, sans-serif;
+  --font-body: Inter, Noto Sans TC, sans-serif;
+  --font-mono: Inter, Noto Sans TC, sans-serif;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.tool-intro {
+  max-width: 64ch;
+  margin-block: 24px 40px;
+  color: #6b665b;
+}
+
+.font-grid-empty {
+  margin: 0 0 24px;
+  font-size: 1rem;
+  color: #6b665b;
+}
+
+.font-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.font-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  text-align: left;
+  background: #ece7d9;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), box-shadow 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.font-card:hover {
+  border-color: #1c1b18;
+}
+.font-card.is-active {
+  border-color: #d8442a;
+  box-shadow: 4px 4px 0 rgba(28, 27, 24, 0.12);
+}
+
+.font-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.font-card-filename {
+  overflow: hidden;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.font-card-remove {
+  flex: 0 0 auto;
+  color: #6b665b;
+  transition: color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.font-card-remove:hover {
+  color: #d8442a;
+}
+
+.font-card-preview {
+  margin: 0;
+  overflow: hidden;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  color: #1c1b18;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.font-card-meta {
+  margin: 0;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  color: #6b665b;
+}
+
+.font-card-error {
+  margin: 0;
+  font-size: 1rem;
+  color: #d8442a;
+}
+
+.detail-empty {
+  margin: 0 0 24px;
+  font-size: 1rem;
+  color: #6b665b;
+}
+
+.meta-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 24px;
+  row-gap: 8px;
+  flex: 1 1 420px;
+}
+
+.meta-label {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  color: #6b665b;
+  white-space: nowrap;
+}
+
+.meta-value {
+  font-weight: 600;
+  color: #1c1b18;
+  word-break: break-word;
+}
+
+.meta-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: 0;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #d8442a;
+}
+
+.waterfall-input {
+  width: 100%;
+  padding: 16px 24px;
+  margin-bottom: 24px;
+  font-size: 1rem;
+  color: #1c1b18;
+  background: #f4f1e8;
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+  transition: border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.waterfall-input:focus {
+  outline: none;
+  border-color: #d8442a;
+}
+
+.waterfall-rows {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid #d9d3c3;
+}
+
+.waterfall-row {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  padding-block: 16px;
+  overflow-x: auto;
+  border-bottom: 1px solid #d9d3c3;
+}
+
+.waterfall-size {
+  flex: 0 0 auto;
+  min-width: 3.5em;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+  font-variant-numeric: tabular-nums;
+}
+
+.waterfall-sample {
+  color: #1c1b18;
+  white-space: nowrap;
+}
+
+.coverage-empty {
+  margin: 0;
+  font-size: 1rem;
+  color: #6b665b;
+}
+
+.coverage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.coverage-row {
+  display: grid;
+  grid-template-columns: 13em 1fr 7em;
+  align-items: center;
+  gap: 16px;
+}
+
+.coverage-label {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+}
+
+.coverage-bar {
+  height: 10px;
+  overflow: hidden;
+  background: #ece7d9;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+}
+
+.coverage-fill {
+  height: 100%;
+  background: #d8442a;
+  transition: width 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.coverage-count {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.charcheck-input {
+  min-height: 120px;
+}
+
+.charcheck-result {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 16px;
+  margin-bottom: 8px;
+  font-size: 1.25rem;
+  line-height: 1.8;
+  background: #ece7d9;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+}
+.charcheck-result:empty {
+  display: none;
+}
+
+.char-ok {
+  color: #1c1b18;
+}
+
+.char-missing {
+  color: #d8442a;
+  text-decoration: underline wavy #d8442a;
+  text-underline-offset: 3px;
+}
+
+.charcheck-summary {
+  margin: 0;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+}
+
+@media (max-width: 640px) {
+  .coverage-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .coverage-count {
+    text-align: left;
+  }
+  .meta-grid {
+    grid-template-columns: 1fr;
+  }
+  .meta-label {
+    margin-top: 8px;
+  }
+}

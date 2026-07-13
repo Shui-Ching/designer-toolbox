@@ -2,7 +2,7 @@
 // 38 JSON 格式化／校驗 — 貼上自動排版、即時語法校驗＋錯誤定位
 // 純 JSON.parse / JSON.stringify 字串處理，零相依，全程瀏覽器端
 // ============================================================
-import { copyText, formatBytes, track } from '../../shared/scripts/shared.js?v=202607131651';
+import { copyText, formatBytes, track } from '../../shared/scripts/shared.js?v=202607131742';
 
 const SAMPLE = '{"name":"設計師工具箱","edition":38,"categories":["image","color","css","text","reference","assets","focus","fun"],"isOpenSource":false,"meta":{"author":"Andrew","tags":["design","frontend",null]}}';
 

@@ -3,7 +3,7 @@
 // 單一真實來源：每個類別以「基準單位」保存目前數值（state.bases[cat]），
 // 編輯任一欄即換算回基準、再回填其餘欄位。零相依、全在瀏覽器端運算。
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202607131651';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202607131742';
 
 // — DOM —
 const tabsEl = document.getElementById('unit-tabs');

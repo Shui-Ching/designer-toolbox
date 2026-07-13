@@ -1,0 +1,289 @@
+// ============================================================
+// 43 字型檔預覽器 — 工具特有樣式
+// 共用元件（tool-head / btn / tag / dropzone / section-rule / site-foot）直接套 class
+// 缺字檢查輸入沿用 13 word-count／38 json-formatter 的 text-area 語彙
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+}
+
+// — 已上傳字型：卡片網格 —
+.font-grid-empty {
+  margin: 0 0 $space-4;
+  font-size: $fs-sm;
+  color: $color-ink-soft;
+}
+
+.font-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: $space-3;
+  margin-bottom: $space-5;
+}
+
+.font-card {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  padding: $space-3;
+  text-align: left;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: border-color $dur $ease, box-shadow $dur $ease;
+
+  &:hover { border-color: $color-ink; }
+
+  &.is-active {
+    border-color: $color-accent;
+    box-shadow: 4px 4px 0 rgba(28, 27, 24, 0.12);
+  }
+}
+
+.font-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+}
+
+.font-card-filename {
+  overflow: hidden;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.font-card-remove {
+  flex: 0 0 auto;
+  color: $color-ink-soft;
+  transition: color $dur $ease;
+
+  &:hover { color: $color-accent; }
+}
+
+.font-card-preview {
+  margin: 0;
+  overflow: hidden;
+  font-size: $fs-xl;
+  line-height: 1.2;
+  color: $color-ink;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.font-card-meta {
+  margin: 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.03em;
+  color: $color-ink-soft;
+}
+
+.font-card-error {
+  margin: 0;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// — 詳細面板 —
+.detail-empty {
+  margin: 0 0 $space-4;
+  font-size: $fs-sm;
+  color: $color-ink-soft;
+}
+
+.meta-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-4;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: $space-4;
+  row-gap: $space-2;
+  flex: 1 1 420px;
+}
+
+.meta-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+  white-space: nowrap;
+}
+
+.meta-value {
+  font-weight: 600;
+  color: $color-ink;
+  word-break: break-word;
+}
+
+.meta-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: $space-2;
+  flex: 0 0 auto;
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// — 字級瀑布 —
+.waterfall-input {
+  width: 100%;
+  padding: $space-3 $space-4;
+  margin-bottom: $space-4;
+  font-size: $fs-base;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  transition: border-color $dur $ease;
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+}
+
+.waterfall-rows {
+  display: flex;
+  flex-direction: column;
+  border-top: $border-fine;
+}
+
+.waterfall-row {
+  display: flex;
+  align-items: baseline;
+  gap: $space-4;
+  padding-block: $space-3;
+  overflow-x: auto;
+  border-bottom: $border-fine;
+}
+
+.waterfall-size {
+  flex: 0 0 auto;
+  min-width: 3.5em;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  font-variant-numeric: tabular-nums;
+}
+
+.waterfall-sample {
+  color: $color-ink;
+  white-space: nowrap;
+}
+
+// — 字符集涵蓋率 —
+.coverage-empty {
+  margin: 0;
+  font-size: $fs-sm;
+  color: $color-ink-soft;
+}
+
+.coverage-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.coverage-row {
+  display: grid;
+  grid-template-columns: 13em 1fr 7em;
+  align-items: center;
+  gap: $space-3;
+}
+
+.coverage-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+.coverage-bar {
+  height: 10px;
+  overflow: hidden;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+.coverage-fill {
+  height: 100%;
+  background: $color-accent;
+  transition: width $dur $ease;
+}
+
+.coverage-count {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+// — 缺字檢查 —
+.charcheck-input {
+  min-height: 120px;
+}
+
+.charcheck-result {
+  display: flex;
+  flex-wrap: wrap;
+  padding: $space-3;
+  margin-bottom: $space-2;
+  font-size: $fs-lg;
+  line-height: 1.8;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+
+  &:empty { display: none; }
+}
+
+.char-ok { color: $color-ink; }
+
+.char-missing {
+  color: $color-accent;
+  text-decoration: underline wavy $color-accent;
+  text-underline-offset: 3px;
+}
+
+.charcheck-summary {
+  margin: 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+// — 窄螢幕 —
+@media (max-width: 640px) {
+  .coverage-row {
+    grid-template-columns: 1fr;
+    gap: $space-1;
+  }
+
+  .coverage-count { text-align: left; }
+
+  .meta-grid { grid-template-columns: 1fr; }
+  .meta-label { margin-top: $space-2; }
+}

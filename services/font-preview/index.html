@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>字型檔預覽器 · 設計師工具箱</title>
+  <meta name="description" content="拖入 TTF/OTF/WOFF 字型檔，即時預覽字重與樣式、字級瀑布，並檢視字符集涵蓋率與缺字，檔案不上傳，全程在瀏覽器端運算。">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202607131742">
+  <link rel="stylesheet" href="./style.css?v=202607131742">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="font-preview">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 43</span>
+        <h1 class="tool-head-title">字型檔預覽器</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      拖入 TTF／OTF／WOFF 字型檔，即時預覽字重與樣式、字級瀑布，並檢視字符集涵蓋率與缺字。可一次上傳多個檔案互相比較。全程在瀏覽器端解析，<strong>檔案不會離開你的電腦。</strong>
+    </p>
+
+    <!-- 拖放區 -->
+    <div class="dropzone" id="dropzone">
+      <p class="dropzone-hint">把字型檔拖進來，或點擊選檔</p>
+      <p class="tag">支援 TTF / OTF / WOFF · 可一次多個</p>
+      <input type="file" id="file-input" accept=".ttf,.otf,.woff" multiple hidden>
+    </div>
+
+    <!-- 已上傳字型 -->
+    <div class="section-rule"><span class="tag">已上傳字型</span></div>
+    <p class="font-grid-empty" id="font-grid-empty">尚未上傳字型檔。</p>
+    <div class="font-grid" id="font-grid"></div>
+
+    <!-- 詳細面板 -->
+    <div class="section-rule"><span class="tag">字型資訊</span></div>
+    <p class="detail-empty" id="detail-empty">選擇上方一個字型卡片，這裡會顯示字型資訊、字級瀑布與缺字檢查。</p>
+
+    <section id="detail-panel" hidden>
+
+      <div class="meta-panel">
+        <div class="meta-grid" id="meta-grid"></div>
+        <div class="meta-actions">
+          <button class="btn btn-accent" id="copy-meta-btn" type="button">複製字型資訊</button>
+          <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <!-- 字級瀑布 -->
+      <div class="section-rule"><span class="tag">字級瀑布</span></div>
+      <input
+        id="waterfall-text"
+        class="waterfall-input"
+        type="text"
+        value="The quick brown fox jumps over the lazy dog 永安字型預覽 0123456789"
+        spellcheck="false"
+        aria-label="瀑布預覽文字">
+      <div class="waterfall-rows" id="waterfall-rows"></div>
+
+      <!-- 字符集涵蓋率 -->
+      <div class="section-rule"><span class="tag">字符集涵蓋率</span></div>
+      <p class="tool-intro">依 Unicode 區塊統計此字型 cmap 表涵蓋的字符數，僅列出有涵蓋的區塊。</p>
+      <div class="coverage-list" id="coverage-list"></div>
+
+      <!-- 缺字檢查 -->
+      <div class="section-rule"><span class="tag">缺字檢查</span></div>
+      <textarea
+        id="charcheck-input"
+        class="text-area charcheck-input"
+        placeholder="輸入或貼上文字，逐字元核對此字型是否收錄…"
+        spellcheck="false"
+        aria-label="缺字檢查輸入"></textarea>
+      <div class="charcheck-result" id="charcheck-result"></div>
+      <p class="charcheck-summary" id="charcheck-summary" aria-live="polite"></p>
+
+    </section>
+
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202607131742"></script>
+</body>
+</html>
