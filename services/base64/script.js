@@ -2,7 +2,7 @@
 // 32 Base64 編解碼 — 文字雙向互轉 + 圖片轉 data URI
 // 零相依，全程瀏覽器端，文字與圖片皆不上傳
 // ============================================================
-import { copyText, track, formatBytes, bindDropzone, escapeHtml } from '../../shared/scripts/shared.js?v=202607101719';
+import { copyText, track, formatBytes, bindDropzone, escapeHtml } from '../../shared/scripts/shared.js?v=202607131602';
 
 // ── Base64 核心：正確處理 UTF-8（中文等多位元組字元）────────────
 const enc = new TextEncoder();

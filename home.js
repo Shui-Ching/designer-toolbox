@@ -52,6 +52,7 @@ const TOOL_POPULARITY = {
   'services/json-formatter/index.html': 0,
   'services/timestamp-convert/index.html': 0,
   'services/text-diff/index.html': 0,
+  'services/regex-tester/index.html': 0,
 };
 
 (function () {

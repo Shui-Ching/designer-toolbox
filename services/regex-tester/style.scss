@@ -1,0 +1,302 @@
+// ============================================================
+// 41 Regex 測試器 — 工具特有樣式
+// 共用元件（tool-head / btn / tag / section-rule / filter-chip）直接套 class；
+// 輸入框沿用 38 號 json-formatter 的 editor-toolbar／text-area 語彙；
+// 高亮結果沿用 40 號 text-diff 的 diff-charflow／diff-run 配色慣例
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 68ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+
+  code {
+    font-family: $font-mono;
+    padding: 1px $space-1;
+    background: $color-paper-deep;
+    border-radius: $radius;
+  }
+}
+
+// ============================================================
+// 正規表達式輸入列
+// ============================================================
+.regex-input-row {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex-wrap: wrap;
+}
+
+.regex-delim {
+  font-family: $font-mono;
+  font-size: $fs-xl;
+  color: $color-ink-soft;
+  user-select: none;
+}
+
+.regex-pattern-input {
+  flex: 1 1 320px;
+  min-width: 0;
+  padding: $space-3;
+  font-family: $font-mono;
+  font-size: $fs-base;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
+  transition: border-color $dur $ease;
+
+  &::placeholder { color: $color-ink-soft; }
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+}
+
+.regex-flags {
+  display: flex;
+  gap: $space-2;
+}
+
+.pattern-status {
+  min-height: 1.4em;
+  margin: $space-2 0 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+
+  &.is-invalid { color: $color-accent; }
+}
+
+// ============================================================
+// 常用 pattern 速查（沿用 37 號 special-chars 的 filter-chip 語彙）
+// ============================================================
+.quick-pattern-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.filter-chip {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-1 $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+  background: transparent;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// ============================================================
+// 測試文字輸入（沿用 38 號 json-formatter 的 editor-toolbar／text-area）
+// ============================================================
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+  margin-bottom: $space-3;
+}
+
+.editor-toolbar-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+  font-variant-numeric: tabular-nums;
+}
+
+.editor-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.text-area {
+  width: 100%;
+  min-height: 200px;
+  padding: $space-4;
+  font-family: $font-mono;
+  font-size: $fs-base;
+  line-height: 1.7;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
+  resize: vertical;
+  transition: border-color $dur $ease;
+
+  &::placeholder { color: $color-ink-soft; }
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+}
+
+// ============================================================
+// 比對結果
+// ============================================================
+.regex-result-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-3;
+  margin-bottom: $space-3;
+}
+
+.regex-stat {
+  margin: 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.03em;
+  color: $color-accent;
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: $space-2 0 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+.regex-highlight {
+  padding: $space-4;
+  font-family: $font-mono;
+  font-size: $fs-base;
+  line-height: 1.85;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  overflow: auto;
+  max-height: 400px;
+}
+
+.regex-match {
+  background: color-mix(in srgb, $color-accent 18%, transparent);
+  color: $color-accent-deep;
+  border-radius: $radius;
+  box-shadow: 0 0 0 1px color-mix(in srgb, $color-accent 40%, transparent);
+}
+
+.regex-match.is-zero {
+  padding-inline: 2px;
+  color: $color-paper;
+  background: $color-mark;
+  box-shadow: none;
+}
+
+.regex-empty {
+  margin: 0;
+  padding: $space-5 $space-4;
+  text-align: center;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  color: $color-ink-soft;
+}
+
+// ============================================================
+// 擷取群組清單
+// ============================================================
+.match-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.match-card {
+  padding: $space-3 $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+.match-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: $space-3;
+  margin-bottom: $space-2;
+}
+
+.match-pos {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  font-variant-numeric: tabular-nums;
+}
+
+.match-full {
+  margin: 0;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  word-break: break-word;
+  color: $color-ink;
+}
+
+.match-groups {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  margin-top: $space-2;
+  padding-top: $space-2;
+  border-top: $border-fine;
+}
+
+.match-group-row {
+  display: flex;
+  gap: $space-3;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+}
+
+.match-group-label {
+  flex: 0 0 auto;
+  min-width: 5em;
+  color: $color-ink-soft;
+}
+
+.match-group-value {
+  word-break: break-word;
+  color: $color-ink;
+
+  &.is-empty {
+    color: $color-ink-soft;
+    font-style: italic;
+  }
+}
+
+// ============================================================
+// 窄螢幕
+// ============================================================
+@media (max-width: 640px) {
+  .regex-delim { display: none; }
+
+  .text-area { min-height: 160px; }
+}

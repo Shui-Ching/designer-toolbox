@@ -1,0 +1,290 @@
+:root {
+  --color-paper: #f4f1e8;
+  --color-paper-deep: #ece7d9;
+  --color-ink: #1c1b18;
+  --color-ink-soft: #6b665b;
+  --color-line: #d9d3c3;
+  --color-accent: #d8442a;
+  --color-accent-deep: #b0331d;
+  --color-mark: #e0a92e;
+  --font-display: Inter, Noto Sans TC, sans-serif;
+  --font-body: Inter, Noto Sans TC, sans-serif;
+  --font-mono: Inter, Noto Sans TC, sans-serif;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.tool-intro {
+  max-width: 68ch;
+  margin-block: 24px 40px;
+  color: #6b665b;
+}
+.tool-intro code {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  padding: 1px 4px;
+  background: #ece7d9;
+  border-radius: 2px;
+}
+
+.regex-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.regex-delim {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1.75rem;
+  color: #6b665b;
+  user-select: none;
+}
+
+.regex-pattern-input {
+  flex: 1 1 320px;
+  min-width: 0;
+  padding: 16px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #1c1b18;
+  background: #f4f1e8;
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+  box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
+  transition: border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.regex-pattern-input::placeholder {
+  color: #6b665b;
+}
+.regex-pattern-input:focus {
+  outline: none;
+  border-color: #d8442a;
+}
+
+.regex-flags {
+  display: flex;
+  gap: 8px;
+}
+
+.pattern-status {
+  min-height: 1.4em;
+  margin: 8px 0 0;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+}
+.pattern-status.is-invalid {
+  color: #d8442a;
+}
+
+.quick-pattern-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-chip {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  padding: 4px 16px;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  color: #6b665b;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), background-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.filter-chip:hover {
+  color: #1c1b18;
+  border-color: #1c1b18;
+}
+.filter-chip.is-active {
+  color: #f4f1e8;
+  background: #d8442a;
+  border-color: #d8442a;
+}
+
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.editor-toolbar-label {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  color: #6b665b;
+  font-variant-numeric: tabular-nums;
+}
+
+.editor-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.text-area {
+  width: 100%;
+  min-height: 200px;
+  padding: 24px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #1c1b18;
+  background: #f4f1e8;
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+  box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
+  resize: vertical;
+  transition: border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.text-area::placeholder {
+  color: #6b665b;
+}
+.text-area:focus {
+  outline: none;
+  border-color: #d8442a;
+}
+
+.regex-result-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.regex-stat {
+  margin: 0;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  color: #d8442a;
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: 8px 0 0;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #d8442a;
+}
+
+.regex-highlight {
+  padding: 24px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  line-height: 1.85;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: #1c1b18;
+  background: #f4f1e8;
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+  overflow: auto;
+  max-height: 400px;
+}
+
+.regex-match {
+  background: color-mix(in srgb, #d8442a 18%, transparent);
+  color: #b0331d;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px color-mix(in srgb, #d8442a 40%, transparent);
+}
+
+.regex-match.is-zero {
+  padding-inline: 2px;
+  color: #f4f1e8;
+  background: #e0a92e;
+  box-shadow: none;
+}
+
+.regex-empty {
+  margin: 0;
+  padding: 40px 24px;
+  text-align: center;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+}
+
+.match-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.match-card {
+  padding: 16px 24px;
+  background: #ece7d9;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+}
+
+.match-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.match-pos {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+  font-variant-numeric: tabular-nums;
+}
+
+.match-full {
+  margin: 0;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  word-break: break-word;
+  color: #1c1b18;
+}
+
+.match-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #d9d3c3;
+}
+
+.match-group-row {
+  display: flex;
+  gap: 16px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+}
+
+.match-group-label {
+  flex: 0 0 auto;
+  min-width: 5em;
+  color: #6b665b;
+}
+
+.match-group-value {
+  word-break: break-word;
+  color: #1c1b18;
+}
+.match-group-value.is-empty {
+  color: #6b665b;
+  font-style: italic;
+}
+
+@media (max-width: 640px) {
+  .regex-delim {
+    display: none;
+  }
+  .text-area {
+    min-height: 160px;
+  }
+}
