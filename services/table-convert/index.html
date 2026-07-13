@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>CSV ↔ Markdown/JSON 表格轉換 · 設計師工具箱</title>
+  <meta name="description" content="貼上 CSV 或從 Excel 複製的表格，即時轉換成 Markdown 表格與 JSON，並附即時預覽表格；自寫 CSV／TSV 解析器，可正確處理引號跳脫，檔案不上傳。">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202607131651">
+  <link rel="stylesheet" href="./style.css?v=202607131651">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="table-convert">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 42</span>
+        <h1 class="tool-head-title">CSV ↔ Markdown/JSON 表格轉換</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      貼上 CSV 或從 Excel／Google 試算表複製的表格，即時轉換成 Markdown 表格或 JSON，並附預覽表格對照。自寫解析器正確處理引號跳脫與欄位內的逗號、換行，全程在瀏覽器端運算，內容不上傳。
+    </p>
+
+    <!-- 輸入設定 -->
+    <section class="controls">
+      <div class="control-row">
+        <span class="control-label">分隔符號</span>
+        <div class="chip-group" id="delim-group">
+          <button type="button" class="opt-chip is-active" data-delim="auto">自動偵測</button>
+          <button type="button" class="opt-chip" data-delim=",">逗號 ,</button>
+          <button type="button" class="opt-chip" data-delim="tab">Tab</button>
+          <button type="button" class="opt-chip" data-delim=";">分號 ;</button>
+        </div>
+      </div>
+      <div class="control-row">
+        <span class="control-label">首列</span>
+        <div class="chip-group" id="header-group">
+          <button type="button" class="opt-chip is-active" data-header="yes">作為標題列</button>
+          <button type="button" class="opt-chip" data-header="no">純資料（無標題）</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 貼上資料 -->
+    <div class="section-rule"><span class="tag">貼上資料</span></div>
+    <div class="editor-toolbar">
+      <span class="editor-toolbar-label" id="parse-stat">尚未輸入</span>
+      <div class="editor-toolbar-actions">
+        <button class="btn" id="sample-btn" type="button">載入範例</button>
+        <button class="btn" id="clear-btn" type="button">清空</button>
+      </div>
+    </div>
+    <textarea
+      id="csv-input"
+      class="text-area"
+      placeholder="貼上 CSV，或直接從 Excel／Google 試算表複製儲存格範圍…"
+      spellcheck="false"
+      aria-label="表格資料輸入"></textarea>
+
+    <!-- 轉換結果 -->
+    <div class="section-rule"><span class="tag">轉換結果</span></div>
+    <div class="control-row">
+      <span class="control-label">格式</span>
+      <div class="chip-group" id="format-group">
+        <button type="button" class="opt-chip is-active" data-format="markdown">Markdown 表格</button>
+        <button type="button" class="opt-chip" data-format="json">JSON</button>
+      </div>
+      <button class="btn btn-accent" id="copy-output-btn" type="button">複製結果</button>
+    </div>
+    <textarea
+      id="output-area"
+      class="text-area"
+      readonly
+      spellcheck="false"
+      aria-label="轉換結果輸出"></textarea>
+    <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+
+    <!-- 預覽表格 -->
+    <div class="section-rule"><span class="tag">預覽表格</span></div>
+    <div class="table-preview-wrap" id="preview-wrap">
+      <p class="preview-empty" id="preview-empty">貼上資料後在這裡即時預覽解析結果。</p>
+      <table class="table-preview" id="preview-table" hidden></table>
+    </div>
+
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202607131651"></script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+// ============================================================
+// 42 CSV ↔ Markdown/JSON 表格轉換 — 工具特有樣式
+// 共用元件（tool-head / btn / tag / section-rule / site-foot）直接套 class
+// 輸入設定沿用 33 svg-optimizer 的 controls / chip-group / opt-chip 語彙
+// 輸入輸出框沿用 38 json-formatter 的 editor-toolbar / text-area
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+}
+
+// — 輸入設定面板 —
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  padding: $space-4;
+  margin-bottom: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+.control-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-3;
+}
+
+.control-label {
+  flex: 0 0 auto;
+  min-width: 5em;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.opt-chip {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-1 $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+  background: $color-paper;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// 轉換結果的格式列：格式 chip 與複製鈕同一列，靠右對齊
+.control-row .btn {
+  margin-left: auto;
+}
+
+// — 輸入／輸出工具列 —
+.editor-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+  margin-bottom: $space-3;
+}
+
+.editor-toolbar-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+  font-variant-numeric: tabular-nums;
+}
+
+.editor-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+// — 輸入／輸出框（等寬字體） —
+.text-area {
+  width: 100%;
+  min-height: 220px;
+  padding: $space-4;
+  margin-bottom: $space-3;
+  font-family: $font-mono;
+  font-size: $fs-base;
+  line-height: 1.7;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
+  resize: vertical;
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: auto;
+  transition: border-color $dur $ease;
+
+  &::placeholder { color: $color-ink-soft; }
+
+  &:focus {
+    outline: none;
+    border-color: $color-accent;
+  }
+
+  &[readonly] {
+    background: $color-paper-deep;
+  }
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: 0 0 $space-4;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// — 預覽表格 —
+.table-preview-wrap {
+  overflow-x: auto;
+  border: $border-fine;
+  border-radius: $radius;
+  background: $color-paper;
+}
+
+.preview-empty {
+  margin: 0;
+  padding: $space-4;
+  font-size: $fs-sm;
+  color: $color-ink-soft;
+}
+
+.table-preview {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: $fs-sm;
+  white-space: nowrap;
+
+  th, td {
+    padding: $space-2 $space-3;
+    text-align: left;
+    border-bottom: $border-fine;
+    border-right: $border-fine;
+
+    &:last-child { border-right: none; }
+  }
+
+  thead th {
+    font-family: $font-mono;
+    font-size: $fs-xs;
+    letter-spacing: 0.04em;
+    color: $color-paper;
+    background: $color-ink;
+    white-space: nowrap;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:nth-child(even) { background: $color-paper-deep; }
+}
+
+// — 窄螢幕：設定列與格式列改上下堆疊 —
+@media (max-width: 640px) {
+  .control-label { min-width: 100%; }
+  .control-row .btn { margin-left: 0; }
+
+  .text-area { min-height: 180px; }
+}

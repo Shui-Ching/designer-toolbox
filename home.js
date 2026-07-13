@@ -53,6 +53,7 @@ const TOOL_POPULARITY = {
   'services/timestamp-convert/index.html': 0,
   'services/text-diff/index.html': 0,
   'services/regex-tester/index.html': 0,
+  'services/table-convert/index.html': 0,
 };
 
 (function () {

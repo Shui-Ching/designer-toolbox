@@ -16,8 +16,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="shared/styles/shared.css?v=202607131602">
-  <link rel="stylesheet" href="index.css?v=202607131602">
+  <link rel="stylesheet" href="shared/styles/shared.css?v=202607131651">
+  <link rel="stylesheet" href="index.css?v=202607131651">
 
   <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
@@ -194,7 +194,7 @@
           </select>
         </label>
 
-        <span class="index-count" id="tool-count">41 項工具</span>
+        <span class="index-count" id="tool-count">42 項工具</span>
       </div>
 
       <!-- 分類篩選：依領域切換工具，與搜尋列為交集篩選 -->
@@ -745,6 +745,19 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
+        <a class="tool-card" href="services/table-convert/index.html" data-category="text" data-keywords="csv markdown json 表格 轉換 excel 試算表 table convert tsv 逗號分隔 貼上">
+          <div class="tool-card-top">
+            <span class="tool-card-no">42</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">CSV ↔ Markdown/JSON 表格轉換</h2>
+            <span class="tool-card-en">Table Convert</span>
+          </div>
+          <p class="tool-card-desc">貼上 CSV 或從 Excel 複製的表格，即時轉換成 Markdown 表格與 JSON，並附即時預覽表格對照。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
       </nav>
 
       <!-- 搜尋無結果時的空狀態 -->
@@ -761,8 +774,8 @@
   <button class="go-top" id="go-top" aria-label="回到頂端">↑</button>
 
   <!-- 共用 JS：掛載頁尾（ES Module，符合 CSP script-src 'self'） -->
-  <script type="module" src="./shared/scripts/shared.js?v=202607131602"></script>
+  <script type="module" src="./shared/scripts/shared.js?v=202607131651"></script>
   <!-- 首頁工具搜尋（外部檔，符合 CSP script-src 'self'） -->
-  <script defer src="home.js?v=202607131602"></script>
+  <script defer src="home.js?v=202607131651"></script>
 </body>
 </html>

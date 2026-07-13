@@ -4,6 +4,8 @@
 > 架構決策、設計 token、新增工具標準步驟另存於 project skill（`.claude/skills/designer-toolbox`）。
 > 收工更新方式：改「最後更新」一行＋在工具總覽補一列；實作細節寫進 git commit 與程式碼註解，不要貼進本檔。
 
+最後更新：2026-07-13 — 完成 **42 CSV ↔ Markdown/JSON 表格轉換**（貼上 CSV 或從 Excel／Google 試算表複製的表格，即時轉換成 Markdown 表格與 JSON，並附即時預覽表格對照）。自寫 CSV/TSV 解析器（逐字元狀態機，非 split(',') ），正確處理雙引號跳脫（`""` → `"`）、引號內含分隔符與換行的跨行欄位；分隔符號可自動偵測（逗號／Tab／分號，取樣前 5 行、忽略引號內字元，偵測到 Tab 即優先判定，對應 Excel 複製貼上的常見情境）或手動指定。首列可選「作為標題列」（Markdown 表頭、JSON 物件陣列）或「純資料」（Markdown 補生成「欄位 N」表頭、JSON 陣列的陣列）。欄位數不一致的列一律補齊空字串到當次最大欄數，避免 Markdown 表格斷欄。Markdown 輸出跳脫儲存格內的 `\`、`|`，換行轉 `<br>`；預覽表格用 `createElement`＋`textContent` 組 DOM，不經 `innerHTML`。設定與格式切換沿用 33 號 svg-optimizer 的 `controls`／`chip-group`／`opt-chip` 語彙，輸入輸出框沿用 38 號 json-formatter 的 `editor-toolbar`／`text-area`。手動抽出核心解析／轉換函式跑 11 組 Node 單元測試（含引號跳脫、跨行欄位、分隔符偵測、Markdown pipe 跳脫、有無標題列的 JSON 形狀）全數通過；另用 Playwright 實際跑過瀏覽器驗證：初始空狀態、載入範例（含引號逗號／全形逗號／換行皆正確解析）、Markdown／JSON 切換、有無標題列切換、Tab／分號手動分隔符、未成對引號的畸形輸入（不崩潰、寬容處理）、複製結果到剪貼簿、清空恢復空狀態，console 皆無錯誤。
+
 最後更新：2026-07-13 — 完成 **41 Regex 測試器**（輸入正規表達式與 g/i/m/s 旗標，即時高亮所有匹配並列出擷取群組，附 12 組常用 pattern 速查）。原生 `RegExp`，零相依；沒有 `g` 旗標時比照原生行為只回傳第一筆，避免使用者誤以為工具壞掉。找匹配用 `exec` + `lastIndex` 迴圈，零寬匹配時手動 `lastIndex++` 避免無窮迴圈，並設 2000 筆匹配上限防病態 pattern 撐爆 DOM（無法防 ReDoS 級的災難性回溯，屬原生 regex engine 的固有限制，不在自寫範圍內）。高亮沿用 40 號 text-diff 的 `createElement`＋`textContent` 組 DOM 手法，不經 `innerHTML`。擷取群組同時列出數字群組（`m[1..]`）與具名群組（`m.groups`），未匹配到的群組顯示「（未匹配）」。常用 pattern（Email／URL／IPv4／Hex 色碼／台灣手機／日期／時間／中文字元／HTML 標籤／數字／多餘空白／英數帳號）為工具內建常數，非外部 JSON（資料量小且不重用）。範圍拍板時已確認**不做替換（replace）功能**，先聚焦匹配＋擷取＋速查。用 Playwright 實際跑過瀏覽器驗證：初始空狀態、載入範例自動帶入 Email pattern 並正確高亮、切換 Hex 色碼 pattern、具名群組擷取正確對應、錯誤 pattern 顯示語法錯誤訊息、關閉 g 旗標後只回傳第一筆匹配、複製所有匹配、清空恢復空狀態，console 皆無錯誤。
 
 ## 工具總覽（41 個，全數上線）
@@ -99,28 +101,27 @@ Umami（`cloud.umami.is`，cookieless）＋各頁嚴格 CSP meta 已全站套用
 
 ## 排入排程（已拍板，待實作）
 
-2026-07-13 拍板，依下表順序開發；正式工具編號於上線時連續分配（Regex 測試器已於 41 號上線，見上方工具總覽）。
+2026-07-13 拍板，依下表順序開發；正式工具編號於上線時連續分配（Regex 測試器已於 41 號、CSV ↔ Markdown/JSON 表格轉換已於 42 號上線，見上方工具總覽）。
 
 | 順序 | 工具（資料夾） | 分類 | 方向 |
 |---|---|---|---|
-| 1 | CSV ↔ Markdown/JSON 表格轉換（`table-convert`） | text | 貼 Excel／CSV 轉 Markdown 表格與 JSON；自寫 CSV parser（處理引號跳脫），零相依 |
-| 2 | 字型檔預覽器（`font-preview`） | assets | 拖入 TTF/OTF/WOFF 即時預覽字重、字符集、waterfall 字級瀑布；原生 `FontFace` API，零相依 |
-| 3 | 佔位圖產生器（`placeholder-image`） | image | 自訂尺寸／底色／文字輸出 PNG/SVG 佔位圖，可一鍵套 03 號社群版位尺寸；Canvas＋SVG 序列化。自動標註尺寸：置中文字＋藍圖標註線兩種樣式切換，字級取短邊等比縮放，文字顏色依底色亮度自動反轉（複用 27 號 WCAG 相對亮度算法） |
-| 4 | CSS clip-path 產生器（`clip-path`） | css | 多邊形拖曳控制點＋預設形狀（三角、箭頭、對話框），輸出 `clip-path`；拖曳互動沿用 28 號 cubic-bezier |
-| 5 | SVG Blob／波浪產生器（`blob-generator`） | assets | 隨機有機形狀＋波浪分隔線，調複雜度與隨機種子，輸出 SVG；貝茲曲線數學自寫 |
-| 6 | 噪點／紋理產生器（`noise-texture`） | assets | grain、dot grid、格線紋理，輸出可平鋪 PNG/SVG；Canvas＋`crypto.getRandomValues` |
-| 7 | EXIF 檢視與移除（`exif-viewer`） | image | 拖入照片看 EXIF（GPS、機型），一鍵去除後下載；自寫 EXIF parser（JPEG APP1 段），去除走 01 號 Canvas 重編碼管線 |
-| 8 | 九宮格切圖（`grid-splitter`） | image | 長圖或方圖切成 IG 九宮格／輪播分頁，ZIP 打包下載；Canvas 切片＋沿用 07 號 favicon 的手寫 ZIP 容器 |
-| 9 | 裝置外框截圖（`device-mockup`） | image | 截圖套進手機／瀏覽器外框輸出提案用 mockup；外框 SVG 自繪＋Canvas 合成，與 04 號 device-size 資料互通 |
-| 10 | LINE Rich Menu 預覽模擬器（`richmenu-preview`） | image | 拖入選單圖驗證規格（尺寸／格式／≤1MB，規格存 JSON 比照 03 號）＋疊分格模板 overlay＋自繪去識別化聊天室 mockup 預覽展開／收合；緊接第 9 順位共用自繪手機外框技術。**實作前先查證 LINE 官方文件現行規格** |
-| 11 | 日期計算器（`date-calc`） | reference | 日期差、加減天數、倒數日；原生 `Date`＋`Intl`，沿用 39 號 timestamp 版面 |
-| 12 | PPI 計算器（`ppi-calc`） | reference | 解析度＋螢幕吋數 → PPI／設備像素比速查；純算式 |
-| 13 | 我的螢幕資訊（`screen-info`） | reference | 偵測本機解析度／視窗大小／DPR／觸控／目前斷點，resize 即時更新＋「複製診斷報告」；定位為丟給客戶的診斷頁，與 04 號（查別人的裝置）互補。**偵測值只留本機顯示，不送 Umami、不進 URL** |
-| 14 | 亂數密碼／字串產生器（`password-generator`） | assets | 長度、字元集、排除易混淆字元；複用 34 號抽籤器的 `crypto` 拒絕採樣 |
-| 15 | 倒數計時器／碼表（`countdown-timer`） | focus | 通用倒數＋碼表，補 focus 類缺口；沿用 21 號 pomodoro 的 SVG 環＋Web Audio |
-| 16 | Emoji 查找複製（`emoji-picker`） | reference | 分類＋中英關鍵字搜尋，點卡複製；複製 37 號 special-chars 架構，只換 JSON 資料 |
-| 17 | 繁簡轉換（`zh-convert`） | text | 繁↔簡＋台灣／中國用語提示；需準備對照 JSON，零相依 |
-| 18 | Mermaid 流程圖預覽器（`mermaid-preview`） | text | 貼 Mermaid 語法即時預覽＋匯出 SVG/PNG；**需本機 vendor mermaid.js（約 2–3MB）**，實作前先確認版本與 CSP 影響（先例：20 號 pdf-compress） |
+| 1 | 字型檔預覽器（`font-preview`） | assets | 拖入 TTF/OTF/WOFF 即時預覽字重、字符集、waterfall 字級瀑布；原生 `FontFace` API，零相依 |
+| 2 | 佔位圖產生器（`placeholder-image`） | image | 自訂尺寸／底色／文字輸出 PNG/SVG 佔位圖，可一鍵套 03 號社群版位尺寸；Canvas＋SVG 序列化。自動標註尺寸：置中文字＋藍圖標註線兩種樣式切換，字級取短邊等比縮放，文字顏色依底色亮度自動反轉（複用 27 號 WCAG 相對亮度算法） |
+| 3 | CSS clip-path 產生器（`clip-path`） | css | 多邊形拖曳控制點＋預設形狀（三角、箭頭、對話框），輸出 `clip-path`；拖曳互動沿用 28 號 cubic-bezier |
+| 4 | SVG Blob／波浪產生器（`blob-generator`） | assets | 隨機有機形狀＋波浪分隔線，調複雜度與隨機種子，輸出 SVG；貝茲曲線數學自寫 |
+| 5 | 噪點／紋理產生器（`noise-texture`） | assets | grain、dot grid、格線紋理，輸出可平鋪 PNG/SVG；Canvas＋`crypto.getRandomValues` |
+| 6 | EXIF 檢視與移除（`exif-viewer`） | image | 拖入照片看 EXIF（GPS、機型），一鍵去除後下載；自寫 EXIF parser（JPEG APP1 段），去除走 01 號 Canvas 重編碼管線 |
+| 7 | 九宮格切圖（`grid-splitter`） | image | 長圖或方圖切成 IG 九宮格／輪播分頁，ZIP 打包下載；Canvas 切片＋沿用 07 號 favicon 的手寫 ZIP 容器 |
+| 8 | 裝置外框截圖（`device-mockup`） | image | 截圖套進手機／瀏覽器外框輸出提案用 mockup；外框 SVG 自繪＋Canvas 合成，與 04 號 device-size 資料互通 |
+| 9 | LINE Rich Menu 預覽模擬器（`richmenu-preview`） | image | 拖入選單圖驗證規格（尺寸／格式／≤1MB，規格存 JSON 比照 03 號）＋疊分格模板 overlay＋自繪去識別化聊天室 mockup 預覽展開／收合；緊接第 8 順位共用自繪手機外框技術。**實作前先查證 LINE 官方文件現行規格** |
+| 10 | 日期計算器（`date-calc`） | reference | 日期差、加減天數、倒數日；原生 `Date`＋`Intl`，沿用 39 號 timestamp 版面 |
+| 11 | PPI 計算器（`ppi-calc`） | reference | 解析度＋螢幕吋數 → PPI／設備像素比速查；純算式 |
+| 12 | 我的螢幕資訊（`screen-info`） | reference | 偵測本機解析度／視窗大小／DPR／觸控／目前斷點，resize 即時更新＋「複製診斷報告」；定位為丟給客戶的診斷頁，與 04 號（查別人的裝置）互補。**偵測值只留本機顯示，不送 Umami、不進 URL** |
+| 13 | 亂數密碼／字串產生器（`password-generator`） | assets | 長度、字元集、排除易混淆字元；複用 34 號抽籤器的 `crypto` 拒絕採樣 |
+| 14 | 倒數計時器／碼表（`countdown-timer`） | focus | 通用倒數＋碼表，補 focus 類缺口；沿用 21 號 pomodoro 的 SVG 環＋Web Audio |
+| 15 | Emoji 查找複製（`emoji-picker`） | reference | 分類＋中英關鍵字搜尋，點卡複製；複製 37 號 special-chars 架構，只換 JSON 資料 |
+| 16 | 繁簡轉換（`zh-convert`） | text | 繁↔簡＋台灣／中國用語提示；需準備對照 JSON，零相依 |
+| 17 | Mermaid 流程圖預覽器（`mermaid-preview`） | text | 貼 Mermaid 語法即時預覽＋匯出 SVG/PNG；**需本機 vendor mermaid.js（約 2–3MB）**，實作前先確認版本與 CSP 影響（先例：20 號 pdf-compress） |
 
 ## 後續可選（未做，留待提出）
 
