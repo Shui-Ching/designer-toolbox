@@ -3,7 +3,7 @@
 // 自寫 LCS diff 演算法（動態規劃求最長共同子序列，回溯還原編輯序列），零相依
 // 全程用 DOM API（createElement + textContent）組出結果，不經 innerHTML，天生免疫 XSS
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202607131927';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202607140956';
 
 // — DOM —
 const textA = document.getElementById('text-a');

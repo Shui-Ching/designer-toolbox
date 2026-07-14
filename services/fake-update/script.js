@@ -1,4 +1,4 @@
-import { track } from '../../shared/scripts/shared.js?v=202607131927';
+import { track } from '../../shared/scripts/shared.js?v=202607140956';
 
 // ── 狀態 ──────────────────────────────────────────
 let selectedOS = 'mac';

@@ -2,7 +2,7 @@
 // 31 印刷紙張尺寸速查 — 系列篩選、單位切換（mm/cm/inch/px）、點列複製
 // 資料內嵌，零相依，維持 CSP script-src 'self'
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202607131927';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202607140956';
 
 // ── 紙張資料（mm: [寬, 高]）────────────────────────────────
 // 直式以短邊為寬；名片與明信片為橫式使用，以長邊為寬

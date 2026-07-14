@@ -1,0 +1,96 @@
+// ============================================================
+// 45 我的螢幕資訊 — 工具特有樣式
+// 共用元件（tool-head / btn / tag / section-rule）直接套 class；
+// 統計方格沿用 13 號 word-count 的 stat-grid / stat-cell 語彙，
+// 這裡只補診斷頁特有的說明連結與隱私提示列
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 72ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+}
+
+.inline-link {
+  color: $color-accent;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  &:hover { color: $color-accent-deep; }
+}
+
+// ============================================================
+// 即時偵測方格
+// ============================================================
+.screen-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $space-3;
+  margin-block: $space-4 $space-5;
+}
+
+.screen-cell {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  padding: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+}
+
+.screen-cell-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  color: $color-ink-soft;
+}
+
+.screen-cell-value {
+  font-family: $font-display;
+  font-size: $fs-xl;
+  font-weight: 600;
+  line-height: 1.2;
+  color: $color-accent;
+  font-variant-numeric: tabular-nums;
+}
+
+.screen-cell-note {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+// ============================================================
+// 複製診斷報告列
+// ============================================================
+.report-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-3;
+  margin-bottom: $space-4;
+}
+
+.copy-hint {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// — 隱私提示 —
+.privacy-note {
+  display: flex;
+  align-items: baseline;
+  gap: $space-2;
+  max-width: 72ch;
+  font-size: $fs-sm;
+  color: $color-ink-soft;
+
+  .tag {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}

@@ -2,7 +2,7 @@
 // 41 Regex 測試器 — 輸入正規表達式即時高亮匹配並列出擷取群組
 // 原生 RegExp，零相依；高亮沿用 40 號 text-diff 的 createElement + textContent 手法（不經 innerHTML）
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202607131927';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202607140956';
 
 // — DOM —
 const patternInput = document.getElementById('pattern-input');

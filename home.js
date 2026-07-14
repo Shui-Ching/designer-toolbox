@@ -56,6 +56,7 @@ const TOOL_POPULARITY = {
   'services/table-convert/index.html': 0,
   'services/font-preview/index.html': 0,
   'services/placeholder-image/index.html': 0,
+  'services/screen-info/index.html': 0,
 };
 
 (function () {

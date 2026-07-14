@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>我的螢幕資訊 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202607140956">
+  <link rel="stylesheet" href="./style.css?v=202607140956">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="screen-info">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 45</span>
+        <h1 class="tool-head-title">我的螢幕資訊</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      即時偵測這台裝置目前的螢幕解析度、視窗大小、裝置像素比（DPR）、觸控支援與所在的響應式斷點，調整視窗大小會自動更新。
+      定位為丟給客戶或協作者的診斷頁——與 <a class="inline-link" href="../device-size/index.html">04 裝置尺寸查詢</a>（查別人的裝置規格）互補，這裡查的是「現在正在用的這台」。
+    </p>
+
+    <div class="section-rule"><span class="tag">即時偵測</span></div>
+
+    <div class="screen-grid" id="screen-grid">
+      <div class="screen-cell">
+        <span class="screen-cell-label">螢幕解析度</span>
+        <span class="screen-cell-value" id="val-resolution">–</span>
+        <span class="screen-cell-note">實體像素，screen.width × height</span>
+      </div>
+      <div class="screen-cell">
+        <span class="screen-cell-label">視窗大小</span>
+        <span class="screen-cell-value" id="val-window">–</span>
+        <span class="screen-cell-note">CSS px，瀏覽器可視區域</span>
+      </div>
+      <div class="screen-cell">
+        <span class="screen-cell-label">裝置像素比 DPR</span>
+        <span class="screen-cell-value" id="val-dpr">–</span>
+        <span class="screen-cell-note">devicePixelRatio</span>
+      </div>
+      <div class="screen-cell">
+        <span class="screen-cell-label">觸控支援</span>
+        <span class="screen-cell-value" id="val-touch">–</span>
+        <span class="screen-cell-note">是否偵測到觸控輸入</span>
+      </div>
+      <div class="screen-cell">
+        <span class="screen-cell-label">目前斷點</span>
+        <span class="screen-cell-value" id="val-breakpoint">–</span>
+        <span class="screen-cell-note" id="val-breakpoint-note">Bootstrap 5 預設斷點</span>
+      </div>
+    </div>
+
+    <div class="report-bar">
+      <button type="button" class="btn btn-accent" id="copy-report-btn">複製診斷報告</button>
+      <span class="copy-hint" id="copy-hint" aria-live="polite"></span>
+    </div>
+
+    <p class="privacy-note">
+      <span class="tag">隱私</span>
+      以上偵測值只會顯示在你自己的畫面上，不會送出到任何伺服器、不記錄在網址列，也不會被分析工具收集。
+    </p>
+
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202607140956"></script>
+</body>
+</html>
