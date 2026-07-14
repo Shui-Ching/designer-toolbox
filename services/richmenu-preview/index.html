@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>LINE Rich Menu 預覽模擬器 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202607141111">
+  <link rel="stylesheet" href="./style.css?v=202607141111">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="richmenu-preview">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 46</span>
+        <h1 class="tool-head-title">LINE Rich Menu 預覽模擬器</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      拖入圖文選單（Rich Menu）的設計稿，驗證<span class="tag">尺寸</span>／<span class="tag">格式</span>／<span class="tag">≤1MB</span>是否符合 LINE 官方規格，
+      疊上分格模板檢查版面是否對齊分格線，並用去識別化的聊天室模擬畫面預覽展開／收合的實際互動。全部在瀏覽器端完成，圖片不會離開你的電腦。
+    </p>
+
+    <!-- 上傳區（尚無圖片時顯示）-->
+    <div class="dropzone" id="dropzone">
+      <span class="dropzone-hint">拖放 Rich Menu 圖片到這裡，或點擊選檔</span>
+      <span class="tag">建議 JPG／PNG，≤ 1MB</span>
+      <input type="file" id="file-input" accept="image/*" hidden>
+    </div>
+
+    <!-- 編輯區（載入圖片後顯示）-->
+    <div class="editor" id="editor" hidden>
+      <div class="editor-layout">
+
+        <!-- 左：規格驗證與設定 -->
+        <section class="controls" aria-label="Rich Menu 規格與設定">
+
+          <div class="control-block">
+            <span class="control-label">檔案</span>
+            <div class="file-summary">
+              <span class="file-name" id="file-name">–</span>
+              <span class="file-dim" id="file-dim">–</span>
+            </div>
+            <button type="button" class="btn" id="change-btn">更換圖片</button>
+          </div>
+
+          <div class="control-block">
+            <span class="control-label">規格驗證</span>
+            <ul class="spec-checklist" id="spec-checklist"></ul>
+          </div>
+
+          <div class="control-block">
+            <span class="control-label">分格模板 overlay</span>
+            <div class="chip-group" id="template-group"></div>
+            <label class="toggle-row">
+              <input type="checkbox" id="grid-toggle" checked>
+              <span>顯示分格線</span>
+            </label>
+          </div>
+
+          <div class="control-block">
+            <span class="control-label">聊天室情境預覽</span>
+            <button type="button" class="btn" id="chat-toggle-action">切換展開／收合</button>
+          </div>
+
+          <div class="control-actions">
+            <button class="btn btn-accent" id="download-btn" type="button">下載疊圖（含分格線）</button>
+          </div>
+          <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+        </section>
+
+        <!-- 右：分格 overlay 舞台 + 聊天室 mockup -->
+        <section class="stage-wrap" aria-label="Rich Menu 預覽">
+
+          <div class="rm-stage" id="rm-stage">
+            <img class="rm-image" id="rm-image" alt="Rich Menu 預覽圖">
+            <div class="rm-grid-overlay" id="grid-overlay"></div>
+          </div>
+
+          <div class="chat-mock" id="chat-mock" aria-label="去識別化聊天室情境模擬">
+            <div class="chat-mock-header">
+              <span class="chat-mock-avatar" aria-hidden="true">OA</span>
+              <span class="chat-mock-name">官方帳號</span>
+              <span class="chat-mock-icons" aria-hidden="true">⋯</span>
+            </div>
+            <div class="chat-mock-body">
+              <div class="chat-bubble">您好，歡迎詢問！</div>
+              <div class="chat-bubble">請點選下方選單開始使用</div>
+            </div>
+            <div class="chat-mock-menu" id="chat-mock-menu">
+              <button type="button" class="chat-mock-toggle" id="chat-toggle-btn" aria-label="展開／收合選單">⌄</button>
+              <img class="chat-menu-img" id="chat-menu-img" alt="Rich Menu 於聊天室內顯示效果">
+              <span class="chat-mock-collapsed-label">選單</span>
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202607141111"></script>
+</body>
+</html>

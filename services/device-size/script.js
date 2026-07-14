@@ -1,7 +1,7 @@
 // ============================================================
 // 04 裝置尺寸查詢 — 載入資料、搜尋、類型篩選、欄位排序、點列複製 viewport
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202607140956';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202607141111';
 
 const searchInput = document.getElementById('search');
 const filterBar = document.getElementById('filter-bar');

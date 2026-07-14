@@ -5,7 +5,7 @@
 // 這個標準 trick（見 getTzOffsetMinutes），零相依、原生 Intl API 全包辦。
 // 換算模式沿用 23 號 unit-convert：settings（時區）→ section-rule → unit-list。
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202607140956';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202607141111';
 
 // — DOM —
 const tzSelect = document.getElementById('tz-select');

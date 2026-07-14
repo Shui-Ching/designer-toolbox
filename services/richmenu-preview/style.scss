@@ -1,0 +1,357 @@
+// ============================================================
+// 46 LINE Rich Menu 預覽模擬器 — 工具特有樣式
+// 共用元件（tool-head / dropzone / btn / tag）直接套 class
+// 控制台 .controls / .control-block / .chip-group 語彙沿用 06 image-crop／44 placeholder-image
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+}
+
+.dropzone { cursor: pointer; }
+
+// — 編輯區：左控制、右舞台；窄螢幕改上下堆疊 —
+.editor-layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: $space-5;
+  align-items: start;
+}
+
+// ============================================================
+// 左側：控制面板
+// ============================================================
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  padding: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+  position: sticky;
+  top: $space-4;
+}
+
+.control-block {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.control-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.file-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.file-name {
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  color: $color-ink;
+  word-break: break-all;
+}
+
+.file-dim {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+// — 規格驗證清單 —
+.spec-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.spec-item {
+  display: flex;
+  gap: $space-2;
+  align-items: baseline;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  line-height: 1.5;
+}
+
+.spec-item-icon {
+  flex-shrink: 0;
+  width: 1.4em;
+  text-align: center;
+}
+
+.spec-item-text { color: $color-ink-soft; }
+
+.spec-item.is-pass .spec-item-icon { color: $color-accent; }
+.spec-item.is-warn .spec-item-icon { color: $color-mark; }
+.spec-item.is-fail .spec-item-icon { color: $color-accent-deep; }
+.spec-item.is-fail .spec-item-text { color: $color-ink; }
+
+// — 分段按鈕群（分格模板）—
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.chip {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-1 $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+  background: $color-paper;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// — 顯示分格線開關 —
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+  cursor: pointer;
+}
+
+// — 動作鈕 —
+.control-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// ============================================================
+// 右側：分格 overlay 舞台
+// ============================================================
+.stage-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: $space-5;
+  align-items: center;
+}
+
+.rm-stage {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+  max-width: 100%;
+  // 棋盤底紋：透明圖也看得清邊界
+  background-color: $color-paper-deep;
+  background-image:
+    linear-gradient(45deg, $color-line 25%, transparent 25%),
+    linear-gradient(-45deg, $color-line 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, $color-line 75%),
+    linear-gradient(-45deg, transparent 75%, $color-line 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  border: $border-ink;
+  border-radius: $radius;
+  overflow: hidden;
+}
+
+.rm-image {
+  display: block;
+  width: min(720px, 100%);
+  height: auto;
+}
+
+.rm-grid-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  &[hidden] { display: none; }
+}
+
+.rm-grid-cell {
+  position: absolute;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  border: 1.5px dashed $color-accent;
+  background: color-mix(in srgb, $color-accent 10%, transparent);
+}
+
+.rm-grid-cell-index {
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  font-weight: 600;
+  color: $color-paper;
+  background: color-mix(in srgb, $color-accent 85%, transparent);
+  padding: 2px 8px;
+  border-radius: $radius;
+}
+
+// ============================================================
+// 聊天室情境模擬（去識別化，自繪）
+// ============================================================
+.chat-mock {
+  width: min(360px, 100%);
+  display: flex;
+  flex-direction: column;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  overflow: hidden;
+  box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
+}
+
+.chat-mock-header {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-3 $space-3;
+  background: $color-paper-deep;
+  border-bottom: $border-fine;
+}
+
+.chat-mock-avatar {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  font-family: $font-mono;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  color: $color-paper;
+  background: $color-ink-soft;
+  border-radius: 50%;
+}
+
+.chat-mock-name {
+  flex: 1;
+  font-size: $fs-sm;
+  color: $color-ink;
+}
+
+.chat-mock-icons {
+  color: $color-ink-soft;
+  font-family: $font-mono;
+}
+
+.chat-mock-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: $space-2;
+  padding: $space-3;
+}
+
+.chat-bubble {
+  max-width: 80%;
+  padding: $space-2 $space-3;
+  font-size: $fs-sm;
+  color: $color-ink;
+  background: $color-paper-deep;
+  border-radius: $radius;
+}
+
+// — Rich Menu 區塊：展開／收合互動 —
+.chat-mock-menu {
+  position: relative;
+  overflow: hidden;
+  border-top: $border-fine;
+  background: $color-paper-deep;
+  transition: height $dur $ease;
+}
+
+.chat-menu-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.chat-mock-toggle {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  width: 40px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease;
+
+  &:hover { color: $color-accent; border-color: $color-accent; }
+}
+
+.chat-mock-collapsed-label {
+  display: none;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+.chat-mock-menu.is-collapsed {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .chat-menu-img { display: none; }
+  .chat-mock-toggle { position: static; transform: none; margin-right: $space-2; }
+  .chat-mock-collapsed-label { display: inline; }
+}
+
+// ============================================================
+// 窄螢幕
+// ============================================================
+@media (max-width: 860px) {
+  .editor-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-4;
+  }
+
+  .controls {
+    position: static;
+    top: auto;
+  }
+}

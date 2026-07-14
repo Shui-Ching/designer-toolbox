@@ -57,6 +57,7 @@ const TOOL_POPULARITY = {
   'services/font-preview/index.html': 0,
   'services/placeholder-image/index.html': 0,
   'services/screen-info/index.html': 0,
+  'services/richmenu-preview/index.html': 0,
 };
 
 (function () {
