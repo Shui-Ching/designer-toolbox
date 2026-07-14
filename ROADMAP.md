@@ -4,13 +4,15 @@
 > 架構決策、設計 token、新增工具標準步驟另存於 project skill（`.claude/skills/designer-toolbox`）。
 > 收工更新方式：改「最後更新」一行＋在工具總覽補一列；實作細節寫進 git commit 與程式碼註解，不要貼進本檔。
 
+最後更新：2026-07-13 — 完成 **44 佔位圖產生器**（自訂寬高、底色、標註文字產生佔位圖，可套用 03 號社群版位尺寸，輸出 PNG 或 SVG）。核心運算抽成零 import 的 `render.js`（沿用 08 qr-code 的 qr-encode.js 風格，不碰 DOM），canvas 預覽與 PNG 輸出、SVG 序列化共用同一份「規格」物件（尺寸、底色、文字、樣式衍生出的版面幾何），避免兩種輸出對不齊。版面幾何全部依「短邊」等比例推導（字級、邊框留白、線寬、圖角標記臂長皆為短邊的固定比例並各自 clamp），小至 16px 大至 4000px 都不會產生負值或互撞。文字顏色依底色自動反黑／反白：複用 27 號對比度檢查器的 WCAG 相對亮度／對比值算法，黑白兩個候選取對比值較高者，不是單純亮度門檻判斷。兩種樣式：「置中文字」純底色＋置中標註（留空則顯示尺寸字樣，否則用自訂文字）；「藍圖標註線」在置中文字之外疊加邊框、對角交叉線與四角觀景窗式標記（皆用同一色但三種透明度／線寬營造層次），呼應全站手冊／藍圖美學。SVG 輸出將自訂文字跑過 `escapeHtml` 才嵌入 `<text>`，避免使用者輸入的 `<`、`&` 破壞 XML 或被當標籤解析。手動抽出 render.js 的核心函式跑 Node 測試（56 組斷言）：黑底／白底／硃紅／淡紙色／無效 HEX 的自動反色結果、8 組常見與極端尺寸（含 16×4000 極端長寬比）下版面幾何不產生 NaN／負值／四角互撞，另外驗證 `escapeHtml` 能擋下 `<script>` 等字元不讓它以原始標籤形式流入 SVG 字串。用 Playwright 實際跑過瀏覽器驗證（本機 http-server）：初始狀態、切換置中文字／藍圖標註線樣式、自訂標註文字、淺色底自動反黑字、無效 HEX／尺寸 <16 標紅且不套用、寬高對調、套用非正方形社群版位（Facebook 封面照片 851×315）同步寬高與讀數、PNG↔SVG 格式切換、複製 SVG 原始碼內容正確（`<svg>`、尺寸屬性皆對）、下載 PNG／SVG 檔名正確、4000×4000 邊界不崩潰，全程 console 無錯誤（23 項全數通過）。
+
 最後更新：2026-07-13 — 完成 **43 字型檔預覽器**（拖入 TTF/OTF/WOFF 字型檔，即時預覽字重與樣式、字級瀑布，並檢視字符集涵蓋率與缺字，可一次上傳多檔互相比較）。自寫 OpenType/WOFF 表格解析（`font-parser.js`）：讀 sfnt／WOFF1 表格目錄取出 `name`（家族名／樣式名／完整名／PostScript 名，優先 Windows(3) 平台記錄、UTF-16BE 解碼）、`OS/2`（`usWeightClass` 字重、`fsSelection` 判斷粗體斜體）、`head`（macStyle 作 OS/2 缺席時備援）、`cmap`（format 0/4/12 子表解出字符涵蓋範圍，合併重疊區段後供二分搜尋）四張表；WOFF1 表格採 zlib 壓縮，比照 02 號 svg-to-font 用 `CompressionStream('deflate')` 寫出 WOFF 的反向操作，改用瀏覽器原生 `DecompressionStream('deflate')` 解壓（zlib 格式即 `'deflate'`），零相依。**WOFF2 因採 Brotli 壓縮整檔、瀏覽器原生串流 API 不支援解壓，不在支援格式內**（與排程方向列一致，僅列 TTF/OTF/WOFF）。字型渲染另走原生 `FontFace` API 動態載入（每個檔案配一個內部 family 名稱），與中繼資料解析互相獨立，故單純預覽渲染不受表格解析限制。多檔上傳時每張卡片各自用自身字型渲染「Ag 永安 09」預覽樣張＋字重標籤，方便一眼比較不同字重／樣式；點卡切換下方詳細面板（字型資訊、可編輯文字的字級瀑布、依 Unicode 區塊統計的字符涵蓋率長條、輸入文字逐字元核對的缺字檢查，未收錄字元標紅波浪底線）。字符涵蓋率為 cmap 區段推算（format 4 少數邊界字元可能對應 `.notdef`），標示為估算值。用 Playwright 實際跑過瀏覽器驗證（本機 http-server，file:// 下 ES Module 會被 CORS 擋下）：上傳 TTF 正體＋粗體＋OTF 三檔、卡片預覽與字重資訊正確、切換卡片後詳細面板同步更新、字級瀑布 11 級隨文字輸入即時更新、字符涵蓋率正確列出區塊、缺字檢查正確標出字型未收錄的中文與符號字元、複製字型資訊、移除卡片；另用瀏覽器原生 `CompressionStream` 現場把系統字型轉成 WOFF1 測試檔，確認 zlib 解壓路徑正確還原相同的家族名／字重／字符數；上傳偽裝副檔名的非字型檔案確認錯誤訊息不崩潰；全程 console 無錯誤。
 
 最後更新：2026-07-13 — 完成 **42 CSV ↔ Markdown/JSON 表格轉換**（貼上 CSV 或從 Excel／Google 試算表複製的表格，即時轉換成 Markdown 表格與 JSON，並附即時預覽表格對照）。自寫 CSV/TSV 解析器（逐字元狀態機，非 split(',') ），正確處理雙引號跳脫（`""` → `"`）、引號內含分隔符與換行的跨行欄位；分隔符號可自動偵測（逗號／Tab／分號，取樣前 5 行、忽略引號內字元，偵測到 Tab 即優先判定，對應 Excel 複製貼上的常見情境）或手動指定。首列可選「作為標題列」（Markdown 表頭、JSON 物件陣列）或「純資料」（Markdown 補生成「欄位 N」表頭、JSON 陣列的陣列）。欄位數不一致的列一律補齊空字串到當次最大欄數，避免 Markdown 表格斷欄。Markdown 輸出跳脫儲存格內的 `\`、`|`，換行轉 `<br>`；預覽表格用 `createElement`＋`textContent` 組 DOM，不經 `innerHTML`。設定與格式切換沿用 33 號 svg-optimizer 的 `controls`／`chip-group`／`opt-chip` 語彙，輸入輸出框沿用 38 號 json-formatter 的 `editor-toolbar`／`text-area`。手動抽出核心解析／轉換函式跑 11 組 Node 單元測試（含引號跳脫、跨行欄位、分隔符偵測、Markdown pipe 跳脫、有無標題列的 JSON 形狀）全數通過；另用 Playwright 實際跑過瀏覽器驗證：初始空狀態、載入範例（含引號逗號／全形逗號／換行皆正確解析）、Markdown／JSON 切換、有無標題列切換、Tab／分號手動分隔符、未成對引號的畸形輸入（不崩潰、寬容處理）、複製結果到剪貼簿、清空恢復空狀態，console 皆無錯誤。
 
 最後更新：2026-07-13 — 完成 **41 Regex 測試器**（輸入正規表達式與 g/i/m/s 旗標，即時高亮所有匹配並列出擷取群組，附 12 組常用 pattern 速查）。原生 `RegExp`，零相依；沒有 `g` 旗標時比照原生行為只回傳第一筆，避免使用者誤以為工具壞掉。找匹配用 `exec` + `lastIndex` 迴圈，零寬匹配時手動 `lastIndex++` 避免無窮迴圈，並設 2000 筆匹配上限防病態 pattern 撐爆 DOM（無法防 ReDoS 級的災難性回溯，屬原生 regex engine 的固有限制，不在自寫範圍內）。高亮沿用 40 號 text-diff 的 `createElement`＋`textContent` 組 DOM 手法，不經 `innerHTML`。擷取群組同時列出數字群組（`m[1..]`）與具名群組（`m.groups`），未匹配到的群組顯示「（未匹配）」。常用 pattern（Email／URL／IPv4／Hex 色碼／台灣手機／日期／時間／中文字元／HTML 標籤／數字／多餘空白／英數帳號）為工具內建常數，非外部 JSON（資料量小且不重用）。範圍拍板時已確認**不做替換（replace）功能**，先聚焦匹配＋擷取＋速查。用 Playwright 實際跑過瀏覽器驗證：初始空狀態、載入範例自動帶入 Email pattern 並正確高亮、切換 Hex 色碼 pattern、具名群組擷取正確對應、錯誤 pattern 顯示語法錯誤訊息、關閉 g 旗標後只回傳第一筆匹配、複製所有匹配、清空恢復空狀態，console 皆無錯誤。
 
-## 工具總覽（43 個，全數上線）
+## 工具總覽（44 個，全數上線）
 
 | # | 工具（資料夾） | 分類 | 核心做法一句話 |
 |---|---|---|---|
@@ -57,6 +59,7 @@
 | 41 | Regex 測試器（`regex-tester`） | text | 輸入正規表達式＋g/i/m/s 旗標，即時高亮匹配並列出數字／具名擷取群組，附 12 組常用 pattern 速查；原生 RegExp，零相依 |
 | 42 | CSV ↔ Markdown/JSON 表格轉換（`table-convert`） | text | 自寫 CSV/TSV 解析器（狀態機，處理引號跳脫與跨行欄位），分隔符號自動偵測／手動指定，輸出 Markdown 表格與 JSON |
 | 43 | 字型檔預覽器（`font-preview`） | assets | 拖入 TTF/OTF/WOFF 即時預覽字重、字符集涵蓋率、字級瀑布，可多檔比較；自寫 OpenType/WOFF 表格解析＋原生 FontFace API，零相依 |
+| 44 | 佔位圖產生器（`placeholder-image`） | image | 自訂尺寸／底色／文字輸出 PNG/SVG 佔位圖，可套 03 號社群版位尺寸；置中文字／藍圖標註線兩種樣式，字級與線條依短邊等比例縮放，文字色依底色 WCAG 對比自動反黑／反白（複用 27 號算法），零相依 |
 
 共同約定：全部零後端、檔案不上傳；除 02（opentype.js CDN＋SRI）與 20（本機 vendor）外零相依，維持 CSP `script-src 'self'`。
 
@@ -105,26 +108,25 @@ Umami（`cloud.umami.is`，cookieless）＋各頁嚴格 CSP meta 已全站套用
 
 ## 排入排程（已拍板，待實作）
 
-2026-07-13 拍板，依下表順序開發；正式工具編號於上線時連續分配（Regex 測試器已於 41 號、CSV ↔ Markdown/JSON 表格轉換已於 42 號、字型檔預覽器已於 43 號上線，見上方工具總覽）。
+2026-07-13 拍板，依下表順序開發；正式工具編號於上線時連續分配（Regex 測試器已於 41 號、CSV ↔ Markdown/JSON 表格轉換已於 42 號、字型檔預覽器已於 43 號、佔位圖產生器已於 44 號上線，見上方工具總覽）。
 
 | 順序 | 工具（資料夾） | 分類 | 方向 |
 |---|---|---|---|
-| 1 | 佔位圖產生器（`placeholder-image`） | image | 自訂尺寸／底色／文字輸出 PNG/SVG 佔位圖，可一鍵套 03 號社群版位尺寸；Canvas＋SVG 序列化。自動標註尺寸：置中文字＋藍圖標註線兩種樣式切換，字級取短邊等比縮放，文字顏色依底色亮度自動反轉（複用 27 號 WCAG 相對亮度算法） |
-| 2 | CSS clip-path 產生器（`clip-path`） | css | 多邊形拖曳控制點＋預設形狀（三角、箭頭、對話框），輸出 `clip-path`；拖曳互動沿用 28 號 cubic-bezier |
-| 3 | SVG Blob／波浪產生器（`blob-generator`） | assets | 隨機有機形狀＋波浪分隔線，調複雜度與隨機種子，輸出 SVG；貝茲曲線數學自寫 |
-| 4 | 噪點／紋理產生器（`noise-texture`） | assets | grain、dot grid、格線紋理，輸出可平鋪 PNG/SVG；Canvas＋`crypto.getRandomValues` |
-| 5 | EXIF 檢視與移除（`exif-viewer`） | image | 拖入照片看 EXIF（GPS、機型），一鍵去除後下載；自寫 EXIF parser（JPEG APP1 段），去除走 01 號 Canvas 重編碼管線 |
-| 6 | 九宮格切圖（`grid-splitter`） | image | 長圖或方圖切成 IG 九宮格／輪播分頁，ZIP 打包下載；Canvas 切片＋沿用 07 號 favicon 的手寫 ZIP 容器 |
-| 7 | 裝置外框截圖（`device-mockup`） | image | 截圖套進手機／瀏覽器外框輸出提案用 mockup；外框 SVG 自繪＋Canvas 合成，與 04 號 device-size 資料互通 |
-| 8 | LINE Rich Menu 預覽模擬器（`richmenu-preview`） | image | 拖入選單圖驗證規格（尺寸／格式／≤1MB，規格存 JSON 比照 03 號）＋疊分格模板 overlay＋自繪去識別化聊天室 mockup 預覽展開／收合；緊接第 7 順位共用自繪手機外框技術。**實作前先查證 LINE 官方文件現行規格** |
-| 9 | 日期計算器（`date-calc`） | reference | 日期差、加減天數、倒數日；原生 `Date`＋`Intl`，沿用 39 號 timestamp 版面 |
-| 10 | PPI 計算器（`ppi-calc`） | reference | 解析度＋螢幕吋數 → PPI／設備像素比速查；純算式 |
-| 11 | 我的螢幕資訊（`screen-info`） | reference | 偵測本機解析度／視窗大小／DPR／觸控／目前斷點，resize 即時更新＋「複製診斷報告」；定位為丟給客戶的診斷頁，與 04 號（查別人的裝置）互補。**偵測值只留本機顯示，不送 Umami、不進 URL** |
-| 12 | 亂數密碼／字串產生器（`password-generator`） | assets | 長度、字元集、排除易混淆字元；複用 34 號抽籤器的 `crypto` 拒絕採樣 |
-| 13 | 倒數計時器／碼表（`countdown-timer`） | focus | 通用倒數＋碼表，補 focus 類缺口；沿用 21 號 pomodoro 的 SVG 環＋Web Audio |
-| 14 | Emoji 查找複製（`emoji-picker`） | reference | 分類＋中英關鍵字搜尋，點卡複製；複製 37 號 special-chars 架構，只換 JSON 資料 |
-| 15 | 繁簡轉換（`zh-convert`） | text | 繁↔簡＋台灣／中國用語提示；需準備對照 JSON，零相依 |
-| 16 | Mermaid 流程圖預覽器（`mermaid-preview`） | text | 貼 Mermaid 語法即時預覽＋匯出 SVG/PNG；**需本機 vendor mermaid.js（約 2–3MB）**，實作前先確認版本與 CSP 影響（先例：20 號 pdf-compress） |
+| 1 | CSS clip-path 產生器（`clip-path`） | css | 多邊形拖曳控制點＋預設形狀（三角、箭頭、對話框），輸出 `clip-path`；拖曳互動沿用 28 號 cubic-bezier |
+| 2 | SVG Blob／波浪產生器（`blob-generator`） | assets | 隨機有機形狀＋波浪分隔線，調複雜度與隨機種子，輸出 SVG；貝茲曲線數學自寫 |
+| 3 | 噪點／紋理產生器（`noise-texture`） | assets | grain、dot grid、格線紋理，輸出可平鋪 PNG/SVG；Canvas＋`crypto.getRandomValues` |
+| 4 | EXIF 檢視與移除（`exif-viewer`） | image | 拖入照片看 EXIF（GPS、機型），一鍵去除後下載；自寫 EXIF parser（JPEG APP1 段），去除走 01 號 Canvas 重編碼管線 |
+| 5 | 九宮格切圖（`grid-splitter`） | image | 長圖或方圖切成 IG 九宮格／輪播分頁，ZIP 打包下載；Canvas 切片＋沿用 07 號 favicon 的手寫 ZIP 容器 |
+| 6 | 裝置外框截圖（`device-mockup`） | image | 截圖套進手機／瀏覽器外框輸出提案用 mockup；外框 SVG 自繪＋Canvas 合成，與 04 號 device-size 資料互通 |
+| 7 | LINE Rich Menu 預覽模擬器（`richmenu-preview`） | image | 拖入選單圖驗證規格（尺寸／格式／≤1MB，規格存 JSON 比照 03 號）＋疊分格模板 overlay＋自繪去識別化聊天室 mockup 預覽展開／收合；緊接第 6 順位共用自繪手機外框技術。**實作前先查證 LINE 官方文件現行規格** |
+| 8 | 日期計算器（`date-calc`） | reference | 日期差、加減天數、倒數日；原生 `Date`＋`Intl`，沿用 39 號 timestamp 版面 |
+| 9 | PPI 計算器（`ppi-calc`） | reference | 解析度＋螢幕吋數 → PPI／設備像素比速查；純算式 |
+| 10 | 我的螢幕資訊（`screen-info`） | reference | 偵測本機解析度／視窗大小／DPR／觸控／目前斷點，resize 即時更新＋「複製診斷報告」；定位為丟給客戶的診斷頁，與 04 號（查別人的裝置）互補。**偵測值只留本機顯示，不送 Umami、不進 URL** |
+| 11 | 亂數密碼／字串產生器（`password-generator`） | assets | 長度、字元集、排除易混淆字元；複用 34 號抽籤器的 `crypto` 拒絕採樣 |
+| 12 | 倒數計時器／碼表（`countdown-timer`） | focus | 通用倒數＋碼表，補 focus 類缺口；沿用 21 號 pomodoro 的 SVG 環＋Web Audio |
+| 13 | Emoji 查找複製（`emoji-picker`） | reference | 分類＋中英關鍵字搜尋，點卡複製；複製 37 號 special-chars 架構，只換 JSON 資料 |
+| 14 | 繁簡轉換（`zh-convert`） | text | 繁↔簡＋台灣／中國用語提示；需準備對照 JSON，零相依 |
+| 15 | Mermaid 流程圖預覽器（`mermaid-preview`） | text | 貼 Mermaid 語法即時預覽＋匯出 SVG/PNG；**需本機 vendor mermaid.js（約 2–3MB）**，實作前先確認版本與 CSP 影響（先例：20 號 pdf-compress） |
 
 ## 後續可選（未做，留待提出）
 

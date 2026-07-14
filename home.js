@@ -55,6 +55,7 @@ const TOOL_POPULARITY = {
   'services/regex-tester/index.html': 0,
   'services/table-convert/index.html': 0,
   'services/font-preview/index.html': 0,
+  'services/placeholder-image/index.html': 0,
 };
 
 (function () {

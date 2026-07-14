@@ -2,7 +2,7 @@
 // 06 圖片裁切／改尺寸 — 互動裁切框 + Canvas drawImage 輸出
 // 裁切座標一律以「原圖像素」為準，顯示時再乘上縮放比例 scale
 // ============================================================
-import { downloadBlob, bindDropzone, track } from '../../shared/scripts/shared.js?v=202607131742';
+import { downloadBlob, bindDropzone, track } from '../../shared/scripts/shared.js?v=202607131927';
 
 const dropzone = document.getElementById('dropzone');
 const fileInput = document.getElementById('file-input');

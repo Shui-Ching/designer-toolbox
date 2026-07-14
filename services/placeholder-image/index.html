@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>佔位圖產生器 · 設計師工具箱</title>
+  <meta name="description" content="自訂尺寸、底色與標註文字產生佔位圖，可套用社群平台版位尺寸，輸出 PNG 或 SVG；置中文字與藍圖標註線兩種樣式，文字顏色依底色亮度自動反轉，檔案不上傳。">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202607131927">
+  <link rel="stylesheet" href="./style.css?v=202607131927">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="placeholder-image">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 44</span>
+        <h1 class="tool-head-title">佔位圖產生器</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      設定<span class="tag">尺寸</span>、<span class="tag">底色</span>與標註文字，即時產生佔位圖，
+      可一鍵套用社群平台版位尺寸，輸出 PNG 或 SVG。全部在瀏覽器端繪製，不上傳任何內容。
+    </p>
+
+    <div class="pi-layout">
+
+      <!-- 左：設定 -->
+      <section class="controls" aria-label="佔位圖設定">
+
+        <!-- 尺寸 -->
+        <div class="control-block">
+          <span class="control-label">尺寸 · size</span>
+          <div class="input-row">
+            <label class="input-field">
+              <span class="input-name">寬度</span>
+              <div class="input-suffix-wrap">
+                <input class="text-input" type="number" id="w-input" min="16" max="4000" step="1" value="1080">
+                <span class="input-suffix">px</span>
+              </div>
+            </label>
+            <button type="button" class="swap-btn" id="swap-btn" aria-label="對調寬高">⇄</button>
+            <label class="input-field">
+              <span class="input-name">高度</span>
+              <div class="input-suffix-wrap">
+                <input class="text-input" type="number" id="h-input" min="16" max="4000" step="1" value="1080">
+                <span class="input-suffix">px</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- 社群版位（讀取 03 資料）-->
+        <div class="control-block">
+          <span class="control-label">套用社群版位</span>
+          <select class="social-select" id="social-select" aria-label="套用社群版位尺寸">
+            <option value="">— 選擇平台版位 —</option>
+          </select>
+        </div>
+
+        <!-- 底色 -->
+        <div class="control-block">
+          <label class="control-label" for="bg-picker">底色 · background</label>
+          <div class="color-row">
+            <input type="color" class="color-input" id="bg-picker" value="#d8442a" aria-label="底色色票">
+            <input type="text" class="hex-input" id="bg-hex" spellcheck="false" autocomplete="off" aria-label="底色 HEX">
+          </div>
+        </div>
+
+        <!-- 標註文字 -->
+        <div class="control-block">
+          <label class="control-label" for="text-input">標註文字</label>
+          <input type="text" class="text-input full-width" id="text-input" maxlength="60" placeholder="留空預設顯示尺寸，例如「1080 × 1080」">
+        </div>
+
+        <!-- 樣式 -->
+        <div class="control-block">
+          <span class="control-label">樣式</span>
+          <div class="chip-group" id="style-group">
+            <button type="button" class="chip is-active" data-style="centered">置中文字</button>
+            <button type="button" class="chip" data-style="blueprint">藍圖標註線</button>
+          </div>
+        </div>
+
+        <!-- 輸出格式 -->
+        <div class="control-block">
+          <span class="control-label">輸出格式</span>
+          <div class="chip-group" id="format-group">
+            <button type="button" class="chip is-active" data-format="png">PNG</button>
+            <button type="button" class="chip" data-format="svg">SVG</button>
+          </div>
+        </div>
+
+        <!-- 尺寸讀數 -->
+        <dl class="readout">
+          <div class="readout-row">
+            <dt>輸出尺寸</dt>
+            <dd id="readout-dim">1080 × 1080 px</dd>
+          </div>
+        </dl>
+
+        <!-- 動作 -->
+        <div class="control-actions">
+          <button class="btn btn-accent" id="download-btn" type="button">下載 PNG</button>
+          <button class="btn" id="copy-svg-btn" type="button" hidden>複製 SVG 原始碼</button>
+        </div>
+        <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+      </section>
+
+      <!-- 右：預覽 -->
+      <section class="stage-wrap" aria-label="佔位圖預覽">
+        <div class="pi-stage">
+          <canvas id="preview-canvas" width="1080" height="1080"></canvas>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202607131927"></script>
+</body>
+</html>
