@@ -3,7 +3,7 @@
 // 附四種色盲模擬。零相依：對比與色彩換算全部自寫，
 // 維持 CSP script-src 'self'
 // ============================================================
-import { track } from '../../shared/scripts/shared.js?v=202607172223';
+import { track } from '../../shared/scripts/shared.js?v=202607172333';
 
 // — DOM —
 const fgPicker = document.getElementById('fg-picker');

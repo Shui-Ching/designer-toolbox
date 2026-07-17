@@ -12,8 +12,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202607172223">
-  <link rel="stylesheet" href="./style.css?v=202607172223">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202607172333">
+  <link rel="stylesheet" href="./style.css?v=202607172333">
 
   <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
@@ -32,7 +32,7 @@
     </div>
 
     <p class="tool-intro">
-      Unix timestamp（<span class="tag">秒</span><span class="tag">毫秒</span>）與日期時間雙向即時互轉，可切換時區；下方另提供目前時間戳速查。全程在瀏覽器端運算，不上傳任何資料。
+      Unix timestamp（<span class="tag">秒</span><span class="tag">毫秒</span>）與日期時間雙向即時互轉，可切換時區；也能直接貼上 <span class="tag">Jul 30, 2026 8:00 AM SGT</span> 這類日期文字，換算成本機時間。全程在瀏覽器端運算，不上傳任何資料。
     </p>
 
     <section class="converter" aria-label="時間戳轉換">
@@ -51,17 +51,16 @@
       <div class="section-rule"><span class="tag">目前時間戳</span></div>
       <div class="unit-list" id="now-list"></div>
 
-      <!-- Timestamp → 日期時間 -->
-      <div class="section-rule"><span class="tag">Timestamp → 日期時間</span></div>
+      <!-- Timestamp / 日期文字 → 日期時間 -->
+      <div class="section-rule"><span class="tag">Timestamp / 日期文字 → 日期時間</span></div>
       <div class="ts-input-row">
         <input
           type="text"
           id="ts-input"
           class="unit-input ts-main-input"
-          inputmode="numeric"
           autocomplete="off"
           spellcheck="false"
-          placeholder="輸入 Unix timestamp，例如 1751000000">
+          placeholder="輸入 Unix timestamp，或貼上 Jul 30, 2026 8:00 AM SGT">
         <button type="button" class="btn" id="ts-now-btn">填入現在</button>
       </div>
       <div class="unit-tabs ts-unit-toggle" id="ts-unit-toggle" role="tablist" aria-label="時間戳單位">
@@ -69,6 +68,7 @@
         <button class="unit-tab" type="button" role="tab" data-unit="s" aria-selected="false">秒</button>
         <button class="unit-tab" type="button" role="tab" data-unit="ms" aria-selected="false">毫秒</button>
       </div>
+      <p class="parse-hint" id="parse-hint" aria-live="polite"></p>
       <div class="unit-list" id="ts-to-date-list"></div>
 
       <!-- 日期時間 → Timestamp -->
@@ -81,7 +81,7 @@
       <div class="unit-list" id="date-to-ts-list"></div>
 
       <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
-      <p class="unit-note">時區只影響「日期時間」的顯示與解讀方式，timestamp 本身永遠是 UTC 起算的絕對時刻；跨日期時區換算可能造成日期落在前一天或後一天，屬正常現象。</p>
+      <p class="unit-note">時區只影響「日期時間」的顯示與解讀方式，timestamp 本身永遠是 UTC 起算的絕對時刻；跨日期時區換算可能造成日期落在前一天或後一天，屬正常現象。日期文字裡的時區縮寫（SGT、PST、JST…）依固定偏移解讀；CST 採中國標準時間 UTC+8，美國中部來源請改用 CDT 或 UTC-6。</p>
 
     </section>
   </main>
@@ -89,6 +89,6 @@
   <!-- 頁尾 -->
   <footer class="container site-foot"></footer>
 
-  <script type="module" src="./script.js?v=202607172223"></script>
+  <script type="module" src="./script.js?v=202607172333"></script>
 </body>
 </html>

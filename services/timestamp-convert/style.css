@@ -56,7 +56,18 @@
 }
 
 .ts-unit-toggle {
-  margin-bottom: 24px;
+  margin-bottom: 8px;
+}
+
+.parse-hint {
+  min-height: 1.4em;
+  margin: 0 0 16px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+}
+.parse-hint.is-error {
+  color: #d8442a;
 }
 
 .date-input-row {

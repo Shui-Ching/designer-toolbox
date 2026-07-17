@@ -3,7 +3,7 @@
 // 自寫 CSV/TSV 解析器（處理引號跳脫、跨行欄位），零相依，全程瀏覽器端
 // 分隔符號可自動偵測或手動指定；首列可選作標題列或視為純資料
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202607172223';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202607172333';
 
 const SAMPLE = '姓名,部門,備註\n王小明,設計,"擅長 UI, UX"\n陳美麗,工程,"負責前端，含 CSS／SCSS"\n李大同,行銷,';
 

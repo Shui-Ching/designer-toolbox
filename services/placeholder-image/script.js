@@ -1,8 +1,8 @@
 // ============================================================
 // 44 佔位圖產生器 — 畫面互動：狀態 → render.js 純運算 → canvas 預覽／PNG／SVG 輸出
 // ============================================================
-import { downloadBlob, copyText, track } from '../../shared/scripts/shared.js?v=202607172223';
-import { buildSpec, buildSvgString, drawToCanvas, hexToRgb } from './render.js?v=202607172223';
+import { downloadBlob, copyText, track } from '../../shared/scripts/shared.js?v=202607172333';
+import { buildSpec, buildSvgString, drawToCanvas, hexToRgb } from './render.js?v=202607172333';
 
 const $ = (id) => document.getElementById(id);
 

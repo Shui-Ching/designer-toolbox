@@ -251,7 +251,7 @@
 .feedback-ticker-track {
   display: flex;
   width: max-content;
-  animation: ticker 60s linear infinite;
+  animation: ticker 110s linear infinite;
 
   // 滑入或鍵盤聚焦時暫停，方便閱讀
   .feedback-ticker:hover &,

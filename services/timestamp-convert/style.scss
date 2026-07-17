@@ -56,7 +56,18 @@
 }
 
 .ts-unit-toggle {
-  margin-bottom: $space-4;
+  margin-bottom: $space-2;
+}
+
+// 日期文字的解讀結果提示（已解讀為哪個時區的幾點／無法解讀）
+.parse-hint {
+  min-height: 1.4em;
+  margin: 0 0 $space-3;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+
+  &.is-error { color: $color-accent; }
 }
 
 // ============================================================

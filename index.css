@@ -259,7 +259,7 @@
 .feedback-ticker-track {
   display: flex;
   width: max-content;
-  animation: ticker 60s linear infinite;
+  animation: ticker 110s linear infinite;
 }
 .feedback-ticker:hover .feedback-ticker-track, .feedback-ticker:focus-within .feedback-ticker-track {
   animation-play-state: paused;

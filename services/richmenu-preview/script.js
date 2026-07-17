@@ -2,8 +2,8 @@
 // 46 LINE Rich Menu 預覽模擬器 — 畫面互動：載入圖片 → spec-check.js 純運算驗證
 // → 分格 overlay 疊圖 → 去識別化聊天室 mockup 展開／收合
 // ============================================================
-import { bindDropzone, downloadBlob, copyText, formatBytes, track } from '../../shared/scripts/shared.js?v=202607172223';
-import { evaluateSpec } from './spec-check.js?v=202607172223';
+import { bindDropzone, downloadBlob, copyText, formatBytes, track } from '../../shared/scripts/shared.js?v=202607172333';
+import { evaluateSpec } from './spec-check.js?v=202607172333';
 
 const $ = (id) => document.getElementById(id);
 

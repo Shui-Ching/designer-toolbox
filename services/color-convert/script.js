@@ -3,7 +3,7 @@
 // 零相依：所有色彩換算（含 OKLCH 的 sRGB↔OKLab 矩陣）全部自寫，
 // 維持 CSP script-src 'self'
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202607172223';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202607172333';
 
 // — DOM —
 const picker = document.getElementById('picker');

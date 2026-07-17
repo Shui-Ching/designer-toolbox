@@ -1,7 +1,7 @@
 // ============================================================
 // 17 決策轉盤 — Canvas 轉盤 + 選項管理
 // ============================================================
-import { track, escapeHtml } from '../../shared/scripts/shared.js?v=202607172223';
+import { track, escapeHtml } from '../../shared/scripts/shared.js?v=202607172333';
 
 // 預設選項
 const DRINKS_PRESET = ['50嵐', '清心良品', '一芳水果茶', 'CoCo都可', '茶湯會', '迷客夏', '大苑子', '日出茶太'];
