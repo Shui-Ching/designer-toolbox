@@ -2,7 +2,7 @@
 // 09 調色盤產生器 — 由單一主色推導色階與調和色
 // 零相依：色彩換算（hex ↔ rgb ↔ hsl）全部自寫，維持 CSP script-src 'self'
 // ============================================================
-import { downloadBlob, copyText, track } from '../../shared/scripts/shared.js?v=202607141111';
+import { downloadBlob, copyText, track } from '../../shared/scripts/shared.js?v=202607172223';
 
 // — DOM —
 const baseInput = document.getElementById('base-input');

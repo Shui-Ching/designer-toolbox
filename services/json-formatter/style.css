@@ -41,6 +41,13 @@
   gap: 8px;
 }
 
+.editor-toolbar-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
 .editor-toolbar-label {
   font-family: "Inter", "Noto Sans TC", sans-serif;
   font-size: 1rem;
@@ -55,30 +62,88 @@
   gap: 8px;
 }
 
-.text-area {
+.editor-host {
   width: 100%;
-  min-height: 460px;
-  padding: 24px;
-  font-family: "Inter", "Noto Sans TC", sans-serif;
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #1c1b18;
   background: #f4f1e8;
   border: 1.5px solid #1c1b18;
   border-radius: 2px;
   box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
-  resize: vertical;
-  white-space: pre;
-  overflow-wrap: normal;
-  overflow-x: auto;
+  overflow: hidden;
   transition: border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
-.text-area::placeholder {
+.editor-host:focus-within {
+  border-color: #d8442a;
+}
+
+.editor-host .cm-editor {
+  max-height: 75vh;
+}
+.editor-host .cm-editor.cm-focused {
+  outline: none;
+}
+.editor-host .cm-scroller {
+  min-height: 460px;
+  overflow: auto;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #1c1b18;
+}
+.editor-host .cm-content {
+  padding: 16px 0;
+}
+.editor-host .cm-line {
+  padding-inline: 16px;
+}
+.editor-host .cm-placeholder {
   color: #6b665b;
 }
-.text-area:focus {
-  outline: none;
+.editor-host .cm-cursor {
+  border-left-color: #1c1b18;
+}
+.editor-host .cm-selectionBackground, .editor-host.cm-focused .cm-selectionBackground,
+.editor-host .cm-content ::selection {
+  background: rgba(224, 169, 46, 0.35);
+}
+.editor-host .cm-gutters {
+  background: #ece7d9;
+  color: #6b665b;
+  border-right: 1px solid #d9d3c3;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+}
+.editor-host .cm-activeLine {
+  background: rgba(28, 27, 24, 0.04);
+}
+.editor-host .cm-activeLineGutter {
+  background: rgba(28, 27, 24, 0.06);
+}
+.editor-host .cm-foldGutter .cm-gutterElement {
+  padding-inline: 4px;
+  cursor: pointer;
+  transition: color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.editor-host .cm-foldGutter .cm-gutterElement:hover {
+  color: #d8442a;
+}
+.editor-host .cm-foldPlaceholder {
+  margin-inline: 4px;
+  padding: 0 8px;
+  font-size: inherit;
+  color: #6b665b;
+  background: transparent;
+  border: 1px dashed #d9d3c3;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.editor-host .cm-foldPlaceholder:hover {
+  color: #d8442a;
   border-color: #d8442a;
+}
+.editor-host .cm-matchingBracket {
+  background: rgba(224, 169, 46, 0.25);
+  outline: 1px solid rgba(28, 27, 24, 0.2);
 }
 
 .copy-hint {
@@ -234,7 +299,7 @@
   .json-pane {
     position: static;
   }
-  .text-area {
+  .editor-host .cm-scroller {
     min-height: 320px;
   }
 }

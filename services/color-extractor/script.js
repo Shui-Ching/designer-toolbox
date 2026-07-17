@@ -2,7 +2,7 @@
 // 30 圖片萃取調色盤 — k-means++ 萃取圖片主色，零相依
 // 全程瀏覽器端，圖片不上傳；維持 CSP script-src 'self'
 // ============================================================
-import { bindDropzone, copyText, track } from '../../shared/scripts/shared.js?v=202607141111';
+import { bindDropzone, copyText, track } from '../../shared/scripts/shared.js?v=202607172223';
 
 // ── DOM ──────────────────────────────────────────────────────
 const dropzone        = document.getElementById('dropzone');

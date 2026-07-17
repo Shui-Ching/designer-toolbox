@@ -1,7 +1,8 @@
 // ============================================================
 // 38 JSON 格式化／校驗 — 工具特有樣式
 // 共用元件（tool-head / btn / tag / section-rule / site-foot）直接套 class，
-// editor-pane / text-area / stat-grid 語彙沿用 pangu、word-count 既有慣例
+// editor-pane / stat-grid 語彙沿用 pangu、word-count 既有慣例；
+// 編輯區為 CodeMirror 6，主題化在 .editor-host 底下覆寫 .cm-* class
 // ============================================================
 @use '../../shared/styles/tokens' as *;
 
@@ -38,6 +39,13 @@
   gap: $space-2;
 }
 
+.editor-toolbar-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-3;
+}
+
 .editor-toolbar-label {
   font-family: $font-mono;
   font-size: $fs-xs;
@@ -52,30 +60,90 @@
   gap: $space-2;
 }
 
-// — JSON 輸入框（等寬字體） —
-.text-area {
+// — JSON 編輯器（CodeMirror 6，本機 vendor）：外框沿用輸入框語彙 —
+.editor-host {
   width: 100%;
-  min-height: 460px;
-  padding: $space-4;
-  font-family: $font-mono;
-  font-size: $fs-base;
-  line-height: 1.7;
-  color: $color-ink;
   background: $color-paper;
   border: $border-ink;
   border-radius: $radius;
   box-shadow: 6px 6px 0 rgba(28, 27, 24, 0.12);
-  resize: vertical;
-  white-space: pre;
-  overflow-wrap: normal;
-  overflow-x: auto;
+  overflow: hidden;
   transition: border-color $dur $ease;
 
-  &::placeholder { color: $color-ink-soft; }
+  &:focus-within { border-color: $color-accent; }
+}
 
-  &:focus {
-    outline: none;
-    border-color: $color-accent;
+// CodeMirror 主題：手冊風的墨色層次＋單一硃紅（語法著色在 script.js 的 HighlightStyle）
+.editor-host {
+  .cm-editor {
+    max-height: 75vh;
+    &.cm-focused { outline: none; }
+  }
+
+  .cm-scroller {
+    min-height: 460px;
+    overflow: auto;
+    font-family: $font-mono;
+    font-size: $fs-base;
+    line-height: 1.7;
+    color: $color-ink;
+  }
+
+  .cm-content { padding: $space-3 0; }
+  .cm-line { padding-inline: $space-3; }
+
+  .cm-placeholder { color: $color-ink-soft; }
+  .cm-cursor { border-left-color: $color-ink; }
+
+  // 選取底色：芥黃標記感（drawSelection 繪製）
+  .cm-selectionBackground,
+  &.cm-focused .cm-selectionBackground,
+  .cm-content ::selection {
+    background: rgba($color-mark, 0.35);
+  }
+
+  // 行號與摺疊 gutter
+  .cm-gutters {
+    background: $color-paper-deep;
+    color: $color-ink-soft;
+    border-right: $border-fine;
+    font-family: $font-mono;
+    font-size: $fs-xs;
+  }
+
+  .cm-activeLine { background: rgba(28, 27, 24, 0.04); }
+  .cm-activeLineGutter { background: rgba(28, 27, 24, 0.06); }
+
+  .cm-foldGutter .cm-gutterElement {
+    padding-inline: $space-1;
+    cursor: pointer;
+    transition: color $dur $ease;
+
+    &:hover { color: $color-accent; }
+  }
+
+  // 摺疊後的佔位符：點擊可展開
+  .cm-foldPlaceholder {
+    margin-inline: $space-1;
+    padding: 0 $space-2;
+    font-size: inherit;
+    color: $color-ink-soft;
+    background: transparent;
+    border: 1px dashed $color-line;
+    border-radius: $radius;
+    cursor: pointer;
+    transition: color $dur $ease, border-color $dur $ease;
+
+    &:hover {
+      color: $color-accent;
+      border-color: $color-accent;
+    }
+  }
+
+  // 括號配對提示
+  .cm-matchingBracket {
+    background: rgba($color-mark, 0.25);
+    outline: 1px solid rgba(28, 27, 24, 0.2);
   }
 }
 
@@ -244,7 +312,7 @@
     position: static;
   }
 
-  .text-area {
+  .editor-host .cm-scroller {
     min-height: 320px;
   }
 }

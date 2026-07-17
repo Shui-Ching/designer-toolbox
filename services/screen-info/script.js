@@ -5,7 +5,7 @@
 // Bootstrap 5 預設值，直接內建常數（此頁定位是「隨開即用的診斷頁」，
 // 不因額外 fetch 而在 file:// 或離線時失效）。
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202607141111';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202607172223';
 
 const valResolution = document.getElementById('val-resolution');
 const valWindow = document.getElementById('val-window');

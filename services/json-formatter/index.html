@@ -12,8 +12,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202607141111">
-  <link rel="stylesheet" href="./style.css?v=202607141111">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202607172223">
+  <link rel="stylesheet" href="./style.css?v=202607172223">
 
   <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
@@ -32,7 +32,7 @@
     </div>
 
     <p class="tool-intro">
-      貼上 JSON 即自動排版，即時校驗語法並定位錯誤位置（第幾行第幾欄）；也可切換縮排寬度或一鍵壓縮成單行。純字串處理，全程在瀏覽器端運算，內容不上傳。
+      貼上 JSON 即自動排版，即時校驗語法並定位錯誤位置（第幾行第幾欄）；點行號旁的箭頭可摺疊物件／陣列，摺疊的同時照樣編輯；也可切換縮排寬度或一鍵壓縮成單行。全程在瀏覽器端運算，內容不上傳。
     </p>
 
     <div class="json-layout">
@@ -40,19 +40,18 @@
       <!-- 左：輸入／輸出區（原地編輯） -->
       <section class="editor-pane" aria-label="JSON 輸入">
         <div class="editor-toolbar">
-          <span class="editor-toolbar-label" id="live-count">0 字元</span>
+          <div class="editor-toolbar-info">
+            <span class="editor-toolbar-label" id="live-count">0 字元</span>
+          </div>
           <div class="editor-toolbar-actions">
+            <button class="btn" id="expand-all-btn" type="button">全部展開</button>
+            <button class="btn" id="collapse-all-btn" type="button">全部收合</button>
             <button class="btn" id="sample-btn" type="button">載入範例</button>
             <button class="btn" id="copy-btn" type="button">複製內容</button>
             <button class="btn" id="clear-btn" type="button">清空</button>
           </div>
         </div>
-        <textarea
-          id="text-input"
-          class="text-area"
-          placeholder="在這裡貼上或輸入 JSON…"
-          spellcheck="false"
-          aria-label="JSON 輸入區"></textarea>
+        <div class="editor-host" id="editor-host" aria-label="JSON 輸入區（可摺疊編輯器）"></div>
         <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
       </section>
 
@@ -101,6 +100,6 @@
   <!-- 頁尾 -->
   <footer class="container site-foot"></footer>
 
-  <script type="module" src="./script.js?v=202607141111"></script>
+  <script type="module" src="./script.js?v=202607172223"></script>
 </body>
 </html>
