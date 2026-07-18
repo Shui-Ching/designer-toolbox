@@ -2,7 +2,7 @@
 // 05 Grid / Flex 模擬器 — 互動邏輯
 // 調整容器屬性 → 即時套用到預覽舞台 → 同步產生 CSS
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202607172333';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202607181201';
 
 // — 控制項結構：每個模式有哪些可調屬性與選項 —
 // type 'seg' = 分段按鈕（列舉值）；type 'range' = 滑桿（數值）

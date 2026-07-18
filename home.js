@@ -58,6 +58,7 @@ const TOOL_POPULARITY = {
   'services/placeholder-image/index.html': 0,
   'services/screen-info/index.html': 0,
   'services/richmenu-preview/index.html': 0,
+  'services/clip-path/index.html': 0,
 };
 
 (function () {

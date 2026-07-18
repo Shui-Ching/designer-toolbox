@@ -16,8 +16,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="shared/styles/shared.css?v=202607172333">
-  <link rel="stylesheet" href="index.css?v=202607172333">
+  <link rel="stylesheet" href="shared/styles/shared.css?v=202607181201">
+  <link rel="stylesheet" href="index.css?v=202607181201">
 
   <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
@@ -248,7 +248,7 @@
           </select>
         </label>
 
-        <span class="index-count" id="tool-count">46 項工具</span>
+        <span class="index-count" id="tool-count">47 項工具</span>
       </div>
 
       <!-- 分類篩選：依領域切換工具，與搜尋列為交集篩選 -->
@@ -864,6 +864,19 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
+        <a class="tool-card" href="services/clip-path/index.html" data-category="css" data-keywords="clip-path clip path polygon 多邊形 裁切 路徑 形狀 shape 遮罩 mask 三角形 箭頭 星形 對話框 css 產生器 generator">
+          <div class="tool-card-top">
+            <span class="tool-card-no">47</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">CSS clip-path 產生器</h2>
+            <span class="tool-card-en">Clip-path Generator</span>
+          </div>
+          <p class="tool-card-desc">拖曳多邊形頂點調出裁切形狀，內建三角、箭頭、星形、對話框等預設，即時預覽並複製 polygon() 程式碼。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
       </nav>
 
       <!-- 搜尋無結果時的空狀態 -->
@@ -880,8 +893,8 @@
   <button class="go-top" id="go-top" aria-label="回到頂端">↑</button>
 
   <!-- 共用 JS：掛載頁尾（ES Module，符合 CSP script-src 'self'） -->
-  <script type="module" src="./shared/scripts/shared.js?v=202607172333"></script>
+  <script type="module" src="./shared/scripts/shared.js?v=202607181201"></script>
   <!-- 首頁工具搜尋（外部檔，符合 CSP script-src 'self'） -->
-  <script defer src="home.js?v=202607172333"></script>
+  <script defer src="home.js?v=202607181201"></script>
 </body>
 </html>

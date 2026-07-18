@@ -1,0 +1,330 @@
+:root {
+  --color-paper: #f4f1e8;
+  --color-paper-deep: #ece7d9;
+  --color-ink: #1c1b18;
+  --color-ink-soft: #6b665b;
+  --color-line: #d9d3c3;
+  --color-accent: #d8442a;
+  --color-accent-deep: #b0331d;
+  --color-mark: #e0a92e;
+  --font-display: Inter, Noto Sans TC, sans-serif;
+  --font-body: Inter, Noto Sans TC, sans-serif;
+  --font-mono: Inter, Noto Sans TC, sans-serif;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.tool-intro {
+  max-width: 64ch;
+  margin-block: 24px 40px;
+  color: #6b665b;
+}
+
+.clip-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  background: #ece7d9;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  position: sticky;
+  top: 24px;
+}
+
+.control-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.control-label {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b665b;
+}
+
+.control-label-value {
+  font-variant-numeric: tabular-nums;
+  color: #1c1b18;
+  text-transform: none;
+}
+
+.control-section {
+  padding-top: 24px;
+  border-top: 1px solid #d9d3c3;
+}
+
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.chip {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  padding: 4px 16px;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  color: #6b665b;
+  background: #f4f1e8;
+  cursor: pointer;
+  transition: color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), background-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.chip:hover {
+  color: #1c1b18;
+  border-color: #1c1b18;
+}
+.chip.is-active {
+  color: #f4f1e8;
+  background: #d8442a;
+  border-color: #d8442a;
+}
+
+.point-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.point-row {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) minmax(0, 1fr) 28px;
+  align-items: center;
+  gap: 8px;
+}
+
+.point-no {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+  color: #6b665b;
+  text-align: right;
+}
+
+.text-input {
+  width: 100%;
+  min-width: 0;
+  padding: 4px 8px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  color: #1c1b18;
+  background: #f4f1e8;
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+  transition: border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.text-input:focus {
+  outline: none;
+  border-color: #d8442a;
+}
+.text-input.is-invalid {
+  border-color: #d8442a;
+}
+
+.point-del {
+  width: 28px;
+  height: 28px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  line-height: 1;
+  color: #6b665b;
+  background: #f4f1e8;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.point-del:hover:not(:disabled) {
+  color: #d8442a;
+  border-color: #d8442a;
+}
+.point-del:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.point-hint {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #6b665b;
+}
+
+.output {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.output .section-rule {
+  margin-top: 40px;
+}
+
+.stage-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.stage-hint {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+}
+
+.stage-frame {
+  padding: 24px;
+  background: #f4f1e8;
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+}
+
+.stage {
+  position: relative;
+  max-width: 480px;
+  margin: 0 auto;
+  aspect-ratio: 1/1;
+}
+
+.clip-ghost,
+.clip-demo {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(45deg, rgba(244, 241, 232, 0.14) 0 2px, transparent 2px 12px), radial-gradient(circle at 72% 24%, rgba(224, 169, 46, 0.55), transparent 55%), linear-gradient(135deg, #d8442a, #b0331d);
+}
+
+.clip-ghost {
+  opacity: 0.16;
+}
+
+.stage-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.clip-outline {
+  fill: none;
+  stroke: #1c1b18;
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+}
+
+.handle-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.vertex-handle {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #f4f1e8;
+  border: 2.5px solid #d8442a;
+  cursor: grab;
+  touch-action: none;
+}
+.vertex-handle:hover {
+  background: #d8442a;
+}
+.vertex-handle:focus-visible {
+  outline: 2px solid #1c1b18;
+  outline-offset: 2px;
+}
+.vertex-handle.is-active {
+  background: #d8442a;
+  cursor: grabbing;
+}
+
+.vertex-add {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 12px;
+  line-height: 1;
+  color: #6b665b;
+  background: #f4f1e8;
+  border: 1px dashed #6b665b;
+  cursor: copy;
+  opacity: 0.5;
+  transition: opacity 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.vertex-add:hover {
+  opacity: 1;
+  color: #d8442a;
+  border-color: #d8442a;
+}
+
+.code-wrap {
+  position: relative;
+}
+
+.code-block {
+  margin: 0;
+  padding: 24px;
+  padding-right: 96px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #1c1b18;
+  background: #ece7d9;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.code-copy {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: 8px 0 0;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #d8442a;
+}
+
+@media (max-width: 860px) {
+  .clip-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .controls {
+    position: static;
+    top: auto;
+  }
+}

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>CSS clip-path 產生器 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202607181201">
+  <link rel="stylesheet" href="./style.css?v=202607181201">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="clip-path">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 47</span>
+        <h1 class="tool-head-title">CSS clip-path 產生器</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      拖曳多邊形頂點調出裁切形狀，即時預覽裁切結果，一鍵複製可直接貼用的
+      <span class="tag">clip-path: polygon()</span>。內建三角、箭頭、星形、對話框等常用形狀，全程在瀏覽器端運算。
+    </p>
+
+    <div class="clip-layout">
+
+      <!-- 左：控制台 -->
+      <section class="controls" aria-label="形狀控制">
+
+        <!-- 預設形狀 -->
+        <div class="control-block">
+          <span class="control-label">預設形狀 · presets</span>
+          <div class="chip-group" id="preset-group">
+            <button class="chip" type="button" data-preset="triangle">三角形</button>
+            <button class="chip" type="button" data-preset="trapezoid">梯形</button>
+            <button class="chip" type="button" data-preset="parallelogram">平行四邊形</button>
+            <button class="chip" type="button" data-preset="rhombus">菱形</button>
+            <button class="chip" type="button" data-preset="pentagon">五邊形</button>
+            <button class="chip" type="button" data-preset="hexagon">六邊形</button>
+            <button class="chip" type="button" data-preset="octagon">八邊形</button>
+            <button class="chip" type="button" data-preset="star">星形</button>
+            <button class="chip" type="button" data-preset="arrow-right">右箭頭</button>
+            <button class="chip" type="button" data-preset="arrow-left">左箭頭</button>
+            <button class="chip" type="button" data-preset="chevron">山形箭頭</button>
+            <button class="chip" type="button" data-preset="message">對話框</button>
+          </div>
+        </div>
+
+        <!-- 頂點座標清單（依 state 動態產生） -->
+        <div class="control-block control-section">
+          <span class="control-label">頂點座標 · points
+            <span class="control-label-value"><span id="point-count">3</span> 點</span>
+          </span>
+          <div class="point-list" id="point-list"></div>
+          <p class="point-hint">單位＝%（0–100）。拖曳 ● 移動頂點、點邊線中點 ＋ 插入頂點、雙擊 ● 刪除（至少保留 3 點）；選中頂點可用方向鍵微調（Shift ＝ 大步）。</p>
+        </div>
+
+        <!-- 預覽比例 -->
+        <div class="control-block control-section">
+          <span class="control-label">預覽比例 · aspect</span>
+          <div class="chip-group" id="aspect-group">
+            <button class="chip is-active" type="button" data-aspect="1 / 1">1:1</button>
+            <button class="chip" type="button" data-aspect="4 / 3">4:3</button>
+            <button class="chip" type="button" data-aspect="16 / 9">16:9</button>
+            <button class="chip" type="button" data-aspect="3 / 4">3:4</button>
+          </div>
+          <p class="point-hint">百分比座標會跟著容器比例變形，換比例可先確認形狀在目標容器上的模樣。</p>
+        </div>
+
+      </section>
+
+      <!-- 右：預覽舞台 + 輸出 -->
+      <section class="output" aria-label="預覽與輸出">
+
+        <div class="stage-bar">
+          <span class="tag">Preview</span>
+          <span class="stage-hint">拖曳 ● 頂點；淡色區＝被裁掉的部分</span>
+        </div>
+
+        <div class="stage-frame">
+          <div class="stage" id="stage">
+            <!-- 未裁切的殘影（顯示被裁掉的區域） -->
+            <div class="clip-ghost" aria-hidden="true"></div>
+            <!-- 套用 clip-path 的示範層 -->
+            <div class="clip-demo" id="clip-demo" aria-hidden="true"></div>
+            <!-- 多邊形外框線（viewBox 0–100 直接吃百分比座標，non-scaling-stroke 抵銷比例變形） -->
+            <svg class="stage-overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <polygon class="clip-outline" id="clip-outline" points="" vector-effect="non-scaling-stroke"></polygon>
+            </svg>
+            <!-- 頂點把手與中點插入鈕（依 state 動態產生） -->
+            <div class="handle-layer" id="handle-layer"></div>
+          </div>
+        </div>
+
+        <div class="section-rule"><span class="tag">CSS</span></div>
+        <div class="code-wrap">
+          <pre class="code-block" id="code-out"></pre>
+          <button class="btn btn-accent code-copy" type="button" id="copy-btn">複製</button>
+        </div>
+        <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202607181201"></script>
+</body>
+</html>

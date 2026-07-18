@@ -1,4 +1,4 @@
-import { copyText, track } from '../../shared/scripts/shared.js?v=202607172333';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202607181201';
 
 // ——————————————————————————————————————————
 // 狀態（px 為單位）

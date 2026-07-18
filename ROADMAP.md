@@ -4,6 +4,8 @@
 > 架構決策、設計 token、新增工具標準步驟另存於 project skill（`.claude/skills/designer-toolbox`）。
 > 收工更新方式：改「最後更新」一行＋在工具總覽補一列；實作細節寫進 git commit 與程式碼註解，不要貼進本檔。
 
+最後更新：2026-07-18 — 完成 **47 CSS clip-path 產生器**（拖曳多邊形頂點調裁切形狀，輸出 `clip-path: polygon()`，排程順位 1）。拖曳互動沿用 28 號 cubic-bezier 的 pointer capture 手法，但把手改為 DOM button 以百分比定位（`left`/`top` %），容器比例改變不需重算座標；多邊形外框線用 `viewBox="0 0 100 100"`＋`preserveAspectRatio="none"` 的 SVG polygon 直接吃百分比座標，`vector-effect="non-scaling-stroke"` 抵銷非等比縮放的線寬變形。預覽舞台雙層同底圖：殘影層（opacity 0.16）顯示被裁掉的區域、示範層套 clip-path，底圖以 token 色自繪（硃紅漸層＋芥黃光暈＋斜紋），不用外部圖片。12 組預設形狀（三角／梯形／平行四邊形／菱形／五／六／八邊形／星形／左右箭頭／山形箭頭／對話框）為工具內建常數（資料量小且不重用，比照 41 號不外置 JSON）。頂點操作：清單每列 x/y 數字欄＋刪除鈕、邊線中點 ＋ 鈕插入頂點、雙擊把手刪除（下限 3 點）、方向鍵微調（Shift ±5）；預覽比例 chip（1:1／4:3／16:9／3:4）直接改 `aspect-ratio`，百分比定位的把手不需重算。效能取捨：頂點數量變動時整層 rebuild、拖曳中只 render 更新位置與輸出，避免重建打斷 pointer capture 與輸入焦點。**資安把關**：無使用者自由文字進 DOM（座標一律 `parseFloat`＋clamp 0–100，動態列全用 `createElement`），無新增外部資源，CSP 不需更動。用 playwright-core 驅動系統 Chrome 實測（本機靜態伺服器）38 項全過：初始三角形輸出、預設切換與 chip 高亮、拖曳頂點同步座標欄並取消高亮、拖出舞台 clamp 0–100、座標欄輸入小數／超界 clamp／清空標紅 blur 回填、中點插入座標正確、雙擊刪除與 3 點下限、鍵盤微調、16:9 比例切換、剪貼簿內容與畫面一致、390px 不破版、入口頁卡片計數與搜尋，console 全程無錯誤。
+
 最後更新：2026-07-17（深夜）— **39 時間戳轉換**新增「日期文字貼上解析」：Timestamp 輸入框直接接受 `Jul 30, 2026 8:00 AM SGT` 這類文字（使用者需求：貼上即換算成本機時區時間），**沿用同一輸入框、不加模式切換**（合一介面原則），純數字仍走原本 timestamp 路徑。支援格式：月名開頭（Jul 30, 2026）／日開頭（30 July 2026）／ISO 與 `YYYY-MM-DD HH:MM`、AM/PM（含 a.m. 寫法與 Apple 複製常見的 U+202F 窄空白）、時區可為縮寫查表（SGT、PST…，縮寫本身即固定偏移故直接換算，不查 DST）／`UTC±N`／ISO 偏移／`Z`／IANA 名稱，未標時區則依上方時區選單解讀。**CST 歧義採中國標準時間 UTC+8**（解讀提示會標註，頁尾備註引導美中部改貼 CDT／UTC-6）。輸入框下方新增 `parse-hint` 提示列即時顯示「已解讀：…（來源時區）」或無法解讀的錯誤說明（`aria-live`），建立對解析結果的信任。驗證：解析函式抽到 Node 跑 17 組代表性案例全過（AM/PM 換算、12 AM 跨日、ISO 偏移、窄空白、Feb 30 假日期拒收）；另比照專案慣例用 playwright-core 驅動系統 Chrome 實測（本機靜態伺服器、時區釘在 Asia/Taipei）14 項全過：SGT 文字轉台北時間、純數字 timestamp 原路徑不受影響、PST 跨日換算、未標時區依時區選單解讀且切換時區即時重算、無法解讀的標紅／清空／錯誤提示、注入 `<img onerror>` 不執行、清空重置、「填入現在」原功能正常，console 全程無錯誤。
 
 最後更新：2026-07-17（晚）— **38 JSON 格式化／校驗**編輯區改為 **CodeMirror 6**，「摺疊」與「編輯」合併為同一介面（使用者反饋：不要「編輯 ↔ 折疊檢視」兩種模式分開）——行號 gutter 旁有摺疊箭頭，收合任一物件／陣列後照樣打字編輯，收合處顯示可點擊展開的 `⋯` 佔位符。**依賴決策（使用者拍板）**：textarea 無法原生折疊，兩案並陳（A：CodeMirror 6 vendor 進來；B：零相依唯讀樹加行內編輯）後使用者選 A；比照 pdf-lib／mediabunny 前例將 CodeMirror 以 esbuild 打成單檔 ESM（`vendor/codemirror.esm.min.js`，316KB min／103KB gzip，檔頭註明各套件版本：state@6.7.1 view@6.43.6 language@6.12.4 commands@6.10.4 lang-json@6.0.2 @lezer/highlight@1.2.3），CSP `script-src 'self'` 不需更動、不走 CDN；bundle 只匯出用到的 API（進入點見本段，重建時在任一暫存目錄 `npm i` 上述套件＋esbuild `--bundle --format=esm --minify` 即可）。整合方式：校驗仍走原生 `JSON.parse`（debounce 200ms 的 updateListener），語法著色用 `HighlightStyle` 對映設計 token 的 CSS 變數（鍵名墨黑粗體、字串硃紅深、標點淡墨），縮排 chip 透過 `Compartment` 原地重設 `indentUnit`，貼上自動排版改掛 `domEventHandlers.paste`，錯誤定位改為 dispatch selection＋scrollIntoView（`locateError` 同時支援 V8「(line x column y)」與 position 兩種訊息格式，並由行欄反推字元位置；注意新版 V8 對部分錯誤型態只給文字片段不給位置，此時退回文末定位，屬引擎限制）。舊的唯讀結構樹、view-toggle chip、AUTO_COLLAPSE_NODE_LIMIT 全數移除（大型文件效能改由 CodeMirror 視口渲染承擔，4000 筆物件陣列貼上＋自動排版約 830ms 含解析）。範例 JSON 依使用者要求加入 emoji（🧰🎨🍅⋯），順帶當多位元組字元測項。**資安把關**：新增第三方庫已由使用者明確核可；bundle 為本機打包非下載成品，來源為 npm 官方套件；CodeMirror 以 text node 渲染文件內容，實測注入 `<img onerror>`／`<script>` 鍵值僅純文字呈現不執行、無 DOM 節點生成。用 playwright-core 驅動系統 Chrome 實測（本機靜態伺服器）30 項全過：初始 disabled 狀態、載入範例（含 emoji）、gutter 箭頭收合單節點、**收合狀態下直接編輯（改壞→即時報錯→改好，佔位符不受影響）**、點 `⋯` 展開、全部展開／收合、壓縮＋切 4 空格格式化、錯誤行列號解析與點擊定位選中錯誤字元、貼上合法 JSON 自動排版、XSS 注入、剪貼簿複製一致、4000 筆大型 JSON、窄螢幕 390px 不破版，console 全程無錯誤。
@@ -22,7 +24,7 @@
 
 最後更新：2026-07-13 — 完成 **41 Regex 測試器**（輸入正規表達式與 g/i/m/s 旗標，即時高亮所有匹配並列出擷取群組，附 12 組常用 pattern 速查）。原生 `RegExp`，零相依；沒有 `g` 旗標時比照原生行為只回傳第一筆，避免使用者誤以為工具壞掉。找匹配用 `exec` + `lastIndex` 迴圈，零寬匹配時手動 `lastIndex++` 避免無窮迴圈，並設 2000 筆匹配上限防病態 pattern 撐爆 DOM（無法防 ReDoS 級的災難性回溯，屬原生 regex engine 的固有限制，不在自寫範圍內）。高亮沿用 40 號 text-diff 的 `createElement`＋`textContent` 組 DOM 手法，不經 `innerHTML`。擷取群組同時列出數字群組（`m[1..]`）與具名群組（`m.groups`），未匹配到的群組顯示「（未匹配）」。常用 pattern（Email／URL／IPv4／Hex 色碼／台灣手機／日期／時間／中文字元／HTML 標籤／數字／多餘空白／英數帳號）為工具內建常數，非外部 JSON（資料量小且不重用）。範圍拍板時已確認**不做替換（replace）功能**，先聚焦匹配＋擷取＋速查。用 Playwright 實際跑過瀏覽器驗證：初始空狀態、載入範例自動帶入 Email pattern 並正確高亮、切換 Hex 色碼 pattern、具名群組擷取正確對應、錯誤 pattern 顯示語法錯誤訊息、關閉 g 旗標後只回傳第一筆匹配、複製所有匹配、清空恢復空狀態，console 皆無錯誤。
 
-## 工具總覽（46 個，全數上線）
+## 工具總覽（47 個，全數上線）
 
 | # | 工具（資料夾） | 分類 | 核心做法一句話 |
 |---|---|---|---|
@@ -72,6 +74,7 @@
 | 44 | 佔位圖產生器（`placeholder-image`） | image | 自訂尺寸／底色／文字輸出 PNG/SVG 佔位圖，可套 03 號社群版位尺寸；置中文字／藍圖標註線兩種樣式，字級與線條依短邊等比例縮放，文字色依底色 WCAG 對比自動反黑／反白（複用 27 號算法），零相依 |
 | 45 | 我的螢幕資訊（`screen-info`） | reference | 偵測本機螢幕解析度／視窗大小／DPR／觸控／目前斷點，resize 即時更新＋一鍵複製診斷報告；斷點內建 Bootstrap 5 常數（不 fetch，離線也能用），偵測值只留本機顯示不送 Umami、不進 URL |
 | 46 | LINE Rich Menu 預覽模擬器（`richmenu-preview`） | image | 拖入圖文選單設計稿驗證尺寸／格式／≤1MB（規格存 `richmenu-specs.json`，比照 03 號），疊分格模板 overlay＋自繪去識別化聊天室 mockup 預覽展開／收合；規格判斷抽成零 DOM 的 `spec-check.js`，尺寸與模板皆查證 LINE 官方文件 |
+| 47 | CSS clip-path 產生器（`clip-path`） | css | 拖曳多邊形頂點輸出 `clip-path: polygon()`，12 組預設形狀（三角／箭頭／星形／對話框…），邊中點插入＋雙擊刪除頂點、鍵盤微調，預覽比例 1:1／4:3／16:9／3:4 可切；把手百分比定位＋SVG non-scaling-stroke 外框，零相依 |
 
 共同約定：全部零後端、檔案不上傳；除 02（opentype.js CDN＋SRI）與 20（本機 vendor）外零相依，維持 CSP `script-src 'self'`。
 
@@ -120,23 +123,22 @@ Umami（`cloud.umami.is`，cookieless）＋各頁嚴格 CSP meta 已全站套用
 
 ## 排入排程（已拍板，待實作）
 
-2026-07-13 拍板，依下表順序開發；正式工具編號於上線時連續分配（Regex 測試器已於 41 號、CSV ↔ Markdown/JSON 表格轉換已於 42 號、字型檔預覽器已於 43 號、佔位圖產生器已於 44 號、我的螢幕資訊已於 45 號、LINE Rich Menu 預覽模擬器已於 46 號上線，見上方工具總覽）。
+2026-07-13 拍板，依下表順序開發；正式工具編號於上線時連續分配（Regex 測試器已於 41 號、CSV ↔ Markdown/JSON 表格轉換已於 42 號、字型檔預覽器已於 43 號、佔位圖產生器已於 44 號、我的螢幕資訊已於 45 號、LINE Rich Menu 預覽模擬器已於 46 號、CSS clip-path 產生器已於 47 號上線，見上方工具總覽）。
 
 | 順序 | 工具（資料夾） | 分類 | 方向 |
 |---|---|---|---|
-| 1 | CSS clip-path 產生器（`clip-path`） | css | 多邊形拖曳控制點＋預設形狀（三角、箭頭、對話框），輸出 `clip-path`；拖曳互動沿用 28 號 cubic-bezier |
-| 2 | SVG Blob／波浪產生器（`blob-generator`） | assets | 隨機有機形狀＋波浪分隔線，調複雜度與隨機種子，輸出 SVG；貝茲曲線數學自寫 |
-| 3 | 噪點／紋理產生器（`noise-texture`） | assets | grain、dot grid、格線紋理，輸出可平鋪 PNG/SVG；Canvas＋`crypto.getRandomValues` |
-| 4 | EXIF 檢視與移除（`exif-viewer`） | image | 拖入照片看 EXIF（GPS、機型），一鍵去除後下載；自寫 EXIF parser（JPEG APP1 段），去除走 01 號 Canvas 重編碼管線 |
-| 5 | 九宮格切圖（`grid-splitter`） | image | 長圖或方圖切成 IG 九宮格／輪播分頁，ZIP 打包下載；Canvas 切片＋沿用 07 號 favicon 的手寫 ZIP 容器 |
-| 6 | 裝置外框截圖（`device-mockup`） | image | 截圖套進手機／瀏覽器外框輸出提案用 mockup；外框 SVG 自繪＋Canvas 合成，與 04 號 device-size 資料互通 |
-| 7 | 日期計算器（`date-calc`） | reference | 日期差、加減天數、倒數日；原生 `Date`＋`Intl`，沿用 39 號 timestamp 版面 |
-| 8 | PPI 計算器（`ppi-calc`） | reference | 解析度＋螢幕吋數 → PPI／設備像素比速查；純算式 |
-| 9 | 亂數密碼／字串產生器（`password-generator`） | assets | 長度、字元集、排除易混淆字元；複用 34 號抽籤器的 `crypto` 拒絕採樣 |
-| 10 | 倒數計時器／碼表（`countdown-timer`） | focus | 通用倒數＋碼表，補 focus 類缺口；沿用 21 號 pomodoro 的 SVG 環＋Web Audio |
-| 11 | Emoji 查找複製（`emoji-picker`） | reference | 分類＋中英關鍵字搜尋，點卡複製；複製 37 號 special-chars 架構，只換 JSON 資料 |
-| 12 | 繁簡轉換（`zh-convert`） | text | 繁↔簡＋台灣／中國用語提示；需準備對照 JSON，零相依 |
-| 13 | Mermaid 流程圖預覽器（`mermaid-preview`） | text | 貼 Mermaid 語法即時預覽＋匯出 SVG/PNG；**需本機 vendor mermaid.js（約 2–3MB）**，實作前先確認版本與 CSP 影響（先例：20 號 pdf-compress） |
+| 1 | SVG Blob／波浪產生器（`blob-generator`） | assets | 隨機有機形狀＋波浪分隔線，調複雜度與隨機種子，輸出 SVG；貝茲曲線數學自寫 |
+| 2 | 噪點／紋理產生器（`noise-texture`） | assets | grain、dot grid、格線紋理，輸出可平鋪 PNG/SVG；Canvas＋`crypto.getRandomValues` |
+| 3 | EXIF 檢視與移除（`exif-viewer`） | image | 拖入照片看 EXIF（GPS、機型），一鍵去除後下載；自寫 EXIF parser（JPEG APP1 段），去除走 01 號 Canvas 重編碼管線 |
+| 4 | 九宮格切圖（`grid-splitter`） | image | 長圖或方圖切成 IG 九宮格／輪播分頁，ZIP 打包下載；Canvas 切片＋沿用 07 號 favicon 的手寫 ZIP 容器 |
+| 5 | 裝置外框截圖（`device-mockup`） | image | 截圖套進手機／瀏覽器外框輸出提案用 mockup；外框 SVG 自繪＋Canvas 合成，與 04 號 device-size 資料互通 |
+| 6 | 日期計算器（`date-calc`） | reference | 日期差、加減天數、倒數日；原生 `Date`＋`Intl`，沿用 39 號 timestamp 版面 |
+| 7 | PPI 計算器（`ppi-calc`） | reference | 解析度＋螢幕吋數 → PPI／設備像素比速查；純算式 |
+| 8 | 亂數密碼／字串產生器（`password-generator`） | assets | 長度、字元集、排除易混淆字元；複用 34 號抽籤器的 `crypto` 拒絕採樣 |
+| 9 | 倒數計時器／碼表（`countdown-timer`） | focus | 通用倒數＋碼表，補 focus 類缺口；沿用 21 號 pomodoro 的 SVG 環＋Web Audio |
+| 10 | Emoji 查找複製（`emoji-picker`） | reference | 分類＋中英關鍵字搜尋，點卡複製；複製 37 號 special-chars 架構，只換 JSON 資料 |
+| 11 | 繁簡轉換（`zh-convert`） | text | 繁↔簡＋台灣／中國用語提示；需準備對照 JSON，零相依 |
+| 12 | Mermaid 流程圖預覽器（`mermaid-preview`） | text | 貼 Mermaid 語法即時預覽＋匯出 SVG/PNG；**需本機 vendor mermaid.js（約 2–3MB）**，實作前先確認版本與 CSP 影響（先例：20 號 pdf-compress） |
 
 ## 後續可選（未做，留待提出）
 

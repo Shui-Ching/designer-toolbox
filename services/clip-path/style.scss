@@ -1,0 +1,337 @@
+// ============================================================
+// 47 CSS clip-path 產生器 — 工具特有樣式
+// 共用元件（tool-head / btn / tag / section-rule）直接套 class
+// 控制台 .controls / .control-block / .chip 沿用 28 cubic-bezier 語彙
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+}
+
+// — 版面：左控制台、右舞台；窄螢幕改上下堆疊 —
+.clip-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+  gap: $space-5;
+  align-items: start;
+}
+
+// ============================================================
+// 左側控制台
+// ============================================================
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  padding: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+  position: sticky;
+  top: $space-4;
+}
+
+.control-block {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.control-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.control-label-value {
+  font-variant-numeric: tabular-nums;
+  color: $color-ink;
+  text-transform: none;
+}
+
+.control-section {
+  padding-top: $space-4;
+  border-top: $border-fine;
+}
+
+// — chip 群（沿用 28 cubic-bezier）—
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-2;
+}
+
+.chip {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  padding: $space-1 $space-3;
+  border: $border-fine;
+  border-radius: $radius;
+  color: $color-ink-soft;
+  background: $color-paper;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease, background-color $dur $ease;
+
+  &:hover {
+    color: $color-ink;
+    border-color: $color-ink;
+  }
+
+  &.is-active {
+    color: $color-paper;
+    background: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// — 頂點座標清單 —
+.point-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  // 頂點多（如星形 10 點）時清單內自捲，控制台不無限拉長
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.point-row {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) minmax(0, 1fr) 28px;
+  align-items: center;
+  gap: $space-2;
+}
+
+.point-no {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  font-variant-numeric: tabular-nums;
+  color: $color-ink-soft;
+  text-align: right;
+}
+
+.text-input {
+  width: 100%;
+  min-width: 0;
+  padding: $space-1 $space-2;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  color: $color-ink;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+  transition: border-color $dur $ease;
+
+  &:focus { outline: none; border-color: $color-accent; }
+  &.is-invalid { border-color: $color-accent; }
+}
+
+.point-del {
+  width: 28px;
+  height: 28px;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  line-height: 1;
+  color: $color-ink-soft;
+  background: $color-paper;
+  border: $border-fine;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: color $dur $ease, border-color $dur $ease;
+
+  &:hover:not(:disabled) {
+    color: $color-accent;
+    border-color: $color-accent;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}
+
+.point-hint {
+  margin: 0;
+  font-size: $fs-xs;
+  line-height: 1.6;
+  color: $color-ink-soft;
+}
+
+// ============================================================
+// 右側：預覽舞台 + 輸出
+// ============================================================
+.output {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+
+  .section-rule { margin-top: $space-5; }
+}
+
+.stage-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $space-2;
+  margin-bottom: $space-2;
+}
+
+.stage-hint {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+.stage-frame {
+  padding: $space-4;
+  background: $color-paper;
+  border: $border-ink;
+  border-radius: $radius;
+}
+
+// 舞台：把手以百分比定位，比例改變不需重算座標
+.stage {
+  position: relative;
+  max-width: 480px;
+  margin: 0 auto;
+  aspect-ratio: 1 / 1;
+}
+
+// 示範層與殘影共用同一張「手冊風」示範底圖（token 色，斜紋＋芥黃光暈＋硃紅漸層）
+.clip-ghost,
+.clip-demo {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(45deg, rgba($color-paper, 0.14) 0 2px, transparent 2px 12px),
+    radial-gradient(circle at 72% 24%, rgba($color-mark, 0.55), transparent 55%),
+    linear-gradient(135deg, $color-accent, $color-accent-deep);
+}
+
+// 殘影＝被裁掉的區域，淡淡地留著方便對照
+.clip-ghost { opacity: 0.16; }
+
+// 多邊形外框線層
+.stage-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.clip-outline {
+  fill: none;
+  stroke: $color-ink;
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+}
+
+// — 頂點把手層 —
+.handle-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.vertex-handle {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: $color-paper;
+  border: 2.5px solid $color-accent;
+  cursor: grab;
+  touch-action: none; // 拖曳時不被頁面捲動搶走
+
+  &:hover { background: $color-accent; }
+  &:focus-visible { outline: 2px solid $color-ink; outline-offset: 2px; }
+  &.is-active { background: $color-accent; cursor: grabbing; }
+}
+
+// 邊線中點的插入鈕
+.vertex-add {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-family: $font-mono;
+  font-size: 12px;
+  line-height: 1;
+  color: $color-ink-soft;
+  background: $color-paper;
+  border: 1px dashed $color-ink-soft;
+  cursor: copy;
+  opacity: 0.5;
+  transition: opacity $dur $ease, color $dur $ease, border-color $dur $ease;
+
+  &:hover {
+    opacity: 1;
+    color: $color-accent;
+    border-color: $color-accent;
+  }
+}
+
+// — CSS 輸出區（沿用 code-block）—
+.code-wrap { position: relative; }
+
+.code-block {
+  margin: 0;
+  padding: $space-4;
+  padding-right: 96px; // 讓出右上複製鈕空間
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  line-height: 1.7;
+  color: $color-ink;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.code-copy {
+  position: absolute;
+  top: $space-3;
+  right: $space-3;
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: $space-2 0 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// ============================================================
+// 窄螢幕
+// ============================================================
+@media (max-width: 860px) {
+  .clip-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-4;
+  }
+
+  // 堆疊時取消固定，避免控制台擋住下方內容
+  .controls {
+    position: static;
+    top: auto;
+  }
+}
