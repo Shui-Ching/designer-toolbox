@@ -2,7 +2,7 @@
 // 11 字級比例計算 — 基準字級 × 比例推導整套 type scale
 // 零相依、純數值運算；維持 CSP script-src 'self'
 // ============================================================
-import { downloadBlob, copyText, track } from '../../shared/scripts/shared.js?v=202607181201';
+import { downloadBlob, copyText, track } from '../../shared/scripts/shared.js?v=202607181508';
 
 // — DOM —
 const baseRange = document.getElementById('base-range');

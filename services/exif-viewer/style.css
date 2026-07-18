@@ -1,0 +1,307 @@
+@charset "UTF-8";
+:root {
+  --color-paper: #f4f1e8;
+  --color-paper-deep: #ece7d9;
+  --color-ink: #1c1b18;
+  --color-ink-soft: #6b665b;
+  --color-line: #d9d3c3;
+  --color-accent: #d8442a;
+  --color-accent-deep: #b0331d;
+  --color-mark: #e0a92e;
+  --font-display: Inter, Noto Sans TC, sans-serif;
+  --font-body: Inter, Noto Sans TC, sans-serif;
+  --font-mono: Inter, Noto Sans TC, sans-serif;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.tool-intro {
+  max-width: 64ch;
+  margin-block: 24px 40px;
+  color: #6b665b;
+}
+
+.dropzone {
+  cursor: pointer;
+}
+
+.drop-error {
+  margin-top: 16px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #b0331d;
+}
+
+.editor-layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  background: #ece7d9;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  position: sticky;
+  top: 24px;
+}
+
+.control-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.control-label {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b665b;
+}
+
+.file-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.file-name {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #1c1b18;
+  word-break: break-all;
+}
+
+.file-dim {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+}
+
+.spec-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.spec-item {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.spec-item-icon {
+  flex-shrink: 0;
+  width: 1.4em;
+  text-align: center;
+}
+
+.spec-item-text {
+  color: #6b665b;
+}
+
+.spec-item.is-pass .spec-item-icon {
+  color: #d8442a;
+}
+
+.spec-item.is-warn .spec-item-icon {
+  color: #e0a92e;
+}
+
+.spec-item.is-fail .spec-item-icon {
+  color: #b0331d;
+}
+
+.spec-item.is-fail .spec-item-text {
+  color: #1c1b18;
+}
+
+.control-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.strip-note {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: #6b665b;
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: 0;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #d8442a;
+}
+
+.detail-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+.photo-stage {
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: #ece7d9;
+  border: 1.5px solid #1c1b18;
+  border-radius: 2px;
+}
+
+.photo-preview {
+  display: block;
+  max-width: 100%;
+  max-height: 340px;
+  height: auto;
+}
+
+.gps-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 24px;
+  border: 1.5px solid #d8442a;
+  border-radius: 2px;
+  background: color-mix(in srgb, #d8442a 6%, #f4f1e8);
+}
+
+.gps-card-title {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #b0331d;
+}
+
+.gps-coords {
+  margin: 0;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #1c1b18;
+}
+
+.gps-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.gps-note {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: #6b665b;
+}
+
+.exif-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.exif-section {
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.exif-section-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #ece7d9;
+  border-bottom: 1px solid #d9d3c3;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6b665b;
+}
+
+.exif-row {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 16px;
+  padding: 8px 16px;
+  font-size: 1rem;
+}
+.exif-row + .exif-row {
+  border-top: 1px solid #d9d3c3;
+}
+
+.exif-row-label {
+  color: #6b665b;
+}
+
+.exif-row-value {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  color: #1c1b18;
+  word-break: break-word;
+}
+
+.exif-row.is-privacy {
+  background: color-mix(in srgb, #e0a92e 12%, #f4f1e8);
+}
+.exif-row.is-privacy .exif-row-label::before {
+  content: "⚠ ";
+  color: #e0a92e;
+}
+
+.exif-empty {
+  padding: 24px;
+  border: 1.5px dashed #d9d3c3;
+  border-radius: 2px;
+  text-align: center;
+}
+
+.exif-empty-title {
+  margin: 0 0 4px;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #1c1b18;
+}
+
+.exif-empty-desc {
+  margin: 0;
+  font-size: 1rem;
+  color: #6b665b;
+}
+
+.exif-footnote {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: #6b665b;
+}
+
+@media (max-width: 860px) {
+  .editor-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .controls {
+    position: static;
+    top: auto;
+  }
+  .exif-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+}

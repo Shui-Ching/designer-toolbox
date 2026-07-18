@@ -2,8 +2,8 @@
 // 43 字型檔預覽器 — 拖入 TTF/OTF/WOFF 即時預覽字重、字符集、字級瀑布
 // 原生 FontFace API 載入字型渲染；中繼資料與字符涵蓋率由 font-parser.js 自寫解析
 // ============================================================
-import { formatBytes, bindDropzone, copyText, track } from '../../shared/scripts/shared.js?v=202607181201';
-import { analyzeFont, isCodepointSupported } from './font-parser.js?v=202607181201';
+import { formatBytes, bindDropzone, copyText, track } from '../../shared/scripts/shared.js?v=202607181508';
+import { analyzeFont, isCodepointSupported } from './font-parser.js?v=202607181508';
 
 const WATERFALL_SIZES = [96, 72, 60, 48, 36, 30, 24, 20, 18, 16, 14];
 const DEFAULT_WATERFALL_TEXT = 'The quick brown fox jumps over the lazy dog 永安字型預覽 0123456789';

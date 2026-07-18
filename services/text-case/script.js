@@ -2,7 +2,7 @@
 // 26 大小寫轉換 — 句首大寫／全大寫／全小寫／標題式…一鍵切換
 // 零相依、純前端處理；維持 CSP script-src 'self'
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202607181201';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202607181508';
 
 // — DOM —
 const textInput = document.getElementById('text-input');

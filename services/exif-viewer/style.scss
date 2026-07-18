@@ -1,0 +1,301 @@
+// ============================================================
+// 50 EXIF 檢視與移除 — 工具特有樣式
+// 共用元件（tool-head / dropzone / btn / tag）直接套 class
+// 控制台 .controls / .control-block / .spec-checklist 語彙沿用 46 richmenu-preview
+// ============================================================
+@use '../../shared/styles/tokens' as *;
+
+// — 工具開場說明 —
+.tool-intro {
+  max-width: 64ch;
+  margin-block: $space-4 $space-5;
+  color: $color-ink-soft;
+}
+
+.dropzone { cursor: pointer; }
+
+.drop-error {
+  margin-top: $space-3;
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  color: $color-accent-deep;
+}
+
+// — 檢視區：左控制、右明細；窄螢幕改上下堆疊 —
+.editor-layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: $space-5;
+  align-items: start;
+}
+
+// ============================================================
+// 左側：控制面板
+// ============================================================
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  padding: $space-4;
+  background: $color-paper-deep;
+  border: $border-fine;
+  border-radius: $radius;
+  position: sticky;
+  top: $space-4;
+}
+
+.control-block {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.control-label {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.file-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.file-name {
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  color: $color-ink;
+  word-break: break-all;
+}
+
+.file-dim {
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-ink-soft;
+}
+
+// — 隱私檢點清單（樣式語彙同 46 spec-checklist）—
+.spec-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.spec-item {
+  display: flex;
+  gap: $space-2;
+  align-items: baseline;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  line-height: 1.5;
+}
+
+.spec-item-icon {
+  flex-shrink: 0;
+  width: 1.4em;
+  text-align: center;
+}
+
+.spec-item-text { color: $color-ink-soft; }
+
+.spec-item.is-pass .spec-item-icon { color: $color-accent; }
+.spec-item.is-warn .spec-item-icon { color: $color-mark; }
+.spec-item.is-fail .spec-item-icon { color: $color-accent-deep; }
+.spec-item.is-fail .spec-item-text { color: $color-ink; }
+
+.control-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.strip-note {
+  margin: 0;
+  font-size: $fs-xs;
+  line-height: 1.55;
+  color: $color-ink-soft;
+}
+
+.copy-hint {
+  min-height: 1.4em;
+  margin: 0;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  color: $color-accent;
+}
+
+// ============================================================
+// 右側：照片預覽 + EXIF 明細
+// ============================================================
+.detail-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  min-width: 0;
+}
+
+.photo-stage {
+  display: grid;
+  place-items: center;
+  padding: $space-3;
+  background: $color-paper-deep;
+  border: $border-ink;
+  border-radius: $radius;
+}
+
+.photo-preview {
+  display: block;
+  max-width: 100%;
+  max-height: 340px;
+  height: auto;
+}
+
+// — GPS 警示卡：唯一用硃紅框強調的區塊 —
+.gps-card {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  padding: $space-3 $space-4;
+  border: 1.5px solid $color-accent;
+  border-radius: $radius;
+  background: color-mix(in srgb, $color-accent 6%, $color-paper);
+}
+
+.gps-card-title {
+  font-family: $font-mono;
+  font-size: $fs-sm;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: $color-accent-deep;
+}
+
+.gps-coords {
+  margin: 0;
+  font-family: $font-mono;
+  font-size: $fs-base;
+  color: $color-ink;
+}
+
+.gps-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+}
+
+.gps-note {
+  margin: 0;
+  font-size: $fs-xs;
+  line-height: 1.55;
+  color: $color-ink-soft;
+}
+
+// — EXIF 分組表 —
+.exif-sections {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.exif-section {
+  border: $border-fine;
+  border-radius: $radius;
+  overflow: hidden;
+}
+
+.exif-section-head {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-2 $space-3;
+  background: $color-paper-deep;
+  border-bottom: $border-fine;
+  font-family: $font-mono;
+  font-size: $fs-xs;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $color-ink-soft;
+}
+
+.exif-row {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: $space-3;
+  padding: $space-2 $space-3;
+  font-size: $fs-sm;
+
+  & + & { border-top: $border-fine; }
+}
+
+.exif-row-label {
+  color: $color-ink-soft;
+}
+
+.exif-row-value {
+  font-family: $font-mono;
+  color: $color-ink;
+  word-break: break-word;
+}
+
+// 隱私敏感列：芥黃底＋警示符號
+.exif-row.is-privacy {
+  background: color-mix(in srgb, $color-mark 12%, $color-paper);
+
+  .exif-row-label::before {
+    content: '⚠ ';
+    color: $color-mark;
+  }
+}
+
+// — 空狀態與註腳 —
+.exif-empty {
+  padding: $space-4;
+  border: 1.5px dashed $color-line;
+  border-radius: $radius;
+  text-align: center;
+}
+
+.exif-empty-title {
+  margin: 0 0 $space-1;
+  font-family: $font-mono;
+  font-size: $fs-base;
+  color: $color-ink;
+}
+
+.exif-empty-desc {
+  margin: 0;
+  font-size: $fs-sm;
+  color: $color-ink-soft;
+}
+
+.exif-footnote {
+  margin: 0;
+  font-size: $fs-xs;
+  line-height: 1.55;
+  color: $color-ink-soft;
+}
+
+// ============================================================
+// 窄螢幕
+// ============================================================
+@media (max-width: 860px) {
+  .editor-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-4;
+  }
+
+  .controls {
+    position: static;
+    top: auto;
+  }
+
+  .exif-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+}

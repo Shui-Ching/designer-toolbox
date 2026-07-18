@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>SVG Blob／波浪產生器 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202607181508">
+  <link rel="stylesheet" href="./style.css?v=202607181508">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="blob-generator">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 48</span>
+        <h1 class="tool-head-title">SVG Blob／波浪產生器</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      擲一顆隨機種子，長出有機的 Blob 形狀或波浪分隔線，調整複雜度與變化幅度後直接複製或下載
+      <span class="tag">SVG</span>。同一種子必得同一形狀，貝茲曲線全程在瀏覽器端運算。
+    </p>
+
+    <div class="blob-layout">
+
+      <!-- 左：控制台 -->
+      <section class="controls" aria-label="形狀控制">
+
+        <!-- 產生類型 -->
+        <div class="control-block">
+          <span class="control-label">類型 · type</span>
+          <div class="chip-group" id="type-group">
+            <button class="chip is-active" type="button" data-type="blob">Blob 有機形狀</button>
+            <button class="chip" type="button" data-type="wave">波浪分隔線</button>
+          </div>
+        </div>
+
+        <!-- 隨機種子 -->
+        <div class="control-block control-section">
+          <label class="control-label" for="seed-input">隨機種子 · seed</label>
+          <div class="seed-row">
+            <input class="text-input seed-input" type="number" id="seed-input" min="0" max="999999" step="1" value="0" aria-label="隨機種子">
+            <button class="btn btn-accent" type="button" id="reroll-btn">🎲 重擲</button>
+          </div>
+          <p class="control-hint">記下種子就能之後重現同一個形狀。</p>
+        </div>
+
+        <!-- 複雜度 -->
+        <div class="control-block control-section">
+          <label class="control-label" for="complexity-input">
+            <span><span id="complexity-name">頂點數</span> · complexity</span>
+            <span class="control-label-value" id="complexity-val">8</span>
+          </label>
+          <input class="range-input" type="range" id="complexity-input" min="3" max="16" step="1" value="8">
+        </div>
+
+        <!-- 變化幅度 -->
+        <div class="control-block">
+          <label class="control-label" for="variance-input">
+            變化幅度 · variance
+            <span class="control-label-value"><span id="variance-val">35</span>%</span>
+          </label>
+          <input class="range-input" type="range" id="variance-input" min="0" max="100" step="1" value="35">
+          <p class="control-hint">0＝規整對稱，越大越狂放。</p>
+        </div>
+
+        <!-- 填滿方向（僅波浪） -->
+        <div class="control-block control-section" id="fill-dir-block" hidden>
+          <span class="control-label">填滿方向 · fill side</span>
+          <div class="chip-group" id="fill-dir-group">
+            <button class="chip is-active" type="button" data-flip="false">下方（頁尾）</button>
+            <button class="chip" type="button" data-flip="true">上方（頁首）</button>
+          </div>
+        </div>
+
+        <!-- 填色 -->
+        <div class="control-block control-section">
+          <label class="control-label" for="fill-picker">填色 · fill</label>
+          <div class="color-row">
+            <input type="color" class="color-input" id="fill-picker" value="#d8442a" aria-label="填色色票">
+            <input type="text" class="hex-input" id="fill-hex" spellcheck="false" autocomplete="off" aria-label="填色 HEX">
+          </div>
+        </div>
+
+      </section>
+
+      <!-- 右：預覽舞台 + 輸出 -->
+      <section class="output" aria-label="預覽與輸出">
+
+        <div class="stage-bar">
+          <span class="tag">Preview</span>
+          <span class="stage-hint" id="stage-hint">Blob 會維持正方形比例；波浪可橫向撐滿任何容器</span>
+        </div>
+
+        <div class="stage-frame">
+          <!-- 預覽 SVG：JS 只改 viewBox / path d / fill，不經 innerHTML -->
+          <svg class="stage-svg" id="stage-svg" viewBox="0 0 480 480" aria-hidden="true">
+            <path id="stage-path" fill="#d8442a" d=""></path>
+          </svg>
+        </div>
+
+        <div class="section-rule"><span class="tag">SVG</span></div>
+        <div class="code-wrap">
+          <pre class="code-block" id="code-out"></pre>
+          <button class="btn btn-accent code-copy" type="button" id="copy-btn">複製</button>
+        </div>
+        <div class="output-actions">
+          <button class="btn btn-accent" type="button" id="download-btn">↓ 下載 SVG</button>
+          <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202607181508"></script>
+</body>
+</html>

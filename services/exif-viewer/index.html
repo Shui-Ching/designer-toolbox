@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>EXIF 檢視與移除 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202607181508">
+  <link rel="stylesheet" href="./style.css?v=202607181508">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="exif-viewer">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 50</span>
+        <h1 class="tool-head-title">EXIF 檢視與移除</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      拖入 JPEG 照片，檢視裡面藏了哪些 <span class="tag">EXIF</span> 中繼資料——<span class="tag">GPS 定位</span>、拍攝時間、相機機型、機身序號——
+      再一鍵<strong>無損移除</strong>後下載乾淨版本（直接剔除中繼資料段，不重新壓縮、畫質零損失）。全部在瀏覽器端完成，照片不會離開你的電腦。
+    </p>
+
+    <!-- 上傳區（尚無圖片時顯示）-->
+    <div class="dropzone" id="dropzone">
+      <span class="dropzone-hint">拖放 JPEG 照片到這裡，或點擊選檔</span>
+      <span class="tag">JPG / JPEG（EXIF 為 JPEG 格式的中繼資料）</span>
+      <input type="file" id="file-input" accept=".jpg,.jpeg,image/jpeg" hidden>
+    </div>
+    <p class="drop-error" id="drop-error" aria-live="polite" hidden></p>
+
+    <!-- 檢視區（載入圖片後顯示）-->
+    <div class="editor" id="editor" hidden>
+      <div class="editor-layout">
+
+        <!-- 左：檔案資訊、隱私檢點、移除下載 -->
+        <section class="controls" aria-label="檔案與隱私檢點">
+
+          <div class="control-block">
+            <span class="control-label">檔案</span>
+            <div class="file-summary">
+              <span class="file-name" id="file-name">–</span>
+              <span class="file-dim" id="file-dim">–</span>
+            </div>
+            <button type="button" class="btn" id="change-btn">更換照片</button>
+          </div>
+
+          <div class="control-block">
+            <span class="control-label">隱私檢點</span>
+            <ul class="spec-checklist" id="privacy-checklist"></ul>
+          </div>
+
+          <div class="control-actions">
+            <button class="btn btn-accent" id="strip-btn" type="button">↓ 移除中繼資料並下載</button>
+          </div>
+          <p class="strip-note">無損處理：只剔除中繼資料段，影像位元流原封不動；若照片帶方向資訊會保留方向標籤，避免直式照片躺平。</p>
+          <p class="copy-hint" id="strip-hint" aria-live="polite"></p>
+        </section>
+
+        <!-- 右：照片預覽 + EXIF 明細 -->
+        <section class="detail-wrap" aria-label="EXIF 明細">
+
+          <div class="photo-stage">
+            <img class="photo-preview" id="photo-preview" alt="照片預覽">
+          </div>
+
+          <!-- GPS 卡（僅在有座標時顯示）-->
+          <div class="gps-card" id="gps-card" hidden>
+            <div class="gps-card-head">
+              <span class="gps-card-title">⚠ 這張照片內含 GPS 定位</span>
+            </div>
+            <p class="gps-coords" id="gps-coords">–</p>
+            <div class="gps-actions">
+              <button type="button" class="btn" id="gps-copy-btn">複製座標</button>
+              <a class="btn" id="gps-map-link" href="#" target="_blank" rel="noopener noreferrer">在地圖上查看 ↗</a>
+            </div>
+            <p class="gps-note">「在地圖上查看」會把座標帶到 OpenStreetMap（外部網站）；照片本身不會被上傳。</p>
+          </div>
+
+          <!-- EXIF 分組明細（JS 動態填入）-->
+          <div class="exif-sections" id="exif-sections"></div>
+
+          <!-- 無 EXIF 的空狀態 -->
+          <div class="exif-empty" id="exif-empty" hidden>
+            <p class="exif-empty-title">未偵測到 EXIF 資料</p>
+            <p class="exif-empty-desc" id="exif-empty-desc"></p>
+          </div>
+
+          <p class="exif-footnote" id="exif-footnote" hidden></p>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202607181508"></script>
+</body>
+</html>

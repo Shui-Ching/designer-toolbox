@@ -59,6 +59,9 @@ const TOOL_POPULARITY = {
   'services/screen-info/index.html': 0,
   'services/richmenu-preview/index.html': 0,
   'services/clip-path/index.html': 0,
+  'services/blob-generator/index.html': 0,
+  'services/noise-texture/index.html': 0,
+  'services/exif-viewer/index.html': 0,
 };
 
 (function () {

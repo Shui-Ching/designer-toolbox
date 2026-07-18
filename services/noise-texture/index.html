@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="../../images/default/favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 內容安全政策（CSP）：白名單可載入來源，降低 XSS／供應鏈風險 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cloud.umami.is; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://cloud.umami.is https://gateway.umami.is; base-uri 'self'; form-action 'self'">
+
+  <title>噪點／紋理產生器 · 設計師工具箱</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../shared/styles/shared.css?v=202607181508">
+  <link rel="stylesheet" href="./style.css?v=202607181508">
+
+  <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
+</head>
+<body data-tool="noise-texture">
+  <main class="container">
+    <div class="tool-head">
+      <div>
+        <span class="tag tag-accent">Tool / 49</span>
+        <h1 class="tool-head-title">噪點／紋理產生器</h1>
+      </div>
+      <div class="tool-head-actions">
+        <button type="button" class="back-link share-btn" data-share>↗ 分享工具</button>
+        <a class="back-link" href="../../index.html">← 回工具箱</a>
+      </div>
+    </div>
+
+    <p class="tool-intro">
+      產生可無縫平鋪的噪點顆粒、點陣與格線紋理磚，當作背景質感或紙感疊層。噪點輸出
+      <span class="tag">PNG</span>／CSS 背景，點陣與格線另可輸出 <span class="tag">SVG</span>，全程在瀏覽器端運算。
+    </p>
+
+    <div class="texture-layout">
+
+      <!-- 左：控制台 -->
+      <section class="controls" aria-label="紋理控制">
+
+        <!-- 紋理類型 -->
+        <div class="control-block">
+          <span class="control-label">類型 · type</span>
+          <div class="chip-group" id="type-group">
+            <button class="chip is-active" type="button" data-type="grain">噪點顆粒</button>
+            <button class="chip" type="button" data-type="dots">點陣</button>
+            <button class="chip" type="button" data-type="lines">格線</button>
+          </div>
+        </div>
+
+        <!-- ============ 噪點專屬 ============ -->
+        <div class="control-block control-section" data-show="grain">
+          <label class="control-label" for="seed-input">隨機種子 · seed</label>
+          <div class="seed-row">
+            <input class="text-input seed-input" type="number" id="seed-input" min="0" max="999999" step="1" value="0" aria-label="隨機種子">
+            <button class="btn btn-accent" type="button" id="reroll-btn">🎲 重擲</button>
+          </div>
+          <p class="control-hint">記下種子就能之後重現同一張噪點。</p>
+        </div>
+
+        <div class="control-block control-section" data-show="grain">
+          <label class="control-label" for="grain-tile">
+            磚塊尺寸 · tile
+            <span class="control-label-value"><span id="grain-tile-val">128</span>px</span>
+          </label>
+          <input class="range-input" type="range" id="grain-tile" min="64" max="512" step="64" value="128">
+          <p class="control-hint">磚越大重複感越低，檔案也越大。</p>
+        </div>
+
+        <div class="control-block" data-show="grain">
+          <label class="control-label" for="grain-density">
+            密度 · density
+            <span class="control-label-value"><span id="grain-density-val">50</span>%</span>
+          </label>
+          <input class="range-input" type="range" id="grain-density" min="1" max="100" step="1" value="50">
+        </div>
+
+        <div class="control-block" data-show="grain">
+          <label class="control-label" for="grain-size">
+            顆粒大小 · grain size
+            <span class="control-label-value"><span id="grain-size-val">1</span>px</span>
+          </label>
+          <input class="range-input" type="range" id="grain-size" min="1" max="4" step="1" value="1">
+        </div>
+
+        <div class="control-block" data-show="grain">
+          <label class="control-label" for="grain-strength">
+            強度 · strength
+            <span class="control-label-value"><span id="grain-strength-val">60</span>%</span>
+          </label>
+          <input class="range-input" type="range" id="grain-strength" min="5" max="100" step="1" value="60">
+          <p class="control-hint">顆粒透明度上限，疊在照片上建議 20–40%。</p>
+        </div>
+
+        <!-- ============ 點陣專屬 ============ -->
+        <div class="control-block control-section" data-show="dots" hidden>
+          <label class="control-label" for="dots-spacing">
+            間距 · spacing
+            <span class="control-label-value"><span id="dots-spacing-val">24</span>px</span>
+          </label>
+          <input class="range-input" type="range" id="dots-spacing" min="8" max="64" step="1" value="24">
+        </div>
+
+        <div class="control-block" data-show="dots" hidden>
+          <label class="control-label" for="dots-size">
+            點大小 · dot size
+            <span class="control-label-value"><span id="dots-size-val">4</span>px</span>
+          </label>
+          <input class="range-input" type="range" id="dots-size" min="1" max="32" step="1" value="4">
+        </div>
+
+        <div class="control-block" data-show="dots" hidden>
+          <span class="control-label">排列 · layout</span>
+          <div class="chip-group" id="dots-layout-group">
+            <button class="chip is-active" type="button" data-stagger="false">方格對齊</button>
+            <button class="chip" type="button" data-stagger="true">交錯排列</button>
+          </div>
+        </div>
+
+        <!-- ============ 格線專屬 ============ -->
+        <div class="control-block control-section" data-show="lines" hidden>
+          <label class="control-label" for="lines-spacing">
+            間距 · spacing
+            <span class="control-label-value"><span id="lines-spacing-val">24</span>px</span>
+          </label>
+          <input class="range-input" type="range" id="lines-spacing" min="8" max="64" step="1" value="24">
+        </div>
+
+        <div class="control-block" data-show="lines" hidden>
+          <label class="control-label" for="lines-width">
+            線寬 · line width
+            <span class="control-label-value"><span id="lines-width-val">1</span>px</span>
+          </label>
+          <input class="range-input" type="range" id="lines-width" min="1" max="8" step="1" value="1">
+        </div>
+
+        <div class="control-block" data-show="lines" hidden>
+          <span class="control-label">樣式 · style</span>
+          <div class="chip-group" id="lines-mode-group">
+            <button class="chip is-active" type="button" data-mode="grid">十字格線</button>
+            <button class="chip" type="button" data-mode="h">橫線</button>
+            <button class="chip" type="button" data-mode="v">直線</button>
+          </div>
+        </div>
+
+        <!-- ============ 共同：顏色 ============ -->
+        <div class="control-block control-section">
+          <label class="control-label" for="fill-picker">紋理色 · color</label>
+          <div class="color-row">
+            <input type="color" class="color-input" id="fill-picker" value="#1c1b18" aria-label="紋理色色票">
+            <input type="text" class="hex-input" id="fill-hex" spellcheck="false" autocomplete="off" aria-label="紋理色 HEX">
+          </div>
+        </div>
+
+        <div class="control-block">
+          <span class="control-label">背景 · background</span>
+          <div class="chip-group" id="bg-mode-group">
+            <button class="chip is-active" type="button" data-bg="transparent">透明</button>
+            <button class="chip" type="button" data-bg="custom">自訂色</button>
+          </div>
+          <div class="color-row" id="bg-color-row" hidden>
+            <input type="color" class="color-input" id="bg-picker" value="#f4f1e8" aria-label="背景色色票">
+            <input type="text" class="hex-input" id="bg-hex" spellcheck="false" autocomplete="off" aria-label="背景色 HEX">
+          </div>
+        </div>
+
+      </section>
+
+      <!-- 右：預覽舞台 + 輸出 -->
+      <section class="output" aria-label="預覽與輸出">
+
+        <div class="stage-bar">
+          <span class="tag">Preview</span>
+          <span class="stage-hint" id="stage-hint"></span>
+        </div>
+
+        <!-- 預覽：單一磚塊 toDataURL 後以 background-repeat 平鋪，直接驗證無縫；
+             透明背景時底下墊棋盤格。左上角框出一塊磚的範圍。 -->
+        <div class="stage-frame">
+          <div class="stage-tiled" id="stage-tiled">
+            <span class="tile-outline" id="tile-outline">tile</span>
+          </div>
+        </div>
+
+        <div class="section-rule"><span class="tag" id="code-tag">CSS</span></div>
+        <div class="code-wrap">
+          <pre class="code-block" id="code-out"></pre>
+          <button class="btn btn-accent code-copy" type="button" id="copy-btn">複製</button>
+        </div>
+        <p class="code-note" id="code-note" hidden>顯示已截斷 data URI，按「複製」會是完整可用的 CSS。</p>
+
+        <div class="output-actions">
+          <button class="btn btn-accent" type="button" id="download-png-btn">↓ 下載 PNG</button>
+          <button class="btn" type="button" id="download-svg-btn">↓ 下載 SVG</button>
+          <p class="copy-hint" id="copy-hint" aria-live="polite"></p>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- 頁尾 -->
+  <footer class="container site-foot"></footer>
+
+  <script type="module" src="./script.js?v=202607181508"></script>
+</body>
+</html>

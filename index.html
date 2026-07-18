@@ -16,8 +16,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="shared/styles/shared.css?v=202607181201">
-  <link rel="stylesheet" href="index.css?v=202607181201">
+  <link rel="stylesheet" href="shared/styles/shared.css?v=202607181508">
+  <link rel="stylesheet" href="index.css?v=202607181508">
 
   <!-- Umami 匿名分析（cookieless），網站 ID 已設定（shui-ching） -->
   <script defer src="https://cloud.umami.is/script.js" data-website-id="b3d6a837-7848-4e38-9d09-315d62f9103a"></script>
@@ -248,7 +248,7 @@
           </select>
         </label>
 
-        <span class="index-count" id="tool-count">47 項工具</span>
+        <span class="index-count" id="tool-count">50 項工具</span>
       </div>
 
       <!-- 分類篩選：依領域切換工具，與搜尋列為交集篩選 -->
@@ -877,6 +877,45 @@
           <span class="tool-card-cta">開啟 →</span>
         </a>
 
+        <a class="tool-card" href="services/blob-generator/index.html" data-category="assets" data-keywords="blob 波浪 wave 有機形狀 organic shape svg 分隔線 divider 曲線 貝茲 bezier 隨機 random 種子 seed 產生器 generator 背景 裝飾">
+          <div class="tool-card-top">
+            <span class="tool-card-no">48</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">SVG Blob／波浪產生器</h2>
+            <span class="tool-card-en">Blob & Wave Generator</span>
+          </div>
+          <p class="tool-card-desc">隨機種子長出有機 Blob 形狀或波浪分隔線，調複雜度與變化幅度，一鍵複製或下載 SVG。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/noise-texture/index.html" data-category="assets" data-keywords="噪點 noise grain 顆粒 紋理 texture 點陣 dot grid 格線 grid lines 平鋪 tile seamless pattern 背景 background 質感 png svg 產生器 generator">
+          <div class="tool-card-top">
+            <span class="tool-card-no">49</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">噪點／紋理產生器</h2>
+            <span class="tool-card-en">Noise & Texture Generator</span>
+          </div>
+          <p class="tool-card-desc">產生可無縫平鋪的噪點顆粒、點陣與格線紋理磚，輸出 PNG、SVG 或 CSS 背景，替介面鋪上質感。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
+        <a class="tool-card" href="services/exif-viewer/index.html" data-category="image" data-keywords="exif 中繼資料 metadata gps 定位 位置 location 隱私 privacy 個資 相機 camera 機型 序號 拍攝時間 照片 photo jpeg jpg 檢視 viewer 移除 remove 清除 strip 去除">
+          <div class="tool-card-top">
+            <span class="tool-card-no">50</span>
+            <span class="badge is-live">上線</span>
+          </div>
+          <div>
+            <h2 class="tool-card-title">EXIF 檢視與移除</h2>
+            <span class="tool-card-en">EXIF Viewer & Remover</span>
+          </div>
+          <p class="tool-card-desc">檢視照片內藏的 GPS 定位、拍攝時間與相機資訊，一鍵無損移除中繼資料再分享，守住隱私。</p>
+          <span class="tool-card-cta">開啟 →</span>
+        </a>
+
       </nav>
 
       <!-- 搜尋無結果時的空狀態 -->
@@ -893,8 +932,8 @@
   <button class="go-top" id="go-top" aria-label="回到頂端">↑</button>
 
   <!-- 共用 JS：掛載頁尾（ES Module，符合 CSP script-src 'self'） -->
-  <script type="module" src="./shared/scripts/shared.js?v=202607181201"></script>
+  <script type="module" src="./shared/scripts/shared.js?v=202607181508"></script>
   <!-- 首頁工具搜尋（外部檔，符合 CSP script-src 'self'） -->
-  <script defer src="home.js?v=202607181201"></script>
+  <script defer src="home.js?v=202607181508"></script>
 </body>
 </html>
