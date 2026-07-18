@@ -3,11 +3,11 @@
 // 零相依、全在瀏覽器端運算，維持 CSP script-src 'self'
 // 核心運算（PRNG／幾何／SVG 組裝）抽在 texture-core.js，零 DOM 供 Node 測試
 // ============================================================
-import { downloadBlob, copyText, track } from '../../shared/scripts/shared.js?v=202607181508';
+import { downloadBlob, copyText, track } from '../../shared/scripts/shared.js?v=202607181532';
 import {
   renderGrainRGBA, dotsGeometry, linesGeometry,
   buildTileSvg, normalizeHex, hexToRgb,
-} from './texture-core.js?v=202607181508';
+} from './texture-core.js?v=202607181532';
 
 // — DOM —
 const typeGroup = document.getElementById('type-group');

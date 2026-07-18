@@ -62,6 +62,7 @@ const TOOL_POPULARITY = {
   'services/blob-generator/index.html': 0,
   'services/noise-texture/index.html': 0,
   'services/exif-viewer/index.html': 0,
+  'services/emoji-picker/index.html': 0,
 };
 
 (function () {

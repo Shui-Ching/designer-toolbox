@@ -3,7 +3,7 @@
 // 零相依、全在瀏覽器端運算，維持 CSP script-src 'self'
 // 拖曳互動沿用 28 號 cubic-bezier 的 pointer capture 手法
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202607181508';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202607181532';
 
 // — DOM —
 const stage = document.getElementById('stage');

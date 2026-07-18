@@ -4,6 +4,8 @@
 > 架構決策、設計 token、新增工具標準步驟另存於 project skill（`.claude/skills/designer-toolbox`）。
 > 收工更新方式：改「最後更新」一行＋在工具總覽補一列；實作細節寫進 git commit 與程式碼註解，不要貼進本檔。
 
+最後更新：2026-07-18 — 完成 **51 Emoji 查找複製**（分類＋中英關鍵字搜尋，點卡複製，排程順位 9）。完全依排程方向執行：**複製 37 號 special-chars 架構，只換 JSON 資料與語彙**（`symbol-*` class 更名 `emoji-*`，搜尋／分類 chip／分區網格／點卡複製／黏頂查詢列的行為與樣式不變，無新發明）。資料為自行策展的 `shared/data/emoji.json`：9 分類（笑臉與情緒／手勢與人物／動物與自然／食物與飲料／旅遊與地點／活動與慶祝／物品與工具／符號與愛心／旗幟）共 514 個常用 Emoji，非完整 Unicode 集（全集約 3800+，策展取捨比照 37 號 185 個符號的定位——常用優先、快找快複製）；每筆帶繁中名稱＋中英混合關鍵字（含台灣慣用語如「珍珠奶茶／手搖」「小黃」「旺來」），Node 驗證 JSON 合法、無重複字元、分類引用完整。Emoji 字符含 VS16 變體選擇符與 ZWJ 序列（🏴‍☠️、🏳️‍🌈），以 `data-copy` 屬性原樣存放、`copyText` 整串複製不掉碼。卡片 glyph 字級 2.25rem（略大於 37 號黑白符號），交由系統彩色 emoji 字型渲染。**資安把關**：資料為站內靜態 JSON、無使用者自由文字進 DOM，渲染仍全程過 `escapeHtml`（沿用 37 號既有防線）；無新增外部資源，CSP 不需更動；複製僅送 `track('use')` 不送內容。用 playwright-core 驅動系統 Chrome 實測（本機靜態伺服器）32 項全過：入口頁計數 51／搜尋「emoji」／reference 分類篩選／卡片連入、初始 514 筆與 9 分區、中文（愛心、珍珠奶茶）與英文（fire）搜尋、空狀態與清空恢復、旗幟分類 23 筆、分類×搜尋交集、剪貼簿複製 🚀 與 ZWJ 序列 🏴‍☠️ 逐字元一致、複製提示 1.4 秒復原、390px 無水平溢出，console 全程無錯誤。
+
 最後更新：2026-07-18 — 完成 **50 EXIF 檢視與移除**（拖入 JPEG 照片檢視 EXIF 中繼資料——GPS 定位、拍攝時間、相機機型、機身序號——並一鍵無損移除後下載，排程順位 2）。核心抽成零 DOM 的 `exif-core.js`（比照 48/49 號，供 Node 測試與畫面共用）：自寫 JPEG 段走訪＋EXIF/TIFF 解析（支援 II/MM 雙位元組序，IFD0／Exif IFD／GPS IFD，rational／ASCII／SHORT 等型別，curated 21 個常用標籤中文化，GPS DMS 轉十進位），所有位移讀取皆做邊界檢查，畸形檔回警告不崩潰（壞子 IFD 指標不連坐 IFD0、截斷檔 valid=false）。**重要偏離**：排程原寫「去除走 01 號 Canvas 重編碼管線」，實作改為**無損剔除中繼資料段**（既然已自寫段解析器，直接從位元流移除 APP1 Exif/XMP、APP13 IPTC、COM，影像位元流原封不動、畫質零損失，優於重編碼）；副作用是 EXIF 方向標籤同遭移除會讓直式照片躺平，解法為原方向 ≠ 1 時緊接 SOI 注入只含 Orientation 的 36-byte 迷你 APP1（方向值非個資）。保留 APP0 JFIF、APP2 ICC（影響顯色）、APP14 Adobe（影響色彩解碼）。僅支援 JPEG（EXIF 為 JPEG 的中繼資料，以 magic bytes 判定、不信任副檔名），單檔操作。UI 沿用 46 號的左控制／右明細版面與 spec-checklist 語彙：左側隱私檢點（GPS 紅色 fail、時間／可識別欄位／中繼資料段數黃色 warn），右側 GPS 警示卡（十進位座標＋複製＋OpenStreetMap 連結——外部網站、點了才把座標帶出去並有文字揭露，照片本身不上傳）＋三組分組明細（相機與鏡頭／拍攝參數／影像與軟體，隱私列芥黃底＋⚠），未列名標籤只計數列於註腳。**資安把關**：EXIF 字串屬不可信輸入，一律 `textContent` 進 DOM（實測注入 `<img onerror>` 僅純文字呈現、不生成節點不執行）；地圖連結由解析出的數字組 URL 並再驗 `Number.isFinite` 雙保險；Umami 只送 `use` 事件不送檔名或內容；無新增外部資源，CSP 不需更動。Node 單元測試 55 組斷言全過（獨立實作的 TIFF 寫入器產 fixture 交叉驗證：II/MM、CJK 字串、rational 格式化、GPS 南緯西經負值與分母 0、strip 後 SOS 起位元流逐位元組一致、迷你 APP1 位元組層、畸形檔三案）；playwright-core 驅動系統 Chrome 實測（本機靜態伺服器）49 項全過：入口頁計數 50／搜尋／卡片連結、PNG 拒收、完整 EXIF 顯示與檢點、GPS 卡與地圖連結、XSS 三重驗證、下載檔以 Node 重解析驗證（GPS 消失、方向 6 保留、COM/XMP 移除、無損）、乾淨檔回上傳檢點轉綠、全乾淨檔空狀態＋停用鈕、390px 不破版，console 全程無錯誤。註：方向 ≠ 1 的照片顯示尺寸為瀏覽器轉正後的寬高（與檢視器一致）。
 
 最後更新：2026-07-18 — 完成 **49 噪點／紋理產生器**（可無縫平鋪的噪點顆粒／點陣／格線紋理磚，噪點輸出 PNG＋CSS data URI 背景、點陣與格線另出 SVG，排程順位 1）。核心運算抽成零 DOM 的 `texture-core.js`（比照 48 號 blob-math.js）：噪點用 mulberry32 seeded PRNG（同種子必得同紋理，種子由 `crypto.getRandomValues` 擲出、顯示於畫面可記錄重現），把磚切成顆粒大小見方的格子逐格擲落點與透明度（強度上限內再抖動 35%–100% 營造深淺層次），磚界即格界天然無縫；點陣把點畫在格心（直徑 ≤ 間距即完整落在磚內），交錯排列磚高為兩倍間距、第二列的點以 x=0 與 x=間距各畫半顆跨邊界互補拼合；格線貼磚塊上／左緣，平鋪自然接續。三類型同畫面 chip 切換（比照 48 號類型 chip），各類型參數分開保存互不干擾。預覽把單一磚 `toDataURL` 後以 CSS `background-repeat` 實際平鋪（直接驗證無縫），底下墊棋盤格顯示透明穿透，左上虛線框標出一塊磚的實際範圍（磚小於字寬自動只畫框不顯示字）；噪點加 `image-rendering: pixelated` 保持高 DPR 顆粒銳利。噪點因像素亂數無法無損轉向量故不出 SVG（停用該鈕），改給完整 CSS data URI 背景片段——畫面顯示截斷版（頭尾＋KB 標示），複製取完整版。**資安把關**：填色／背景 HEX 先過 `normalizeHex` 白名單才入 state，`buildTileSvg` 內再驗一次雙保險（非法退回 #000000）；種子與滑桿一律 parseInt＋clamp；無使用者自由文字進 DOM（輸出走 textContent，預覽背景為自產 canvas data URI）；無新增外部資源，CSP 不需更動。Node 單元測試 40 組斷言全過（PRNG 確定性、grain 密度 0／100 與落點比例 ±10%、強度上限、顆粒區塊一致、磚不整除不越界、dots／lines 幾何與 clamp、SVG 組裝、注入 fill 退回黑）；用 playwright-core 驅動系統 Chrome 實測（本機靜態伺服器）56 項全過：初始狀態、種子確定性與重擲、種子清空標紅 blur 回填、密度／磚塊尺寸滑桿、hex 3 碼展開／注入字串標紅不進輸出、複製 CSS 為完整未截斷版、點陣／交錯／格線 SVG 形狀正確、自訂背景 rect 進出、剪貼簿與畫面一致、切回噪點記住各自設定與種子、下載檔名 `grain-<seed>.png`／`dots-<spacing>px.svg`、390px 不破版、入口頁計數 49／搜尋／卡片連結，console 全程無錯誤。
@@ -30,7 +32,7 @@
 
 最後更新：2026-07-13 — 完成 **41 Regex 測試器**（輸入正規表達式與 g/i/m/s 旗標，即時高亮所有匹配並列出擷取群組，附 12 組常用 pattern 速查）。原生 `RegExp`，零相依；沒有 `g` 旗標時比照原生行為只回傳第一筆，避免使用者誤以為工具壞掉。找匹配用 `exec` + `lastIndex` 迴圈，零寬匹配時手動 `lastIndex++` 避免無窮迴圈，並設 2000 筆匹配上限防病態 pattern 撐爆 DOM（無法防 ReDoS 級的災難性回溯，屬原生 regex engine 的固有限制，不在自寫範圍內）。高亮沿用 40 號 text-diff 的 `createElement`＋`textContent` 組 DOM 手法，不經 `innerHTML`。擷取群組同時列出數字群組（`m[1..]`）與具名群組（`m.groups`），未匹配到的群組顯示「（未匹配）」。常用 pattern（Email／URL／IPv4／Hex 色碼／台灣手機／日期／時間／中文字元／HTML 標籤／數字／多餘空白／英數帳號）為工具內建常數，非外部 JSON（資料量小且不重用）。範圍拍板時已確認**不做替換（replace）功能**，先聚焦匹配＋擷取＋速查。用 Playwright 實際跑過瀏覽器驗證：初始空狀態、載入範例自動帶入 Email pattern 並正確高亮、切換 Hex 色碼 pattern、具名群組擷取正確對應、錯誤 pattern 顯示語法錯誤訊息、關閉 g 旗標後只回傳第一筆匹配、複製所有匹配、清空恢復空狀態，console 皆無錯誤。
 
-## 工具總覽（50 個，全數上線）
+## 工具總覽（51 個，全數上線）
 
 | # | 工具（資料夾） | 分類 | 核心做法一句話 |
 |---|---|---|---|
@@ -84,6 +86,7 @@
 | 48 | SVG Blob／波浪產生器（`blob-generator`） | assets | 隨機種子（mulberry32，可重現）長出有機 Blob 或波浪分隔線，Catmull-Rom 轉貝茲自寫，調複雜度／變化幅度／填色，複製或下載 SVG，零相依 |
 | 49 | 噪點／紋理產生器（`noise-texture`） | assets | 可無縫平鋪的噪點顆粒／點陣／格線紋理磚，seeded 噪點（mulberry32 可重現）＋格心點陣／貼緣格線幾何，預覽以 CSS repeat 實鋪驗證無縫，輸出 PNG／SVG／CSS data URI 背景，零相依 |
 | 50 | EXIF 檢視與移除（`exif-viewer`） | image | 自寫 JPEG 段＋EXIF/TIFF 解析（II/MM、IFD0/Exif/GPS），隱私檢點警示 GPS／時間／序號；無損剔除中繼資料段（不重新壓縮），方向 ≠1 注入迷你方向標籤防直式照片躺平，零相依 |
+| 51 | Emoji 查找複製（`emoji-picker`） | reference | 讀 emoji.json（9 分類、514 個策展常用 Emoji，繁中名稱＋中英關鍵字），搜尋＋分類篩選，點卡複製；複製 37 號 special-chars 架構，只換資料 |
 
 共同約定：全部零後端、檔案不上傳；除 02（opentype.js CDN＋SRI）與 20（本機 vendor）外零相依，維持 CSP `script-src 'self'`。
 
@@ -132,7 +135,7 @@ Umami（`cloud.umami.is`，cookieless）＋各頁嚴格 CSP meta 已全站套用
 
 ## 排入排程（已拍板，待實作）
 
-2026-07-13 拍板，依下表順序開發；正式工具編號於上線時連續分配（Regex 測試器已於 41 號、CSV ↔ Markdown/JSON 表格轉換已於 42 號、字型檔預覽器已於 43 號、佔位圖產生器已於 44 號、我的螢幕資訊已於 45 號、LINE Rich Menu 預覽模擬器已於 46 號、CSS clip-path 產生器已於 47 號、SVG Blob／波浪產生器已於 48 號、噪點／紋理產生器已於 49 號、EXIF 檢視與移除已於 50 號上線，見上方工具總覽）。
+2026-07-13 拍板，依下表順序開發；正式工具編號於上線時連續分配（Regex 測試器已於 41 號、CSV ↔ Markdown/JSON 表格轉換已於 42 號、字型檔預覽器已於 43 號、佔位圖產生器已於 44 號、我的螢幕資訊已於 45 號、LINE Rich Menu 預覽模擬器已於 46 號、CSS clip-path 產生器已於 47 號、SVG Blob／波浪產生器已於 48 號、噪點／紋理產生器已於 49 號、EXIF 檢視與移除已於 50 號、Emoji 查找複製已於 51 號上線，見上方工具總覽）。
 
 | 順序 | 工具（資料夾） | 分類 | 方向 |
 |---|---|---|---|

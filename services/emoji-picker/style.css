@@ -1,0 +1,171 @@
+:root {
+  --color-paper: #f4f1e8;
+  --color-paper-deep: #ece7d9;
+  --color-ink: #1c1b18;
+  --color-ink-soft: #6b665b;
+  --color-line: #d9d3c3;
+  --color-accent: #d8442a;
+  --color-accent-deep: #b0331d;
+  --color-mark: #e0a92e;
+  --font-display: Inter, Noto Sans TC, sans-serif;
+  --font-body: Inter, Noto Sans TC, sans-serif;
+  --font-mono: Inter, Noto Sans TC, sans-serif;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.tool-intro {
+  max-width: 64ch;
+  margin-block: 24px 16px;
+  color: #6b665b;
+}
+
+.query-bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding-block: 16px;
+  background: #f4f1e8;
+  border-bottom: 1px solid #d9d3c3;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.search-input {
+  width: 100%;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  padding: 8px 16px;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  background: #ece7d9;
+  color: #1c1b18;
+}
+.search-input:focus {
+  outline: none;
+  border-color: #d8442a;
+}
+.search-input::placeholder {
+  color: #6b665b;
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-chip {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  padding: 4px 16px;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  color: #6b665b;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), background-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.filter-chip:hover {
+  color: #1c1b18;
+  border-color: #1c1b18;
+}
+.filter-chip.is-active {
+  color: #f4f1e8;
+  background: #d8442a;
+  border-color: #d8442a;
+}
+
+.result-count {
+  margin-block: 16px 0;
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  color: #6b665b;
+}
+
+.category-block {
+  padding-block: 40px 16px;
+  border-bottom: 1px solid #d9d3c3;
+}
+.category-block:last-child {
+  border-bottom: 0;
+}
+
+.category-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.category-name {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1.75rem;
+}
+
+.category-count {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  color: #6b665b;
+}
+
+.emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  gap: 16px;
+}
+
+.emoji-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 8px;
+  border: 1px solid #d9d3c3;
+  border-radius: 2px;
+  background: #ece7d9;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.emoji-card:hover {
+  border-color: #d8442a;
+  transform: translateY(-2px);
+}
+
+.emoji-glyph {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 2.25rem;
+  line-height: 1.2;
+}
+
+.emoji-name {
+  font-size: 1rem;
+  color: #6b665b;
+}
+
+.copy-hint {
+  font-family: "Inter", "Noto Sans TC", sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  color: #6b665b;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.22, 0.61, 0.36, 1), color 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.emoji-card:hover .copy-hint {
+  opacity: 1;
+}
+
+.emoji-card.is-copied .copy-hint {
+  opacity: 1;
+  color: #d8442a;
+}
+
+.empty-state {
+  padding-block: 64px;
+  text-align: center;
+  color: #6b665b;
+}

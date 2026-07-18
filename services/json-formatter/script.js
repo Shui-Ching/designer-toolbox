@@ -4,7 +4,7 @@
 // 摺疊與編輯同一介面：gutter 箭頭可收合物件／陣列，收合後照樣打字
 // 校驗仍走原生 JSON.parse / JSON.stringify，全程瀏覽器端
 // ============================================================
-import { copyText, formatBytes, track } from '../../shared/scripts/shared.js?v=202607181508';
+import { copyText, formatBytes, track } from '../../shared/scripts/shared.js?v=202607181532';
 import {
   EditorState, Compartment,
   EditorView, keymap, lineNumbers, drawSelection, placeholder,
@@ -14,7 +14,7 @@ import {
   codeFolding, foldGutter, foldKeymap, foldAll, unfoldAll,
   syntaxHighlighting, HighlightStyle, bracketMatching, indentUnit,
   tags,
-} from './vendor/codemirror.esm.min.js?v=202607181508';
+} from './vendor/codemirror.esm.min.js?v=202607181532';
 
 const SAMPLE = '{"name":"設計師工具箱 🧰","edition":38,"categories":["image 🖼️","color 🎨","css","text ✍️","reference","assets","focus 🍅","fun 🎲"],"isOpenSource":false,"meta":{"author":"Andrew","mood":"☕️➡️💪","tags":["design","frontend",null]}}';
 
