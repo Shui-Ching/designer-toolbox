@@ -7,7 +7,7 @@
 // Timestamp 輸入框同時接受貼上日期文字（例：Jul 30, 2026 8:00 AM SGT），
 // 解析邏輯見「日期文字解析」段落。
 // ============================================================
-import { copyText, track } from '../../shared/scripts/shared.js?v=202607181532';
+import { copyText, track } from '../../shared/scripts/shared.js?v=202607241400';
 
 // — DOM —
 const tzSelect = document.getElementById('tz-select');

@@ -4,7 +4,7 @@
 // 代價：文字變影像、不可選取；換來大幅且可控的體積縮減
 // pdf.js / pdf-lib 皆本機 vendor（維持 CSP script-src 'self'），首次拖檔才動態載入
 // ============================================================
-import { downloadBlob, formatBytes, bindDropzone, escapeHtml, track } from '../../shared/scripts/shared.js?v=202607181532';
+import { downloadBlob, formatBytes, bindDropzone, escapeHtml, track } from '../../shared/scripts/shared.js?v=202607241400';
 
 const dropzone = document.getElementById('dropzone');
 const fileInput = document.getElementById('file-input');

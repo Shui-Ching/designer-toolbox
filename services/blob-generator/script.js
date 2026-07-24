@@ -3,11 +3,11 @@
 // 零相依、全在瀏覽器端運算，維持 CSP script-src 'self'
 // 核心數學（PRNG／Catmull-Rom）抽在 blob-math.js，零 DOM 供 Node 測試
 // ============================================================
-import { downloadBlob, copyText, track } from '../../shared/scripts/shared.js?v=202607181532';
+import { downloadBlob, copyText, track } from '../../shared/scripts/shared.js?v=202607241400';
 import {
   BLOB_SIZE, WAVE_W, WAVE_H,
   blobPath, wavePath, normalizeHex, buildBlobSvg, buildWaveSvg,
-} from './blob-math.js?v=202607181532';
+} from './blob-math.js?v=202607241400';
 
 // — DOM —
 const typeGroup = document.getElementById('type-group');

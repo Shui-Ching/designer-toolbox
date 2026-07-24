@@ -233,76 +233,161 @@ function lzwDecode(minCodeSize, data, pixelCount) {
   return out;
 }
 
-// ── 減色（中位切割）─────────────────────────────────────
+// ── 減色（全域色盤，中位切割）───────────────────────────
 
-// 把一幀 RGBA 量化到 maxColors 內，回傳供編碼用的索引與色表
-// { palette: Uint8Array(size*3), paletteSize, indices: Uint8Array, transparentIndex, colorDepth }
-export function quantizeFrame(rgba, maxColors) {
-  const n = rgba.length / 4;
-
-  // 統計不重複的不透明顏色
+// 掃描整段動畫的所有幀，建立「單一共用色盤」。
+// 全片共用一張色表，除了避免逐幀量化造成的閃爍，也讓後續幀間差分能在一致的
+// 索引空間比對「像素有沒有變」。永遠保留一格透明索引：差分時未變動的像素會
+// 指向它（靠 disposal「不清除」讓前一幀透出），genuine 透明像素也用它。
+// 回傳：{ palette, paletteSize, colorDepth, transparentIndex, opaqueCount, hasTransparent, _palArr }
+export function buildPalette(rgbaFrames, maxColors) {
   const hist = new Map();
   let hasTransparent = false;
-  for (let i = 0; i < n; i++) {
-    if (rgba[i * 4 + 3] < 128) { hasTransparent = true; continue; }
-    const key = (rgba[i * 4] << 16) | (rgba[i * 4 + 1] << 8) | rgba[i * 4 + 2];
-    hist.set(key, (hist.get(key) || 0) + 1);
+  for (const rgba of rgbaFrames) {
+    const n = rgba.length / 4;
+    for (let i = 0; i < n; i++) {
+      if (rgba[i * 4 + 3] < 128) { hasTransparent = true; continue; }
+      const key = (rgba[i * 4] << 16) | (rgba[i * 4 + 1] << 8) | rgba[i * 4 + 2];
+      hist.set(key, (hist.get(key) || 0) + 1);
+    }
   }
 
-  const reserve = hasTransparent ? 1 : 0;
-  const target = Math.max(1, maxColors - reserve);
-
+  const target = Math.max(1, maxColors - 1); // 恆留 1 格給透明
   const colors = [];
   for (const [key, count] of hist) {
     colors.push({ r: (key >> 16) & 255, g: (key >> 8) & 255, b: key & 255, count });
   }
 
-  let palette = colors.length <= target
+  let palArr = colors.length <= target
     ? colors.map((c) => [c.r, c.g, c.b])
     : medianCut(colors, target);
-  if (palette.length === 0) palette = [[0, 0, 0]];
+  if (palArr.length === 0) palArr = [[0, 0, 0]];
 
-  const opaqueCount = palette.length; // 最近色只在不透明色中比對，別誤配到透明格
+  const opaqueCount = palArr.length;      // 最近色只在不透明色中比對
+  const transparentIndex = opaqueCount;   // 緊接在不透明色後的那一格
+  palArr = palArr.slice();
+  palArr.push([0, 0, 0]);                 // 透明格
 
-  // 近似色查找（以顏色為 key 快取，減少重複計算）
+  // 色表補足到 2 的冪次；GIF 最小碼寬需要 ≥ 4 色的色表
+  let size = 2;
+  while (size < palArr.length) size *= 2;
+  if (size < 4) size = 4;
+  while (palArr.length < size) palArr.push([0, 0, 0]);
+  const colorDepth = Math.round(Math.log2(size)); // size ≥ 4 → colorDepth ≥ 2
+
+  const palette = new Uint8Array(size * 3);
+  for (let k = 0; k < size; k++) {
+    palette[k * 3] = palArr[k][0];
+    palette[k * 3 + 1] = palArr[k][1];
+    palette[k * 3 + 2] = palArr[k][2];
+  }
+
+  return { palette, paletteSize: size, colorDepth, transparentIndex, opaqueCount, hasTransparent, _palArr: palArr };
+}
+
+// 建立「RGB → 最近色索引」查找器；快取跨幀共用（全域色盤才做得到）以加速。
+function makeNearest(pal) {
+  const { _palArr, opaqueCount } = pal;
   const cache = new Map();
-  const nearest = (r, g, b) => {
+  return (r, g, b) => {
     const key = (r << 16) | (g << 8) | b;
     const hit = cache.get(key);
     if (hit !== undefined) return hit;
     let best = 0, bestD = Infinity;
     for (let k = 0; k < opaqueCount; k++) {
-      const dr = r - palette[k][0], dg = g - palette[k][1], db = b - palette[k][2];
+      const dr = r - _palArr[k][0], dg = g - _palArr[k][1], db = b - _palArr[k][2];
       const d = dr * dr + dg * dg + db * db;
       if (d < bestD) { bestD = d; best = k; }
     }
     cache.set(key, best);
     return best;
   };
+}
 
-  let transparentIndex = -1;
-  if (hasTransparent) { transparentIndex = palette.length; palette.push([0, 0, 0]); }
-
-  // 色表補足到 2 的冪次（GIF 規定）
-  let size = 2;
-  while (size < palette.length) size *= 2;
-  while (palette.length < size) palette.push([0, 0, 0]);
-  const colorDepth = Math.max(2, Math.round(Math.log2(size)));
-
+// 把一整張畫布的 RGBA 對映成全域色盤的索引（透明像素→透明索引）
+function mapFrame(rgba, transparentIndex, nearest) {
+  const n = rgba.length / 4;
   const indices = new Uint8Array(n);
   for (let i = 0; i < n; i++) {
-    if (rgba[i * 4 + 3] < 128 && transparentIndex >= 0) { indices[i] = transparentIndex; continue; }
+    if (rgba[i * 4 + 3] < 128) { indices[i] = transparentIndex; continue; }
     indices[i] = nearest(rgba[i * 4], rgba[i * 4 + 1], rgba[i * 4 + 2]);
   }
+  return indices;
+}
 
-  const pal = new Uint8Array(size * 3);
-  for (let k = 0; k < size; k++) {
-    pal[k * 3] = palette[k][0];
-    pal[k * 3 + 1] = palette[k][1];
-    pal[k * 3 + 2] = palette[k][2];
+// 幀間差分：比對本幀與前一幀（皆為整張畫布的索引），
+// 只保留變動像素、其餘設透明，並裁切到變動範圍的最小外接矩形。
+// disposal 用 1（不清除），未變動處靠前一幀透出，達成「只重畫變動區塊」。
+function diffFrame(prev, cur, width, height, transparentIndex, delayCs) {
+  let minX = width, minY = height, maxX = -1, maxY = -1;
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      if (cur[y * width + x] !== prev[y * width + x]) {
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+      }
+    }
   }
 
-  return { palette: pal, paletteSize: size, indices, transparentIndex, colorDepth };
+  // 與前幀完全相同：輸出 1×1 透明佔位幀，只為保留這一格的延遲時間
+  if (maxX < 0) {
+    return {
+      left: 0, top: 0, iw: 1, ih: 1,
+      indices: Uint8Array.of(transparentIndex),
+      disposal: 1, transparent: true, transparentIndex, delayCs,
+    };
+  }
+
+  const iw = maxX - minX + 1;
+  const ih = maxY - minY + 1;
+  const sub = new Uint8Array(iw * ih);
+  for (let y = 0; y < ih; y++) {
+    const sy = minY + y;
+    for (let x = 0; x < iw; x++) {
+      const si = sy * width + (minX + x);
+      sub[y * iw + x] = cur[si] === prev[si] ? transparentIndex : cur[si];
+    }
+  }
+  return {
+    left: minX, top: minY, iw, ih,
+    indices: sub, disposal: 1, transparent: true, transparentIndex, delayCs,
+  };
+}
+
+// 把每幀 RGBA 規劃成「編碼就緒」的幀陣列。
+// - 全不透明動畫：首幀完整、其後逐幀差分（disposal 1），這是壓縮率的主要來源。
+// - 含透明的動畫：為求正確（透明會牽涉「抹除已顯示像素」需要 disposal 前瞻），
+//   維持逐幀完整重畫（disposal 2），不做差分。
+// onStep(i) 為選用的每幀回呼（讓出主執行緒／回報進度）；回傳 true 代表中止。
+export async function planFrames(rgbaFrames, width, height, delays, pal, { onStep } = {}) {
+  const { transparentIndex, hasTransparent } = pal;
+  const nearest = makeNearest(pal);
+  const frames = [];
+  let prev = null;
+
+  for (let i = 0; i < rgbaFrames.length; i++) {
+    const cur = mapFrame(rgbaFrames[i], transparentIndex, nearest);
+    if (hasTransparent) {
+      // Path B：含透明，完整重畫 + disposal 2（還原背景 = 透明）
+      frames.push({
+        left: 0, top: 0, iw: width, ih: height,
+        indices: cur, disposal: 2, transparent: true, transparentIndex, delayCs: delays[i],
+      });
+    } else if (i === 0) {
+      // Path A 首幀：完整、disposal 1（迴圈回捲時由它整張重繪）
+      frames.push({
+        left: 0, top: 0, iw: width, ih: height,
+        indices: cur, disposal: 1, transparent: true, transparentIndex, delayCs: delays[i],
+      });
+    } else {
+      frames.push(diffFrame(prev, cur, width, height, transparentIndex, delays[i]));
+    }
+    prev = cur;
+    if (onStep && (await onStep(i))) return null;
+  }
+  return frames;
 }
 
 // 中位切割：反覆挑「顏色分佈最廣」的盒子，沿最長通道切成兩半
@@ -377,16 +462,19 @@ class ByteBuffer {
   result() { return this.buf.subarray(0, this.len); }
 }
 
-// 組出完整多幀 GIF89a
-// frames: [{ delayCs, palette, paletteSize, indices, transparentIndex, colorDepth }]
-export function encodeGif({ width, height, loopCount = 0, frames }) {
+// 組出完整多幀 GIF89a（單一全域色表）
+// 參數：{ width, height, loopCount, palette, paletteSize, colorDepth, transparentIndex,
+//        frames: [{ left, top, iw, ih, indices, disposal, transparent, transparentIndex, delayCs }] }
+export function encodeGif({ width, height, loopCount = 0, palette, paletteSize, colorDepth, transparentIndex, frames }) {
   const out = new ByteBuffer();
   out.str('GIF89a');
   out.u16(width);
   out.u16(height);
-  out.byte(0x00); // 不用全域色表（改用各幀區域色表）
-  out.byte(0x00); // 背景色索引
-  out.byte(0x00); // 像素長寬比
+  // 邏輯螢幕描述子：啟用全域色表（0x80）、色彩解析度 7、色表大小 = colorDepth-1
+  out.byte(0xF0 | (colorDepth - 1));
+  out.byte(transparentIndex & 0xff); // 背景色索引 → 透明格（disposal 2 還原背景即透明）
+  out.byte(0x00);                     // 像素長寬比
+  out.bytes(palette, paletteSize * 3);
 
   // NETSCAPE 迴圈擴充（loopCount 0 = 無限循環）
   out.byte(0x21); out.byte(0xFF); out.byte(0x0B);
@@ -396,23 +484,22 @@ export function encodeGif({ width, height, loopCount = 0, frames }) {
   out.byte(0x00);
 
   for (const f of frames) {
-    // 圖形控制擴充：處置方式 2（還原背景）以正確處理透明
+    // 圖形控制擴充：每幀自帶處置方式與透明旗標
     out.byte(0x21); out.byte(0xF9); out.byte(0x04);
-    const transFlag = f.transparentIndex >= 0 ? 1 : 0;
-    out.byte((2 << 2) | transFlag);
+    const transFlag = f.transparent ? 1 : 0;
+    out.byte((f.disposal << 2) | transFlag);
     out.u16(f.delayCs);
-    out.byte(f.transparentIndex >= 0 ? f.transparentIndex : 0);
+    out.byte(f.transparent ? f.transparentIndex : 0);
     out.byte(0x00);
 
-    // 影像描述子（整張、含區域色表）
+    // 影像描述子：本幀的位移與尺寸（差分幀只覆蓋變動矩形），不帶區域色表
     out.byte(0x2C);
-    out.u16(0); out.u16(0);
-    out.u16(width); out.u16(height);
-    out.byte(0x80 | (Math.round(Math.log2(f.paletteSize)) - 1));
-    out.bytes(f.palette, f.paletteSize * 3);
+    out.u16(f.left); out.u16(f.top);
+    out.u16(f.iw); out.u16(f.ih);
+    out.byte(0x00);
 
     // 影像資料（LZW）
-    encodeImageData(out, f.indices, f.colorDepth);
+    encodeImageData(out, f.indices, colorDepth);
   }
 
   out.byte(0x3B); // 結束符

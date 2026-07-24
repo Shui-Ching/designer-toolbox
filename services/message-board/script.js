@@ -1,4 +1,4 @@
-import { track } from '../../shared/scripts/shared.js?v=202607181532';
+import { track } from '../../shared/scripts/shared.js?v=202607241400';
 
 // ── 預設訊息 ──────────────────────────────────────
 const PRESETS = ['人不在，開會去', '人不在，廁所去'];

@@ -2,7 +2,7 @@
 // 51 Emoji 查找複製 — 載入資料、搜尋、分類篩選、依分類分區、點卡複製 Emoji
 // 架構複製 37 號 special-chars，只換資料來源與語彙
 // ============================================================
-import { copyText, escapeHtml, track } from '../../shared/scripts/shared.js?v=202607181532';
+import { copyText, escapeHtml, track } from '../../shared/scripts/shared.js?v=202607241400';
 
 const searchInput = document.getElementById('search');
 const filterBar = document.getElementById('filter-bar');

@@ -3,8 +3,8 @@
 // → 隱私檢點＋分組明細 → 無損剔除中繼資料下載
 // 資安：EXIF 字串為不可信輸入，一律 textContent 進 DOM，不經 innerHTML
 // ============================================================
-import { bindDropzone, downloadBlob, copyText, formatBytes, track } from '../../shared/scripts/shared.js?v=202607181532';
-import { parseJpeg, stripJpeg } from './exif-core.js?v=202607181532';
+import { bindDropzone, downloadBlob, copyText, formatBytes, track } from '../../shared/scripts/shared.js?v=202607241400';
+import { parseJpeg, stripJpeg } from './exif-core.js?v=202607241400';
 
 const $ = (id) => document.getElementById(id);
 

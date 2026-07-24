@@ -1,8 +1,8 @@
 // ============================================================
 // 35 GIF 動畫壓縮 — 自寫 GIF 解碼／減色／重編碼，縮放 + 減色降容量 + 前後對比
 // ============================================================
-import { downloadBlob, formatBytes, bindDropzone, track } from '../../shared/scripts/shared.js?v=202607181532';
-import { decodeGif, quantizeFrame, encodeGif } from './gif-codec.js?v=202607181532';
+import { downloadBlob, formatBytes, bindDropzone, track } from '../../shared/scripts/shared.js?v=202607241400';
+import { decodeGif, buildPalette, planFrames, encodeGif } from './gif-codec.js?v=202607241400';
 
 const dropzone = document.getElementById('dropzone');
 const fileInput = document.getElementById('file-input');
@@ -118,22 +118,39 @@ async function process() {
   afterPanel.classList.add('is-working');
   downloadBtn.disabled = true;
 
-  const encFrames = [];
-  for (let i = 0; i < source.frames.length; i++) {
+  // 1) 依縮放取得每幀整張畫布的 RGBA（縮放用 Canvas，故留在這層做）
+  const rgbaFrames = [];
+  const delays = [];
+  const total = source.frames.length;
+  for (let i = 0; i < total; i++) {
     const f = source.frames[i];
-    const rgba = settings.scale === 1
-      ? f.rgba
-      : resizeRgba(f.rgba, source.width, source.height, outW, outH);
-    const q = quantizeFrame(rgba, settings.colors);
-    encFrames.push({ ...q, delayCs: f.delayCs });
-
-    // 每幀之間讓出主執行緒，避免畫面凍結；期間若有新設定則作廢本次
-    afterPanel.style.setProperty('--progress', `${Math.round(((i + 1) / source.frames.length) * 100)}%`);
-    if (source.frames.length > 4) await tick();
+    rgbaFrames.push(
+      settings.scale === 1 ? f.rgba : resizeRgba(f.rgba, source.width, source.height, outW, outH)
+    );
+    delays.push(f.delayCs);
+    afterPanel.style.setProperty('--progress', `${Math.round(((i + 1) / total) * 40)}%`);
+    if (total > 4) await tick();
     if (my !== runId) return;
   }
 
-  const bytes = encodeGif({ width: outW, height: outH, loopCount: source.loopCount, frames: encFrames });
+  // 2) 建全域色盤 → 逐幀對映索引 + 幀間差分（純不透明動畫才差分）
+  const pal = buildPalette(rgbaFrames, settings.colors);
+  if (my !== runId) return;
+  const encFrames = await planFrames(rgbaFrames, outW, outH, delays, pal, {
+    onStep: async (i) => {
+      afterPanel.style.setProperty('--progress', `${Math.round(40 + ((i + 1) / total) * 55)}%`);
+      if (total > 4) await tick();
+      return my !== runId; // 有新設定 → 中止本次
+    },
+  });
+  if (encFrames === null || my !== runId) return;
+
+  // 3) 重新編碼為單一全域色表的 GIF89a
+  const bytes = encodeGif({
+    width: outW, height: outH, loopCount: source.loopCount,
+    palette: pal.palette, paletteSize: pal.paletteSize, colorDepth: pal.colorDepth,
+    transparentIndex: pal.transparentIndex, frames: encFrames,
+  });
   if (my !== runId) return;
 
   if (outUrl) URL.revokeObjectURL(outUrl);
